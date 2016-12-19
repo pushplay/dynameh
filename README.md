@@ -1,0 +1,2 @@
+# giftbit-dynameh
+DynamoDB utils.
