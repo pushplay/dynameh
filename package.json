@@ -24,7 +24,6 @@
   "homepage": "https://github.com/Giftbit/giftbit-dynameh#readme",
   "dependencies": {},
   "devDependencies": {
-    "@types/lodash.chunk": "^4.2.0",
     "@types/node": "^6.0.52"
   },
   "peerDependencies": {

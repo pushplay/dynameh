@@ -1,4 +1,7 @@
 import * as aws from "aws-sdk";
+import * as babysitter from "./babysitter";
+
+export {babysitter};
 
 /**
  * The maximum number of items that can be gotten in a single request.
