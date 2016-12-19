@@ -1,8 +1,6 @@
 import * as aws from "aws-sdk";
 import chunk = require("lodash.chunk");
 
-type AttributeValue = aws.DynamoDB.Types.AttributeValue;
-
 /**
  * The maximum number of items that can be gotten in a single request.
  */
@@ -19,7 +17,7 @@ const putLimit = 25;
  * @param item
  * @returns the put item
  */
-export function buildRequestPutItem(item: any): AttributeValue {
+export function buildRequestPutItem(item: any): aws.DynamoDB.Types.AttributeValue {
     switch (typeof item) {
         case "boolean":
             return {BOOL: item};
@@ -123,7 +121,7 @@ export function buildBatchGetInputs(tableName: string, keyField: string, keys: a
  * @param item
  * @returns the extracted value
  */
-export function unwrapResponseItem(item: AttributeValue): any {
+export function unwrapResponseItem(item: aws.DynamoDB.Types.AttributeValue): any {
     if (item.B) {
         if (typeof item.B === "string") {
             return Buffer.from(item.B as string, "base64");
