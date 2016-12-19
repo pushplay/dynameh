@@ -1,14 +1,12 @@
 "use strict";
-const chunk = require("lodash.chunk");
 /**
  * The maximum number of items that can be gotten in a single request.
  */
-const getLimit = 100;
+exports.getLimit = 100;
 /**
  * The maximum number of items that can be put in a single request.
- * @type {number}
  */
-const putLimit = 25;
+exports.putLimit = 25;
 /**
  * Build a put object for a single item.
  * @param item
@@ -61,8 +59,8 @@ exports.buildRequestPutItem = buildRequestPutItem;
  * @returns the put request object
  */
 function buildBatchPutInput(tableName, items) {
-    if (items.length > putLimit) {
-        throw new Error(`A single put request cannot exceed ${putLimit} items.`);
+    if (items.length > exports.putLimit) {
+        throw new Error(`A single put request cannot exceed ${exports.putLimit} items.`);
     }
     return {
         RequestItems: {
@@ -72,18 +70,6 @@ function buildBatchPutInput(tableName, items) {
 }
 exports.buildBatchPutInput = buildBatchPutInput;
 /**
- * Build multiple request objects that can be passed into `batchWriteItem`,
- * split on the limit of the number of objects that can be put.
- * @param tableName
- * @param items the items to put
- * @returns the put request objects
- */
-function buildBatchPutInputs(tableName, items) {
-    return chunk(items, putLimit)
-        .map(items => buildBatchPutInput(tableName, items));
-}
-exports.buildBatchPutInputs = buildBatchPutInputs;
-/**
  * Build a request object that can be passed into `batchGetItem`.
  * @param tableName
  * @param keyField the name of the field that is the key
@@ -91,8 +77,8 @@ exports.buildBatchPutInputs = buildBatchPutInputs;
  * @returns the get request object
  */
 function buildBatchGetInput(tableName, keyField, keys) {
-    if (keys.length > getLimit) {
-        throw new Error(`A single get request cannot exceed ${getLimit} items.`);
+    if (keys.length > exports.getLimit) {
+        throw new Error(`A single get request cannot exceed ${exports.getLimit} items.`);
     }
     return {
         RequestItems: {
@@ -103,19 +89,6 @@ function buildBatchGetInput(tableName, keyField, keys) {
     };
 }
 exports.buildBatchGetInput = buildBatchGetInput;
-/**
- * Build multiple request objects that can be passed into `batchGetItem`,
- * split on the limit of the number of objects that can be requested at once.
- * @param tableName
- * @param keyField the name of the field that is the key
- * @param keys an array of the key values for each item to request
- * @returns the get request objects
- */
-function buildBatchGetInputs(tableName, keyField, keys) {
-    return chunk(keys, getLimit)
-        .map(keys => buildBatchGetInput(tableName, keyField, keys));
-}
-exports.buildBatchGetInputs = buildBatchGetInputs;
 /**
  * Extract a single property from a get response.
  * @param item

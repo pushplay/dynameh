@@ -1,16 +1,14 @@
 import * as aws from "aws-sdk";
-import chunk = require("lodash.chunk");
 
 /**
  * The maximum number of items that can be gotten in a single request.
  */
-const getLimit = 100;
+export const getLimit = 100;
 
 /**
  * The maximum number of items that can be put in a single request.
- * @type {number}
  */
-const putLimit = 25;
+export const putLimit = 25;
 
 /**
  * Build a put object for a single item.
@@ -72,18 +70,6 @@ export function buildBatchPutInput(tableName: string, items: Object[]): aws.Dyna
 }
 
 /**
- * Build multiple request objects that can be passed into `batchWriteItem`,
- * split on the limit of the number of objects that can be put.
- * @param tableName
- * @param items the items to put
- * @returns the put request objects
- */
-export function buildBatchPutInputs(tableName: string, items: Object[]): aws.DynamoDB.Types.BatchWriteItemInput[] {
-    return chunk(items, putLimit)
-        .map(items => buildBatchPutInput(tableName, items));
-}
-
-/**
  * Build a request object that can be passed into `batchGetItem`.
  * @param tableName
  * @param keyField the name of the field that is the key
@@ -101,19 +87,6 @@ export function buildBatchGetInput(tableName: string, keyField: string, keys: an
             }
         }
     };
-}
-
-/**
- * Build multiple request objects that can be passed into `batchGetItem`,
- * split on the limit of the number of objects that can be requested at once.
- * @param tableName
- * @param keyField the name of the field that is the key
- * @param keys an array of the key values for each item to request
- * @returns the get request objects
- */
-export function buildBatchGetInputs(tableName: string, keyField: string, keys: any[]): aws.DynamoDB.Types.BatchGetItemInput[] {
-    return chunk(keys, getLimit)
-        .map(keys => buildBatchGetInput(tableName, keyField, keys));
 }
 
 /**
