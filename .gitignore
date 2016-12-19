@@ -1,0 +1,16 @@
+# Node stuff
+node_modules/
+*.log
+npm-debug.log*
+.npm
+.node_repl_history
+
+# IntelliJ stuff
+*.iml
+.idea/
+
+# Terrform stuff
+*.tfstate
+
+# This dir is created by mocha-webpack
+.tmp
