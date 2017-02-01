@@ -126,7 +126,8 @@ function unwrapResponseItem(item) {
     }
     else if (item.M) {
         const resp = {};
-        Object.keys(item).forEach(key => resp[key] = unwrapResponseItem(item[key]));
+        Object.keys(item.M).forEach(key => resp[key] = unwrapResponseItem(item.M[key]));
+        return resp;
     }
     throw new Error(`Unhandled response item ${JSON.stringify(item, null, 2)}`);
 }
