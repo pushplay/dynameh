@@ -1,11 +1,12 @@
 {
   "name": "giftbit-dynameh",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "DynamoDB utils.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
+    "lint": "tslint --project tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,7 +24,10 @@
     "url": "https://github.com/Giftbit/giftbit-dynameh/issues"
   },
   "homepage": "https://github.com/Giftbit/giftbit-dynameh#readme",
-  "dependencies": {},
+  "dependencies": {
+    "tslint": "^4.4.2",
+    "typescript": "^2.1.5"
+  },
   "devDependencies": {
     "@types/node": "^6.0.52"
   },
