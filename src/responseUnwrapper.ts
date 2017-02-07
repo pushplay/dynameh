@@ -40,6 +40,9 @@ export function unwrapResponseItem(item: aws.DynamoDB.Types.AttributeValue): any
  * @returns the object returned
  */
 export function unwrapGetOutput(response: aws.DynamoDB.Types.GetItemOutput): any {
+    if (!response.Item) {
+        return null;
+    }
     return unwrapResponseItem({M: response.Item});
 }
 
@@ -66,6 +69,19 @@ export function unwrapBatchGetOutput(tableName: string | TableSchema, response: 
  * @returns the objects returned
  */
 export function unwrapScanOutput(response: aws.DynamoDB.Types.ScanOutput): any[] {
+    const responseTableItems = response.Items;
+    if (!responseTableItems) {
+        return [];
+    }
+    return responseTableItems.map(responseItem => unwrapResponseItem({M: responseItem}));
+}
+
+/**
+ * Extract the JSON objects from a response to `query`.
+ * @param response result of query
+ * @returns the objects returned
+ */
+export function unwrapQueryOutput(response: aws.DynamoDB.Types.QueryOutput): any[] {
     const responseTableItems = response.Items;
     if (!responseTableItems) {
         return [];

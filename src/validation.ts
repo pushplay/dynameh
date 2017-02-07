@@ -24,7 +24,6 @@ export function checkSchema(tableSchema: TableSchema): void {
     }
 }
 
-
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */

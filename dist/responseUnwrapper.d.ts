@@ -25,3 +25,9 @@ export declare function unwrapBatchGetOutput(tableName: string | TableSchema, re
  * @returns the objects returned
  */
 export declare function unwrapScanOutput(response: aws.DynamoDB.Types.ScanOutput): any[];
+/**
+ * Extract the JSON objects from a response to `query`.
+ * @param response result of query
+ * @returns the objects returned
+ */
+export declare function unwrapQueryOutput(response: aws.DynamoDB.Types.QueryOutput): any[];

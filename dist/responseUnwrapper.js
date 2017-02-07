@@ -46,6 +46,9 @@ exports.unwrapResponseItem = unwrapResponseItem;
  * @returns the object returned
  */
 function unwrapGetOutput(response) {
+    if (!response.Item) {
+        return null;
+    }
     return unwrapResponseItem({ M: response.Item });
 }
 exports.unwrapGetOutput = unwrapGetOutput;
@@ -79,3 +82,16 @@ function unwrapScanOutput(response) {
     return responseTableItems.map(responseItem => unwrapResponseItem({ M: responseItem }));
 }
 exports.unwrapScanOutput = unwrapScanOutput;
+/**
+ * Extract the JSON objects from a response to `query`.
+ * @param response result of query
+ * @returns the objects returned
+ */
+function unwrapQueryOutput(response) {
+    const responseTableItems = response.Items;
+    if (!responseTableItems) {
+        return [];
+    }
+    return responseTableItems.map(responseItem => unwrapResponseItem({ M: responseItem }));
+}
+exports.unwrapQueryOutput = unwrapQueryOutput;
