@@ -32,3 +32,11 @@ export declare function buildBatchDeleteInput(tableSchema: TableSchema, keys: Dy
  * @returns the get request object
  */
 export declare function buildBatchGetInput(tableSchema: TableSchema, keys: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.Types.BatchGetItemInput;
+/**
+ * Build a request object that can be passed into `createTable`.
+ * ProvisionedThroughput takes on default values of 1 and 1 and
+ * should probably be edited.
+ * @param tableSchema
+ * @returns the create table request object
+ */
+export declare function buildCreateTableRequest(tableSchema: TableSchema): aws.DynamoDB.Types.CreateTableInput;
