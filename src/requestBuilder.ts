@@ -226,3 +226,57 @@ export function buildBatchGetInput(tableSchema: TableSchema, keys: DynamoKey[] |
         };
     }
 }
+
+/**
+ * Build a request object that can be passed into `createTable`.
+ * ProvisionedThroughput takes on default values of 1 and 1 and
+ * should probably be edited.
+ * @param tableSchema
+ * @returns the create table request object
+ */
+export function buildCreateTableRequest(tableSchema: TableSchema): aws.DynamoDB.Types.CreateTableInput {
+    checkSchema(tableSchema);
+
+    const request = {
+        AttributeDefinitions: [
+            {
+                AttributeName: tableSchema.primaryKeyField,
+                AttributeType: jsTypeToDdbType(tableSchema.primaryKeyType)
+            }
+        ],
+        KeySchema: [
+            {
+                AttributeName: tableSchema.primaryKeyField,
+                KeyType: "HASH"
+            }
+        ],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 1,
+            WriteCapacityUnits: 1
+        },
+        TableName: tableSchema.tableName,
+    };
+
+    if (tableSchema.sortKeyField) {
+        request.AttributeDefinitions.push({
+            AttributeName: tableSchema.sortKeyField,
+            AttributeType: jsTypeToDdbType(tableSchema.sortKeyType)
+        });
+        request.KeySchema.push({
+            AttributeName: tableSchema.sortKeyField,
+            KeyType: "RANGE"
+        });
+    }
+
+    return request;
+}
+
+function jsTypeToDdbType(t: string): string {
+    switch (t) {
+        case "string":
+            return "S";
+        case "number":
+            return "N";
+    }
+    throw new Error("Unhandled key type.");
+}
