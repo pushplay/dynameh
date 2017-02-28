@@ -5,5 +5,7 @@ const concurrentHelper = require("./concurrentHelper");
 exports.concurrentHelper = concurrentHelper;
 const requestBuilder = require("./requestBuilder");
 exports.requestBuilder = requestBuilder;
+const requestUnwrapper = require("./requestUnwrapper");
+exports.requestUnwrapper = requestUnwrapper;
 const responseUnwrapper = require("./responseUnwrapper");
 exports.responseUnwrapper = responseUnwrapper;
