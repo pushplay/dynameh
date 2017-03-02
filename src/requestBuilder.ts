@@ -7,10 +7,11 @@ import {
 
 /**
  * Build a put object for a single item.
+ * @param tableSchema
  * @param item
  * @returns the put item
  */
-export function buildRequestPutItem(item: any): aws.DynamoDB.Types.AttributeValue {
+export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.DynamoDB.AttributeValue {
     switch (typeof item) {
         case "boolean":
             return {BOOL: item};
@@ -24,6 +25,12 @@ export function buildRequestPutItem(item: any): aws.DynamoDB.Types.AttributeValu
                 return {NULL: true};
             } else if (item instanceof Buffer) {
                 return {B: item.toString("base64")};
+            } else if (item instanceof Date) {
+                if (tableSchema.dateSerializationFunction) {
+                    return buildRequestPutItem(tableSchema, tableSchema.dateSerializationFunction(item));
+                } else {
+                    return {S: item.toISOString()};
+                }
             } else if (Array.isArray(item)) {
                 if (item.length > 0) {
                     const firstItemType = typeof item[0];
@@ -34,10 +41,10 @@ export function buildRequestPutItem(item: any): aws.DynamoDB.Types.AttributeValu
                         return {NS: item.map(n => n.toString())};
                     }
                 }
-                return {L: item.map(i => buildRequestPutItem(i))};
+                return {L: item.map(i => buildRequestPutItem(tableSchema, i))};
             } else {
                 const valueMap: any = {};
-                Object.keys(item).forEach(key => valueMap[key] = buildRequestPutItem(item[key]));
+                Object.keys(item).forEach(key => valueMap[key] = buildRequestPutItem(tableSchema, item[key]));
                 return {M: valueMap};
             }
         }
@@ -53,13 +60,13 @@ export function buildGetInput(tableSchema: TableSchema, primaryKey: DynamoKey, s
 
     const request: aws.DynamoDB.Types.GetItemInput = {
         Key: {
-            [tableSchema.primaryKeyField]: buildRequestPutItem(primaryKey)
+            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKey)
         },
         TableName: tableSchema.tableName
     };
 
     if (sortKey) {
-        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(sortKey);
+        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKey);
     }
 
     return request;
@@ -70,7 +77,7 @@ export function buildPutInput(tableSchema: TableSchema, item: Object): aws.Dynam
     checkSchemaItemAgreement(tableSchema, item);
 
     const request: aws.DynamoDB.Types.PutItemInput = {
-        Item: buildRequestPutItem(item).M,
+        Item: buildRequestPutItem(tableSchema, item).M,
         TableName: tableSchema.tableName
     };
 
@@ -113,13 +120,13 @@ export function buildDeleteInput(tableSchema: TableSchema, primaryKey: DynamoKey
 
     const request: aws.DynamoDB.Types.DeleteItemInput = {
         Key: {
-            [tableSchema.primaryKeyField]: buildRequestPutItem(primaryKey)
+            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKey)
         },
         TableName: tableSchema.tableName
     };
 
     if (sortKey) {
-        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(sortKey);
+        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKey);
     }
 
     return request;
@@ -143,7 +150,7 @@ export function buildBatchPutInput(tableSchema: TableSchema, items: Object[]): a
         RequestItems: {
             [tableSchema.tableName]: items.map(item => ({
                 PutRequest: {
-                    Item: buildRequestPutItem(item).M
+                    Item: buildRequestPutItem(tableSchema, item).M
                 }
             }))
         }
@@ -168,8 +175,8 @@ export function buildBatchDeleteInput(tableSchema: TableSchema, keys: DynamoKey[
                 [tableSchema.tableName]: keyPairs.map(keyPair => ({
                     DeleteRequest: {
                         Key: {
-                            [tableSchema.primaryKeyField]: buildRequestPutItem(keyPair[0]),
-                            [tableSchema.sortKeyField]: buildRequestPutItem(keyPair[1])
+                            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, keyPair[0]),
+                            [tableSchema.sortKeyField]: buildRequestPutItem(tableSchema, keyPair[1])
                         }
                     }
                 }))
@@ -182,7 +189,7 @@ export function buildBatchDeleteInput(tableSchema: TableSchema, keys: DynamoKey[
                 [tableSchema.tableName]: flatKeys.map(key => ({
                     DeleteRequest: {
                         Key: {
-                            [tableSchema.primaryKeyField]: buildRequestPutItem(key)
+                            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, key)
                         }
                     }
                 }))
@@ -207,8 +214,8 @@ export function buildBatchGetInput(tableSchema: TableSchema, keys: DynamoKey[] |
             RequestItems: {
                 [tableSchema.tableName]: {
                     Keys: keyPairs.map(keyPair => ({
-                        [tableSchema.primaryKeyField]: buildRequestPutItem(keyPair[0]),
-                        [tableSchema.sortKeyField]: buildRequestPutItem(keyPair[1])
+                        [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, keyPair[0]),
+                        [tableSchema.sortKeyField]: buildRequestPutItem(tableSchema, keyPair[1])
                     }))
                 }
             }
@@ -219,7 +226,7 @@ export function buildBatchGetInput(tableSchema: TableSchema, keys: DynamoKey[] |
             RequestItems: {
                 [tableSchema.tableName]: {
                     Keys: flatKeys.map(key => ({
-                        [tableSchema.primaryKeyField]: buildRequestPutItem(key)
+                        [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, key)
                     }))
                 }
             }

@@ -36,4 +36,11 @@ export interface TableSchema {
      */
     versionKeyField?: string;
 
+    /**
+     * How to serialize Dates when encountered.  Defaults to ISO8601.
+     * @param d the Date to serialize
+     * @return a serialization of the Date
+     */
+    dateSerializationFunction?: (d: Date) => any;
+
 }

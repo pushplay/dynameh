@@ -3,10 +3,11 @@ import { TableSchema } from "./TableSchema";
 import { DynamoKeyPair, DynamoKey } from "./validation";
 /**
  * Build a put object for a single item.
+ * @param tableSchema
  * @param item
  * @returns the put item
  */
-export declare function buildRequestPutItem(item: any): aws.DynamoDB.Types.AttributeValue;
+export declare function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.DynamoDB.AttributeValue;
 export declare function buildGetInput(tableSchema: TableSchema, primaryKey: DynamoKey, sortKey?: DynamoKey): aws.DynamoDB.Types.GetItemInput;
 export declare function buildPutInput(tableSchema: TableSchema, item: Object): aws.DynamoDB.Types.PutItemInput;
 export declare function buildDeleteInput(tableSchema: TableSchema, primaryKey: DynamoKey, sortKey?: DynamoKey): aws.DynamoDB.Types.DeleteItemInput;

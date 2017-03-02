@@ -3,10 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const validation_1 = require("./validation");
 /**
  * Build a put object for a single item.
+ * @param tableSchema
  * @param item
  * @returns the put item
  */
-function buildRequestPutItem(item) {
+function buildRequestPutItem(tableSchema, item) {
     switch (typeof item) {
         case "boolean":
             return { BOOL: item };
@@ -22,6 +23,14 @@ function buildRequestPutItem(item) {
             else if (item instanceof Buffer) {
                 return { B: item.toString("base64") };
             }
+            else if (item instanceof Date) {
+                if (tableSchema.dateSerializationFunction) {
+                    return buildRequestPutItem(tableSchema, tableSchema.dateSerializationFunction(item));
+                }
+                else {
+                    return { S: item.toISOString() };
+                }
+            }
             else if (Array.isArray(item)) {
                 if (item.length > 0) {
                     const firstItemType = typeof item[0];
@@ -32,11 +41,11 @@ function buildRequestPutItem(item) {
                         return { NS: item.map(n => n.toString()) };
                     }
                 }
-                return { L: item.map(i => buildRequestPutItem(i)) };
+                return { L: item.map(i => buildRequestPutItem(tableSchema, i)) };
             }
             else {
                 const valueMap = {};
-                Object.keys(item).forEach(key => valueMap[key] = buildRequestPutItem(item[key]));
+                Object.keys(item).forEach(key => valueMap[key] = buildRequestPutItem(tableSchema, item[key]));
                 return { M: valueMap };
             }
         }
@@ -51,12 +60,12 @@ function buildGetInput(tableSchema, primaryKey, sortKey) {
     validation_1.checkSchemaKeyAgreement(tableSchema, primaryKey, sortKey);
     const request = {
         Key: {
-            [tableSchema.primaryKeyField]: buildRequestPutItem(primaryKey)
+            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKey)
         },
         TableName: tableSchema.tableName
     };
     if (sortKey) {
-        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(sortKey);
+        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKey);
     }
     return request;
 }
@@ -65,7 +74,7 @@ function buildPutInput(tableSchema, item) {
     validation_1.checkSchema(tableSchema);
     validation_1.checkSchemaItemAgreement(tableSchema, item);
     const request = {
-        Item: buildRequestPutItem(item).M,
+        Item: buildRequestPutItem(tableSchema, item).M,
         TableName: tableSchema.tableName
     };
     if (tableSchema.versionKeyField) {
@@ -106,12 +115,12 @@ function buildDeleteInput(tableSchema, primaryKey, sortKey) {
     validation_1.checkSchemaKeyAgreement(tableSchema, primaryKey, sortKey);
     const request = {
         Key: {
-            [tableSchema.primaryKeyField]: buildRequestPutItem(primaryKey)
+            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKey)
         },
         TableName: tableSchema.tableName
     };
     if (sortKey) {
-        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(sortKey);
+        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKey);
     }
     return request;
 }
@@ -132,7 +141,7 @@ function buildBatchPutInput(tableSchema, items) {
         RequestItems: {
             [tableSchema.tableName]: items.map(item => ({
                 PutRequest: {
-                    Item: buildRequestPutItem(item).M
+                    Item: buildRequestPutItem(tableSchema, item).M
                 }
             }))
         }
@@ -156,8 +165,8 @@ function buildBatchDeleteInput(tableSchema, keys) {
                 [tableSchema.tableName]: keyPairs.map(keyPair => ({
                     DeleteRequest: {
                         Key: {
-                            [tableSchema.primaryKeyField]: buildRequestPutItem(keyPair[0]),
-                            [tableSchema.sortKeyField]: buildRequestPutItem(keyPair[1])
+                            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, keyPair[0]),
+                            [tableSchema.sortKeyField]: buildRequestPutItem(tableSchema, keyPair[1])
                         }
                     }
                 }))
@@ -171,7 +180,7 @@ function buildBatchDeleteInput(tableSchema, keys) {
                 [tableSchema.tableName]: flatKeys.map(key => ({
                     DeleteRequest: {
                         Key: {
-                            [tableSchema.primaryKeyField]: buildRequestPutItem(key)
+                            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, key)
                         }
                     }
                 }))
@@ -195,8 +204,8 @@ function buildBatchGetInput(tableSchema, keys) {
             RequestItems: {
                 [tableSchema.tableName]: {
                     Keys: keyPairs.map(keyPair => ({
-                        [tableSchema.primaryKeyField]: buildRequestPutItem(keyPair[0]),
-                        [tableSchema.sortKeyField]: buildRequestPutItem(keyPair[1])
+                        [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, keyPair[0]),
+                        [tableSchema.sortKeyField]: buildRequestPutItem(tableSchema, keyPair[1])
                     }))
                 }
             }
@@ -208,7 +217,7 @@ function buildBatchGetInput(tableSchema, keys) {
             RequestItems: {
                 [tableSchema.tableName]: {
                     Keys: flatKeys.map(key => ({
-                        [tableSchema.primaryKeyField]: buildRequestPutItem(key)
+                        [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, key)
                     }))
                 }
             }
