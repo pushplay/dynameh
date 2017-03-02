@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const validation_1 = require("./validation");
 /**
  * Build a put object for a single item.

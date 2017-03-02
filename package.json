@@ -1,13 +1,13 @@
 {
   "name": "giftbit-dynameh",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "DynamoDB utils.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "lint": "tslint --project tsconfig.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive --throw-deprecation --require ts-node/register \"src/**/*.test.ts\""
   },
   "repository": {
     "type": "git",
@@ -24,12 +24,16 @@
     "url": "https://github.com/Giftbit/giftbit-dynameh/issues"
   },
   "homepage": "https://github.com/Giftbit/giftbit-dynameh#readme",
-  "dependencies": {
-    "tslint": "^4.4.2",
-    "typescript": "^2.1.5"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/node": "^6.0.52"
+    "@types/chai": "^3.4.35",
+    "@types/mocha": "^2.2.39",
+    "@types/node": "^7.0.5",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "ts-node": "^2.1.0",
+    "tslint": "^4.5.1",
+    "typescript": "^2.2.1"
   },
   "peerDependencies": {
     "aws-sdk": "^2.7.15"

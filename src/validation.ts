@@ -7,6 +7,9 @@ export function checkSchema(tableSchema: TableSchema): void {
     if (!tableSchema) {
         throw new Error("Missing TableSchema.");
     }
+    if (!tableSchema.tableName) {
+        throw new Error("TableSchema missing tableName.");
+    }
     if (!tableSchema.primaryKeyField) {
         throw new Error("TableSchema missing primaryKeyField.");
     }
@@ -18,6 +21,9 @@ export function checkSchema(tableSchema: TableSchema): void {
     }
     if (tableSchema.sortKeyField && !tableSchema.sortKeyType) {
         throw new Error("TableSchema defines sortKeyField but missing sortKeyType.");
+    }
+    if (!tableSchema.sortKeyField && tableSchema.sortKeyType) {
+        throw new Error("TableSchema defines sortKeyType but missing sortKeyField.");
     }
     if (tableSchema.sortKeyField && tableSchema.sortKeyType !== "string" && tableSchema.sortKeyType !== "number") {
         throw new Error(`TableSchema defines sortKeyField, sortKeyType must be 'string' or 'number'.  Got ${tableSchema.sortKeyType}.`);
@@ -92,7 +98,7 @@ export function checkSchemaItemAgreement(tableSchema: TableSchema, item: Object)
     if (tableSchema.sortKeyField && !item[tableSchema.sortKeyField]) {
         throw new Error(`TableSchema defines a sortKeyField ${tableSchema.sortKeyField} which is not on the object.`);
     }
-    if (typeof item[tableSchema.sortKeyField] !== tableSchema.sortKeyType) {
+    if (tableSchema.sortKeyField && typeof item[tableSchema.sortKeyField] !== tableSchema.sortKeyType) {
         throw new Error(`TableSchema defines sortKeyType ${tableSchema.sortKeyType} which does not match the object's ${typeof item[tableSchema.sortKeyField]}.`);
     }
     if (tableSchema.versionKeyField && item[tableSchema.versionKeyField] && typeof item[tableSchema.versionKeyField] !== "number") {

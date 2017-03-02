@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const responseUnwrapper_1 = require("./responseUnwrapper");
 /**
  * Extract the item being put from the input.

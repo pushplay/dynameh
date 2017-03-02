@@ -1,12 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -15,6 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const responseUnwrapper_1 = require("./responseUnwrapper");
 /**
  * The maximum number of items that can be gotten in a single request.
@@ -46,8 +39,8 @@ function batchGetAll(dynamodb, batchGetInput) {
         let backoff = backoffInitial;
         while (unprocessedKeys.length) {
             // Take values from the input but override the Keys we fetch.
-            const request = __assign({}, batchGetInput, { RequestItems: {
-                    [requestItemsTable]: __assign({}, batchGetInput.RequestItems[requestItemsTable], { Keys: unprocessedKeys.splice(0, Math.min(unprocessedKeys.length, exports.batchGetLimit)) })
+            const request = Object.assign({}, batchGetInput, { RequestItems: {
+                    [requestItemsTable]: Object.assign({}, batchGetInput.RequestItems[requestItemsTable], { Keys: unprocessedKeys.splice(0, Math.min(unprocessedKeys.length, exports.batchGetLimit)) })
                 } });
             const response = yield dynamodb.batchGetItem(request).promise();
             const responseObjects = responseUnwrapper_1.unwrapBatchGetOutput(requestItemsTable, response);
@@ -81,7 +74,7 @@ function batchWriteAll(dynamodb, batchPutInput) {
         const unprocessedItems = [...batchPutInput.RequestItems[requestItemsTable]];
         let backoff = backoffInitial;
         while (unprocessedItems.length) {
-            const request = __assign({}, batchPutInput, { RequestItems: {
+            const request = Object.assign({}, batchPutInput, { RequestItems: {
                     [requestItemsTable]: unprocessedItems.splice(0, Math.min(unprocessedItems.length, exports.batchWriteLimit))
                 } });
             const response = yield dynamodb.batchWriteItem(request).promise();

@@ -5,7 +5,13 @@
     "noImplicitAny": false,
     "sourceMap": false,
     "declaration": true,
-    "project": "src",
     "outDir": "dist"
-  }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts"
+  ]
 }

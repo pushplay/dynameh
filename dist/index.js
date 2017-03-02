@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const batchHelper = require("./batchHelper");
 exports.batchHelper = batchHelper;
 const concurrentHelper = require("./concurrentHelper");
