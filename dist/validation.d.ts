@@ -5,11 +5,11 @@ export declare function checkSchema(tableSchema: TableSchema): void;
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */
-export declare function checkSchemaKeyAgreement(tableSchema: TableSchema, primaryKey: DynamoKey, sortKey?: DynamoKey): void;
+export declare function checkSchemaKeyAgreement(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): void;
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */
-export declare function checkSchemaKeysAgreement(tableSchema: TableSchema, keys: DynamoKey[] | DynamoKeyPair[]): void;
+export declare function checkSchemaKeysAgreement(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): void;
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */

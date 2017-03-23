@@ -55,17 +55,17 @@ function buildRequestPutItem(tableSchema, item) {
     }
 }
 exports.buildRequestPutItem = buildRequestPutItem;
-function buildGetInput(tableSchema, primaryKey, sortKey) {
+function buildGetInput(tableSchema, primaryKeyValue, sortKeyValue) {
     validation_1.checkSchema(tableSchema);
-    validation_1.checkSchemaKeyAgreement(tableSchema, primaryKey, sortKey);
+    validation_1.checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue);
     const request = {
         Key: {
-            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKey)
+            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKeyValue)
         },
         TableName: tableSchema.tableName
     };
-    if (sortKey) {
-        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKey);
+    if (sortKeyValue) {
+        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKeyValue);
     }
     return request;
 }
@@ -110,17 +110,17 @@ function buildPutInput(tableSchema, item) {
     return request;
 }
 exports.buildPutInput = buildPutInput;
-function buildDeleteInput(tableSchema, primaryKey, sortKey) {
+function buildDeleteInput(tableSchema, primaryKeyValue, sortKeyValue) {
     validation_1.checkSchema(tableSchema);
-    validation_1.checkSchemaKeyAgreement(tableSchema, primaryKey, sortKey);
+    validation_1.checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue);
     const request = {
         Key: {
-            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKey)
+            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKeyValue)
         },
         TableName: tableSchema.tableName
     };
-    if (sortKey) {
-        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKey);
+    if (sortKeyValue) {
+        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKeyValue);
     }
     return request;
 }
@@ -151,15 +151,15 @@ exports.buildBatchPutInput = buildBatchPutInput;
 /**
  * Build a request object that can be passed into `batchWriteItem`.
  * @param tableSchema
- * @param keys an array of the key values for each item to delete
+ * @param keyValues an array of the key values for each item to delete
  * @param clobber whether to clobber the previous value if it has changed
  * @returns the BatchWriteItemInput
  */
-function buildBatchDeleteInput(tableSchema, keys) {
+function buildBatchDeleteInput(tableSchema, keyValues) {
     validation_1.checkSchema(tableSchema);
-    validation_1.checkSchemaKeysAgreement(tableSchema, keys);
+    validation_1.checkSchemaKeysAgreement(tableSchema, keyValues);
     if (tableSchema.sortKeyType) {
-        const keyPairs = keys;
+        const keyPairs = keyValues;
         return {
             RequestItems: {
                 [tableSchema.tableName]: keyPairs.map(keyPair => ({
@@ -174,7 +174,7 @@ function buildBatchDeleteInput(tableSchema, keys) {
         };
     }
     else {
-        const flatKeys = keys;
+        const flatKeys = keyValues;
         return {
             RequestItems: {
                 [tableSchema.tableName]: flatKeys.map(key => ({
@@ -192,14 +192,14 @@ exports.buildBatchDeleteInput = buildBatchDeleteInput;
 /**
  * Build a request object that can be passed into `batchGetItem`.
  * @param tableSchema
- * @param keys an array of the key values for each item to request
+ * @param keyValues an array of the key values for each item to request
  * @returns the get request object
  */
-function buildBatchGetInput(tableSchema, keys) {
+function buildBatchGetInput(tableSchema, keyValues) {
     validation_1.checkSchema(tableSchema);
-    validation_1.checkSchemaKeysAgreement(tableSchema, keys);
+    validation_1.checkSchemaKeysAgreement(tableSchema, keyValues);
     if (tableSchema.sortKeyType) {
-        const keyPairs = keys;
+        const keyPairs = keyValues;
         return {
             RequestItems: {
                 [tableSchema.tableName]: {
@@ -212,7 +212,7 @@ function buildBatchGetInput(tableSchema, keys) {
         };
     }
     else {
-        const flatKeys = keys;
+        const flatKeys = keyValues;
         return {
             RequestItems: {
                 [tableSchema.tableName]: {
@@ -230,9 +230,9 @@ exports.buildBatchGetInput = buildBatchGetInput;
  * ProvisionedThroughput takes on default values of 1 and 1 and
  * should probably be edited.
  * @param tableSchema
- * @returns the create table request object
+ * @returns the CreateTableInput
  */
-function buildCreateTableRequest(tableSchema) {
+function buildCreateTableInput(tableSchema) {
     validation_1.checkSchema(tableSchema);
     const request = {
         AttributeDefinitions: [
@@ -265,7 +265,7 @@ function buildCreateTableRequest(tableSchema) {
     }
     return request;
 }
-exports.buildCreateTableRequest = buildCreateTableRequest;
+exports.buildCreateTableInput = buildCreateTableInput;
 function jsTypeToDdbType(t) {
     switch (t) {
         case "string":

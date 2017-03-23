@@ -30,35 +30,35 @@ exports.checkSchema = checkSchema;
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */
-function checkSchemaKeyAgreement(tableSchema, primaryKey, sortKey) {
-    if (tableSchema.sortKeyField && !sortKey) {
+function checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue) {
+    if (tableSchema.sortKeyField && !sortKeyValue) {
         throw new Error("TableSchema defines a sortKeyField but the value is missing.");
     }
-    if (!tableSchema.sortKeyField && sortKey) {
+    if (!tableSchema.sortKeyField && sortKeyValue) {
         throw new Error("TableSchema doesn't define a sortKeyField but one was given.");
     }
-    if (typeof primaryKey !== tableSchema.primaryKeyType) {
-        throw new Error(`TableSchema defines primaryKeyType ${tableSchema.primaryKeyType} which does not match the primaryKey ${typeof primaryKey}.`);
+    if (typeof primaryKeyValue !== tableSchema.primaryKeyType) {
+        throw new Error(`TableSchema defines primaryKeyType ${tableSchema.primaryKeyType} which does not match the primaryKeyValue ${typeof primaryKeyValue}.`);
     }
-    if (sortKey && typeof sortKey !== tableSchema.sortKeyType) {
-        throw new Error(`TableSchema defines sortKeyType ${tableSchema.sortKeyType} which does not match the sortKey ${typeof sortKey}.`);
+    if (sortKeyValue && typeof sortKeyValue !== tableSchema.sortKeyType) {
+        throw new Error(`TableSchema defines sortKeyType ${tableSchema.sortKeyType} which does not match the sortKeyValue ${typeof sortKeyValue}.`);
     }
 }
 exports.checkSchemaKeyAgreement = checkSchemaKeyAgreement;
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */
-function checkSchemaKeysAgreement(tableSchema, keys) {
-    if (!Array.isArray(keys) || !keys.length) {
-        throw new Error("keys must be a non-empty array.");
+function checkSchemaKeysAgreement(tableSchema, keyValues) {
+    if (!Array.isArray(keyValues) || !keyValues.length) {
+        throw new Error("keyValues must be a non-empty array.");
     }
     if (tableSchema.sortKeyType) {
         let i = 0;
         try {
-            for (i = 0; i < keys.length; i++) {
-                const keyPair = keys[i];
+            for (i = 0; i < keyValues.length; i++) {
+                const keyPair = keyValues[i];
                 if (!Array.isArray(keyPair) || keyPair.length !== 2) {
-                    throw new Error("Key must be an array of length 2.");
+                    throw new Error("Key value must be an array of length 2.");
                 }
                 checkSchemaKeyAgreement(tableSchema, keyPair[0], keyPair[1]);
             }
@@ -70,8 +70,8 @@ function checkSchemaKeysAgreement(tableSchema, keys) {
     else {
         let i = 0;
         try {
-            for (i = 0; i < keys.length; i++) {
-                checkSchemaKeyAgreement(tableSchema, keys[i]);
+            for (i = 0; i < keyValues.length; i++) {
+                checkSchemaKeyAgreement(tableSchema, keyValues[i]);
             }
         }
         catch (err) {

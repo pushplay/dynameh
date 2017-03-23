@@ -948,6 +948,7 @@ img { max-width: 100%; }
 <span class="hljs-keyword">const</span> getRequet = dynameh.requestBuilder.buildGetInput(tableSchema, <span class="hljs-string">"sv-650"</span>);
 <span class="hljs-keyword">const</span> getResult = <span class="hljs-keyword">await</span> dynamodb.getItem(getRequest).promise();
 <span class="hljs-keyword">const</span> sv650 = dynameh.unwrapGetOutput(getResult);
+<span class="hljs-comment">// sv650.id === "sv-650"</span>
 
 <span class="hljs-comment">// Update the horse power stat.</span>
 sv650.bhp = <span class="hljs-number">73.4</span>;

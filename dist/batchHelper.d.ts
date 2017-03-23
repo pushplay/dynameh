@@ -8,6 +8,14 @@ export declare const batchGetLimit = 100;
  */
 export declare const batchWriteLimit = 25;
 /**
+ * The initial wait when backing off on request rate.
+ */
+export declare let backoffInitial: number;
+/**
+ * The wait growth factor when repeatedly backing off.
+ */
+export declare let backoffFactor: number;
+/**
  * Batch get in multiple requests.  Can handle more than 100 keys at once and
  * reattempts UnprocessedKeys.
  * @param dynamodb

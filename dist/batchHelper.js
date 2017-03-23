@@ -17,9 +17,14 @@ exports.batchGetLimit = 100;
  * The maximum number of items that can be put in a single request.
  */
 exports.batchWriteLimit = 25;
-// Constants controlling exponential backoff when there are unprocessed items.
-const backoffInitial = 2000;
-const backoffFactor = 2;
+/**
+ * The initial wait when backing off on request rate.
+ */
+exports.backoffInitial = 2000;
+/**
+ * The wait growth factor when repeatedly backing off.
+ */
+exports.backoffFactor = 2;
 /**
  * Batch get in multiple requests.  Can handle more than 100 keys at once and
  * reattempts UnprocessedKeys.
@@ -36,7 +41,7 @@ function batchGetAll(dynamodb, batchGetInput) {
         const requestItemsTable = requestItemsTables[0];
         const unprocessedKeys = [...batchGetInput.RequestItems[requestItemsTable].Keys];
         let results = [];
-        let backoff = backoffInitial;
+        let backoff = exports.backoffInitial;
         while (unprocessedKeys.length) {
             // Take values from the input but override the Keys we fetch.
             const request = Object.assign({}, batchGetInput, { RequestItems: {
@@ -48,10 +53,10 @@ function batchGetAll(dynamodb, batchGetInput) {
             if (response.UnprocessedKeys && response.UnprocessedKeys[requestItemsTable] && response.UnprocessedKeys[requestItemsTable].Keys.length) {
                 unprocessedKeys.unshift(...response.UnprocessedKeys[requestItemsTable].Keys);
                 yield wait(backoff);
-                backoff *= backoffFactor;
+                backoff *= exports.backoffFactor;
             }
             else {
-                backoff = backoffInitial;
+                backoff = exports.backoffInitial;
             }
         }
         return results;
@@ -72,7 +77,7 @@ function batchWriteAll(dynamodb, batchPutInput) {
         }
         const requestItemsTable = requestItemsTables[0];
         const unprocessedItems = [...batchPutInput.RequestItems[requestItemsTable]];
-        let backoff = backoffInitial;
+        let backoff = exports.backoffInitial;
         while (unprocessedItems.length) {
             const request = Object.assign({}, batchPutInput, { RequestItems: {
                     [requestItemsTable]: unprocessedItems.splice(0, Math.min(unprocessedItems.length, exports.batchWriteLimit))
@@ -81,10 +86,10 @@ function batchWriteAll(dynamodb, batchPutInput) {
             if (response.UnprocessedItems && response.UnprocessedItems[requestItemsTable] && response.UnprocessedItems[requestItemsTable].length) {
                 unprocessedItems.unshift(...response.UnprocessedItems[requestItemsTable]);
                 yield wait(backoff);
-                backoff *= backoffFactor;
+                backoff *= exports.backoffFactor;
             }
             else {
-                backoff = backoffInitial;
+                backoff = exports.backoffInitial;
             }
         }
     });

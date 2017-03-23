@@ -13,6 +13,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 exports.concurrentFactor = 20;
 /**
+ * The initial wait when backing off on request rate.
+ */
+exports.backoffInitial = 2000;
+/**
+ * The wait growth factor when repeatedly backing off.
+ */
+exports.backoffFactor = 2;
+/**
  * Manages a number of concurrent dynamodb putItem requests.  Put requests
  * are more powerful than batchWrites but cannot be done in batch form.  Making
  * them concurrently is the next best thing.
@@ -60,13 +68,22 @@ function runConcurrentThunks(thunks) {
         function startNext() {
             return __awaiter(this, void 0, void 0, function* () {
                 const ix = startedCount++;
-                try {
-                    const p = thunks[ix]();
-                    const result = yield p;
-                    onDone(result, ix);
-                }
-                catch (err) {
-                    onDone(err, ix);
+                let backoff = exports.backoffInitial;
+                while (true) {
+                    try {
+                        const p = thunks[ix]();
+                        const result = yield p;
+                        onDone(result, ix);
+                        return;
+                    }
+                    catch (err) {
+                        if (!err.retryable) {
+                            onDone(err, ix);
+                            return;
+                        }
+                        yield new Promise(resolve => setTimeout(resolve, backoff));
+                        backoff *= exports.backoffFactor;
+                    }
                 }
             });
         }
