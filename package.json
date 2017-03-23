@@ -1,37 +1,46 @@
 {
-  "name": "giftbit-dynameh",
-  "version": "2.2.0",
+  "name": "dynameh",
+  "version": "2.2.1",
   "description": "DynamoDB utils.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "tsc",
+    "clean": "rimraf ./dist",
     "lint": "tslint --project tsconfig.json",
+    "prepublish": "npm run clean && npm run build && npm run lint && npm run test",
     "test": "mocha --recursive --throw-deprecation --require ts-node/register \"src/**/*.test.ts\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Giftbit/giftbit-dynameh.git"
+    "url": "git+https://github.com/Giftbit/dynameh.git"
   },
-  "private": true,
   "keywords": [
     "aws",
     "dynamodb"
   ],
-  "author": "",
-  "license": "ISC",
+  "contributors": [
+    "Jeffery Grajkowski <pushplay@gmail.com> (https://github.com/pushplay/)",
+    "Graham Baradoy <graham@giftbit.com> (https://github.com/Baradoy/)"
+  ],
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Giftbit/giftbit-dynameh/issues"
+    "url": "https://github.com/Giftbit/dynameh/issues"
   },
-  "homepage": "https://github.com/Giftbit/giftbit-dynameh#readme",
-  "dependencies": {},
+  "homepage": "https://github.com/Giftbit/dynameh#readme",
+  "dependencies": {
+  },
   "devDependencies": {
     "@types/chai": "^3.4.35",
     "@types/mocha": "^2.2.39",
     "@types/node": "^7.0.5",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
-    "ts-node": "^2.1.0",
+    "rimraf": "^2.6.1",
+    "ts-node": "^3.0.2",
     "tslint": "^4.5.1",
     "typescript": "^2.2.1"
   },
