@@ -45,6 +45,7 @@ const tableSchema = {
 const getRequet = dynameh.requestBuilder.buildGetInput(tableSchema, "sv-650");
 const getResult = await dynamodb.getItem(getRequest).promise();
 const sv650 = dynameh.unwrapGetOutput(getResult);
+// sv650.id === "sv-650"
 
 // Update the horse power stat.
 sv650.bhp = 73.4;
