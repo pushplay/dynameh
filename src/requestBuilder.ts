@@ -239,9 +239,9 @@ export function buildBatchGetInput(tableSchema: TableSchema, keys: DynamoKey[] |
  * ProvisionedThroughput takes on default values of 1 and 1 and
  * should probably be edited.
  * @param tableSchema
- * @returns the create table request object
+ * @returns the CreateTableInput
  */
-export function buildCreateTableRequest(tableSchema: TableSchema): aws.DynamoDB.Types.CreateTableInput {
+export function buildCreateTableInput(tableSchema: TableSchema): aws.DynamoDB.Types.CreateTableInput {
     checkSchema(tableSchema);
 
     const request = {
