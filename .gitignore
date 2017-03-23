@@ -8,3 +8,6 @@ npm-debug.log*
 # IntelliJ stuff
 *.iml
 .idea/
+
+# Distribution
+dist/

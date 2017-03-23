@@ -6,6 +6,16 @@ import * as aws from "aws-sdk";
 export let concurrentFactor = 20;
 
 /**
+ * The initial wait when backing off on request rate.
+ */
+export let backoffInitial = 2000;
+
+/**
+ * The wait growth factor when repeatedly backing off.
+ */
+export let backoffFactor = 2;
+
+/**
  * Manages a number of concurrent dynamodb putItem requests.  Put requests
  * are more powerful than batchWrites but cannot be done in batch form.  Making
  * them concurrently is the next best thing.
@@ -53,12 +63,21 @@ function runConcurrentThunks<T>(thunks: ThunkPromise<T>[]): Promise<(T | Error)[
 
         async function startNext(): Promise<void> {
             const ix = startedCount++;
-            try {
-                const p = thunks[ix]();
-                const result = await p;
-                onDone(result, ix);
-            } catch (err) {
-                onDone(err, ix);
+            let backoff = backoffInitial;
+            while (true) {
+                try {
+                    const p = thunks[ix]();
+                    const result = await p;
+                    onDone(result, ix);
+                    return;
+                } catch (err) {
+                    if (!err.retryable) {
+                        onDone(err, ix);
+                        return;
+                    }
+                    await new Promise(resolve => setTimeout(resolve, backoff));
+                    backoff *= backoffFactor;
+                }
             }
         }
 

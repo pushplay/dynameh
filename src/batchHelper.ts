@@ -11,9 +11,15 @@ export const batchGetLimit = 100;
  */
 export const batchWriteLimit = 25;
 
-// Constants controlling exponential backoff when there are unprocessed items.
-const backoffInitial = 2000;
-const backoffFactor = 2;
+/**
+ * The initial wait when backing off on request rate.
+ */
+export let backoffInitial = 2000;
+
+/**
+ * The wait growth factor when repeatedly backing off.
+ */
+export let backoffFactor = 2;
 
 /**
  * Batch get in multiple requests.  Can handle more than 100 keys at once and
