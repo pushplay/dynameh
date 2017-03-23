@@ -54,19 +54,19 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
     }
 }
 
-export function buildGetInput(tableSchema: TableSchema, primaryKey: DynamoKey, sortKey?: DynamoKey): aws.DynamoDB.Types.GetItemInput {
+export function buildGetInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.Types.GetItemInput {
     checkSchema(tableSchema);
-    checkSchemaKeyAgreement(tableSchema, primaryKey, sortKey);
+    checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue);
 
     const request: aws.DynamoDB.Types.GetItemInput = {
         Key: {
-            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKey)
+            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKeyValue)
         },
         TableName: tableSchema.tableName
     };
 
-    if (sortKey) {
-        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKey);
+    if (sortKeyValue) {
+        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKeyValue);
     }
 
     return request;
@@ -114,19 +114,19 @@ export function buildPutInput(tableSchema: TableSchema, item: Object): aws.Dynam
     return request;
 }
 
-export function buildDeleteInput(tableSchema: TableSchema, primaryKey: DynamoKey, sortKey?: DynamoKey): aws.DynamoDB.Types.DeleteItemInput {
+export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.Types.DeleteItemInput {
     checkSchema(tableSchema);
-    checkSchemaKeyAgreement(tableSchema, primaryKey, sortKey);
+    checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue);
 
     const request: aws.DynamoDB.Types.DeleteItemInput = {
         Key: {
-            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKey)
+            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKeyValue)
         },
         TableName: tableSchema.tableName
     };
 
-    if (sortKey) {
-        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKey);
+    if (sortKeyValue) {
+        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKeyValue);
     }
 
     return request;
@@ -160,16 +160,16 @@ export function buildBatchPutInput(tableSchema: TableSchema, items: Object[]): a
 /**
  * Build a request object that can be passed into `batchWriteItem`.
  * @param tableSchema
- * @param keys an array of the key values for each item to delete
+ * @param keyValues an array of the key values for each item to delete
  * @param clobber whether to clobber the previous value if it has changed
  * @returns the BatchWriteItemInput
  */
-export function buildBatchDeleteInput(tableSchema: TableSchema, keys: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.Types.BatchWriteItemInput {
+export function buildBatchDeleteInput(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.Types.BatchWriteItemInput {
     checkSchema(tableSchema);
-    checkSchemaKeysAgreement(tableSchema, keys);
+    checkSchemaKeysAgreement(tableSchema, keyValues);
 
     if (tableSchema.sortKeyType) {
-        const keyPairs = keys as DynamoKeyPair[];
+        const keyPairs = keyValues as DynamoKeyPair[];
         return {
             RequestItems: {
                 [tableSchema.tableName]: keyPairs.map(keyPair => ({
@@ -183,7 +183,7 @@ export function buildBatchDeleteInput(tableSchema: TableSchema, keys: DynamoKey[
             }
         };
     } else {
-        const flatKeys = keys as DynamoKey[];
+        const flatKeys = keyValues as DynamoKey[];
         return {
             RequestItems: {
                 [tableSchema.tableName]: flatKeys.map(key => ({
@@ -201,15 +201,15 @@ export function buildBatchDeleteInput(tableSchema: TableSchema, keys: DynamoKey[
 /**
  * Build a request object that can be passed into `batchGetItem`.
  * @param tableSchema
- * @param keys an array of the key values for each item to request
+ * @param keyValues an array of the key values for each item to request
  * @returns the get request object
  */
-export function buildBatchGetInput(tableSchema: TableSchema, keys: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.Types.BatchGetItemInput {
+export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.Types.BatchGetItemInput {
     checkSchema(tableSchema);
-    checkSchemaKeysAgreement(tableSchema, keys);
+    checkSchemaKeysAgreement(tableSchema, keyValues);
 
     if (tableSchema.sortKeyType) {
-        const keyPairs = keys as DynamoKeyPair[];
+        const keyPairs = keyValues as DynamoKeyPair[];
         return {
             RequestItems: {
                 [tableSchema.tableName]: {
@@ -221,7 +221,7 @@ export function buildBatchGetInput(tableSchema: TableSchema, keys: DynamoKey[] |
             }
         };
     } else {
-        const flatKeys = keys as KeyType[];
+        const flatKeys = keyValues as KeyType[];
         return {
             RequestItems: {
                 [tableSchema.tableName]: {

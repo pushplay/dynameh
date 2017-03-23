@@ -922,7 +922,30 @@ img { max-width: 100%; }
 			<p>Dynameh is your typical NPM package.</p>
 			<pre><code class="lang-bash">npm install --save dynameh
 </code></pre>
-			<h2 id="building-request-objects">Building request objects</h2>
+			<h2 id="tableschema">TableSchema</h2>
+			<p>The key to easy building of requests in Dynameh is the <a href="docs/interfaces/_tableschema_.tableschema.html">TableSchema</a>.  This simple object defines all the extra information Dynameh needs to build requests.</p>
+			<h3 id="example-1">Example 1</h3>
+			<p>For a table called <code>MyTable</code> with a primary key <code>id</code> that is a number...</p>
+			<pre><code class="lang-json">{
+  <span class="hljs-attr">"tableName"</span>: <span class="hljs-string">"MyTable"</span>,
+  <span class="hljs-attr">"primaryKeyField"</span>: <span class="hljs-string">"id"</span>,
+  <span class="hljs-attr">"primaryKeyType"</span>: <span class="hljs-string">"number"</span>
+}
+</code></pre>
+			<h3 id="example-2">Example 2</h3>
+			<p>For a table called <code>MyAdvancedTable</code> with a primary key <code>id</code> that is a string, a range key <code>date</code> that is a number, and a version field <code>version</code>...</p>
+			<pre><code class="lang-json">{
+  <span class="hljs-attr">"tableName"</span>: <span class="hljs-string">"MyAdvancedTable"</span>,
+  <span class="hljs-attr">"primaryKeyField"</span>: <span class="hljs-string">"id"</span>,
+  <span class="hljs-attr">"primaryKeyType"</span>: <span class="hljs-string">"string"</span>,
+  <span class="hljs-attr">"sortKeyField"</span>: <span class="hljs-string">"date"</span>,
+  <span class="hljs-attr">"sortKeyType"</span>: <span class="hljs-string">"number"</span>,
+  <span class="hljs-attr">"versionKeyField"</span>: <span class="hljs-string">"version"</span>
+}
+</code></pre>
+			<p>The <code>version</code> field in this example is used for optimistic locking in <code>PutItem</code> requests.  The <code>version</code> field will be automatically incremented on the server side during a put request.  If the value of <code>version</code> sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.</p>
+			<h2 id="building-requests">Building requests</h2>
+			<p>### </p>
 		</div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
