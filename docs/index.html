@@ -922,9 +922,43 @@ img { max-width: 100%; }
 			<p>Dynameh is your typical NPM package.</p>
 			<pre><code class="lang-bash">npm install --save dynameh
 </code></pre>
-			<h2 id="tableschema">TableSchema</h2>
-			<p>The key to easy building of requests in Dynameh is the <a href="docs/interfaces/_tableschema_.tableschema.html">TableSchema</a>.  This simple object defines all the extra information Dynameh needs to build requests.</p>
+			<h2 id="usage">Usage</h2>
+			<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> dynameh <span class="hljs-keyword">from</span> <span class="hljs-string">"dynameh"</span>;
+<span class="hljs-comment">// or</span>
+<span class="hljs-keyword">const</span> dynameh = <span class="hljs-built_in">require</span>(<span class="hljs-string">"dynameh"</span>);
+</code></pre>
+			<p>See the <a href="docs/index.html">documentation</a> for details on each module and its methods.</p>
 			<h3 id="example-1">Example 1</h3>
+			<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> aws <span class="hljs-keyword">from</span> <span class="hljs-string">"aws-sdk"</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> dynameh <span class="hljs-keyword">from</span> <span class="hljs-string">"dynameh"</span>;
+
+<span class="hljs-comment">// Initialize the DynamoDB client.</span>
+<span class="hljs-keyword">const</span> dynamodb = <span class="hljs-keyword">new</span> aws.DynamoDB({
+    apiVersion: <span class="hljs-string">"2012-08-10"</span>
+});
+
+<span class="hljs-comment">// Set up the table schema.</span>
+<span class="hljs-keyword">const</span> tableSchema = {
+    tableName: <span class="hljs-string">"motorcycles"</span>,
+    priaryKeyField: <span class="hljs-string">"id"</span>,
+    primaryKeyType: <span class="hljs-string">"string"</span>
+};
+
+<span class="hljs-comment">// Fetch the item from the database.</span>
+<span class="hljs-keyword">const</span> getRequet = dynameh.requestBuilder.buildGetInput(tableSchema, <span class="hljs-string">"sv-650"</span>);
+<span class="hljs-keyword">const</span> getResult = <span class="hljs-keyword">await</span> dynamodb.getItem(getRequest).promise();
+<span class="hljs-keyword">const</span> sv650 = dynameh.unwrapGetOutput(getResult);
+
+<span class="hljs-comment">// Update the horse power stat.</span>
+sv650.bhp = <span class="hljs-number">73.4</span>;
+
+<span class="hljs-comment">// Put the updated object in the database.</span>
+<span class="hljs-keyword">const</span> putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, sv650);
+<span class="hljs-keyword">const</span> putResult = <span class="hljs-keyword">await</span> dynamodb.putItem(putRequest).promise();
+</code></pre>
+			<h3 id="tableschema">TableSchema</h3>
+			<p>The key to easy building of requests in Dynameh is the <a href="docs/interfaces/_tableschema_.tableschema.html">TableSchema</a>.  This simple object defines all the extra information Dynameh needs to build requests.</p>
+			<h4 id="example-2">Example 2</h4>
 			<p>For a table called <code>MyTable</code> with a primary key <code>id</code> that is a number...</p>
 			<pre><code class="lang-json">{
   <span class="hljs-attr">"tableName"</span>: <span class="hljs-string">"MyTable"</span>,
@@ -932,7 +966,7 @@ img { max-width: 100%; }
   <span class="hljs-attr">"primaryKeyType"</span>: <span class="hljs-string">"number"</span>
 }
 </code></pre>
-			<h3 id="example-2">Example 2</h3>
+			<h4 id="example-3">Example 3</h4>
 			<p>For a table called <code>MyAdvancedTable</code> with a primary key <code>id</code> that is a string, a range key <code>date</code> that is a number, and a version field <code>version</code>...</p>
 			<pre><code class="lang-json">{
   <span class="hljs-attr">"tableName"</span>: <span class="hljs-string">"MyAdvancedTable"</span>,
@@ -943,9 +977,9 @@ img { max-width: 100%; }
   <span class="hljs-attr">"versionKeyField"</span>: <span class="hljs-string">"version"</span>
 }
 </code></pre>
-			<p>The <code>version</code> field in this example is used for optimistic locking in <code>PutItem</code> requests.  The <code>version</code> field will be automatically incremented on the server side during a put request.  If the value of <code>version</code> sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.</p>
-			<h2 id="building-requests">Building requests</h2>
-			<p>### </p>
+			<h3 id="optimistic-locking">Optimistic Locking</h3>
+			<p>Optimistic locking is a strategy for preventing changes from clobbering each other.  For example two processes read from the database, make unrelated changes, and then both write to the database but the second write overwrites the first (clobbers).</p>
+			<p>The <code>version</code> field in <strong>Example 3</strong> is used for optimistic locking in <code>PutItem</code> requests.  The <code>version</code> field will be automatically incremented on the server side during a put request.  If the value of <code>version</code> sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.</p>
 		</div>
 		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
 		<section class="tsd-panel-group tsd-index-group">

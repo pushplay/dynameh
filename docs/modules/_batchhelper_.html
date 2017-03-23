@@ -909,10 +909,10 @@ img { max-width: 100%; }
 </header>
 <nav class="tsd-navigation secondary">
 	<ul>
-		<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+		<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 			<a href="_batchhelper_.html#backofffactor" class="tsd-kind-icon">backoff<wbr>Factor</a>
 		</li>
-		<li class=" tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+		<li class=" tsd-kind-variable tsd-parent-kind-external-module">
 			<a href="_batchhelper_.html#backoffinitial" class="tsd-kind-icon">backoff<wbr>Initial</a>
 		</li>
 		<li class=" tsd-kind-variable tsd-parent-kind-external-module">
@@ -943,8 +943,8 @@ img { max-width: 100%; }
 					<section class="tsd-index-section ">
 						<h3>Variables</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_batchhelper_.html#backofffactor" class="tsd-kind-icon">backoff<wbr>Factor</a></li>
-							<li class="tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported"><a href="_batchhelper_.html#backoffinitial" class="tsd-kind-icon">backoff<wbr>Initial</a></li>
+							<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_batchhelper_.html#backofffactor" class="tsd-kind-icon">backoff<wbr>Factor</a></li>
+							<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_batchhelper_.html#backoffinitial" class="tsd-kind-icon">backoff<wbr>Initial</a></li>
 							<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_batchhelper_.html#batchgetlimit" class="tsd-kind-icon">batch<wbr>Get<wbr>Limit</a></li>
 							<li class="tsd-kind-variable tsd-parent-kind-external-module"><a href="_batchhelper_.html#batchwritelimit" class="tsd-kind-icon">batch<wbr>Write<wbr>Limit</a></li>
 						</ul>
@@ -962,25 +962,35 @@ img { max-width: 100%; }
 		</section>
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Variables</h2>
-			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
 				<a name="backofffactor" class="tsd-anchor"></a>
 				<h3>backoff<wbr>Factor</h3>
-				<div class="tsd-signature tsd-kind-icon">backoff<wbr>Factor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">2</span><span class="tsd-signature-symbol"> =&nbsp;2</span></div>
+				<div class="tsd-signature tsd-kind-icon">backoff<wbr>Factor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;2</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5f97694/src/batchHelper.ts#L16">batchHelper.ts:16</a></li>
+						<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/fd0b884/src/batchHelper.ts#L22">batchHelper.ts:22</a></li>
 					</ul>
 				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The wait growth factor when repeatedly backing off.</p>
+					</div>
+				</div>
 			</section>
-			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module tsd-is-not-exported">
+			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
 				<a name="backoffinitial" class="tsd-anchor"></a>
 				<h3>backoff<wbr>Initial</h3>
-				<div class="tsd-signature tsd-kind-icon">backoff<wbr>Initial<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">2000</span><span class="tsd-signature-symbol"> =&nbsp;2000</span></div>
+				<div class="tsd-signature tsd-kind-icon">backoff<wbr>Initial<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;2000</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5f97694/src/batchHelper.ts#L15">batchHelper.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/fd0b884/src/batchHelper.ts#L17">batchHelper.ts:17</a></li>
 					</ul>
 				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The initial wait when backing off on request rate.</p>
+					</div>
+				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-external-module">
 				<a name="batchgetlimit" class="tsd-anchor"></a>
@@ -988,7 +998,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">batch<wbr>Get<wbr>Limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">100</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5f97694/src/batchHelper.ts#L7">batchHelper.ts:7</a></li>
+						<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/fd0b884/src/batchHelper.ts#L7">batchHelper.ts:7</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1003,7 +1013,7 @@ img { max-width: 100%; }
 				<div class="tsd-signature tsd-kind-icon">batch<wbr>Write<wbr>Limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">25</span><span class="tsd-signature-symbol"> =&nbsp;25</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5f97694/src/batchHelper.ts#L12">batchHelper.ts:12</a></li>
+						<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/fd0b884/src/batchHelper.ts#L12">batchHelper.ts:12</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -1025,7 +1035,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5f97694/src/batchHelper.ts#L25">batchHelper.ts:25</a></li>
+								<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/fd0b884/src/batchHelper.ts#L31">batchHelper.ts:31</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1058,7 +1068,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5f97694/src/batchHelper.ts#L69">batchHelper.ts:69</a></li>
+								<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/fd0b884/src/batchHelper.ts#L75">batchHelper.ts:75</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -1092,7 +1102,7 @@ img { max-width: 100%; }
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5f97694/src/batchHelper.ts#L98">batchHelper.ts:98</a></li>
+								<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/fd0b884/src/batchHelper.ts#L104">batchHelper.ts:104</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
