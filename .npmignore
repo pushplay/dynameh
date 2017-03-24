@@ -9,6 +9,10 @@ npm-debug.log*
 *.iml
 .idea/
 
-# Distribution
-dist/
+.github
+.gitignore
+.npmignore
 docs/
+src
+tsconfig.json
+tslint.json
