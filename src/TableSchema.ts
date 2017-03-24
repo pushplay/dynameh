@@ -41,6 +41,6 @@ export interface TableSchema {
      * @param d the Date to serialize
      * @return a serialization of the Date
      */
-    dateSerializationFunction?: (d: Date) => any;
+    dateSerializationFunction?: (d: Date) => string | number;
 
 }

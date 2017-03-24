@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rimraf ./dist",
-    "docs": "rimraf docs && typedoc src/ --out docs --mode modules --target es6 --excludePrivate --theme minimal",
+    "docs": "rimraf ./docs && typedoc src/ --out docs --mode modules --module commonjs --target es6 --excludePrivate --name Dynameh && touch ./docs/.nojekyll && gh-pages -d docs -t",
     "lint": "tslint --project tsconfig.json",
     "prepublish": "npm run clean && npm run build && npm run lint && npm run test && npm run docs",
     "test": "mocha --recursive --throw-deprecation --require ts-node/register \"src/**/*.test.ts\""
@@ -37,8 +37,10 @@
     "@types/mocha": "^2.2.39",
     "@types/node": "^7.0.5",
     "chai": "^3.5.0",
+    "gh-pages": "^0.12.0",
     "mocha": "^3.2.0",
     "rimraf": "^2.6.1",
+    "touch": "^1.0.0",
     "ts-node": "^3.0.2",
     "tslint": "^4.5.1",
     "typedoc": "^0.5.9",
