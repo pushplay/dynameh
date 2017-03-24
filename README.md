@@ -97,7 +97,7 @@ For a table called `MyAdvancedTable` with a primary key `id` that is a string, a
 
 Optimistic locking is a strategy for preventing changes from clobbering each other.  For example two processes read from the database, make unrelated changes, and then both write to the database but the second write overwrites the first (clobbers).
 
-The `versionKeyField` in the second TableSchema example is used for optimistic locking in `PutItem` requests.  The `version` field will be automatically incremented on the server side during a put request.  If the value of `version` sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.
+Enable optimistic locking by setting the `versionKeyField` on your TableSchema.  In the second TableSchema example that field is `version`.  The `versionKeyField` will be automatically incremented on the server side during a put request.  If the value for `versionKeyField` sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.
 
 ### Date Serialization
 
