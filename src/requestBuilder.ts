@@ -82,7 +82,7 @@ export function buildPutInput(tableSchema: TableSchema, item: Object): aws.Dynam
     };
 
     if (tableSchema.versionKeyField) {
-        if (item[tableSchema.versionKeyField]) {
+        if (item[tableSchema.versionKeyField] !== null && item[tableSchema.versionKeyField] !== undefined) {
             // Require the existing table item to have the same old value, and increment
             // the value we're putting.  This is the crux of the optimistic locking.
             request.ExpressionAttributeNames = {
@@ -98,13 +98,12 @@ export function buildPutInput(tableSchema: TableSchema, item: Object): aws.Dynam
                 N: (parseInt(request.Item[tableSchema.versionKeyField].N, 10) + 1).toString()
             };
         } else {
-            // If the version key isn't set (or is 0) then we must be putting a brand new item.
-            // Since every item in the table must have a partition key, this condition will prevent
-            // any existing item from being overwritten.
+            // If the version key isn't set then we must be putting a brand new item,
+            // or versioning has just been enabled.
             request.ExpressionAttributeNames = {
-                "#P": tableSchema.primaryKeyField
+                "#V": tableSchema.versionKeyField
             };
-            request.ConditionExpression = "attribute_not_exists(#P)";
+            request.ConditionExpression = "attribute_not_exists(#V)";
             request.Item[tableSchema.versionKeyField] = {
                 N: "1"
             };
