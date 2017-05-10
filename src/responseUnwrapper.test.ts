@@ -33,7 +33,8 @@ describe("responseUnwrapper", () => {
                         }
                     },
                     "Breed": {"S": "Beagle"},
-                    "AnimalType": {"S": "Dog"}
+                    "AnimalType": {"S": "Dog"},
+                    "BarCode": {"B": "SmVmZkcgd2FzIGhlcmU="}
                 }
             });
             chai.assert.deepEqual(res, {
@@ -44,6 +45,7 @@ describe("responseUnwrapper", () => {
                     Rabies: ["2009-03-17", "2011-09-21", "2014-07-08"],
                     Distemper: "2015-10-13"
                 },
+                BarCode: Buffer.from([0x4a, 0x65, 0x66, 0x66, 0x47, 0x20, 0x77, 0x61, 0x73, 0x20, 0x68, 0x65, 0x72, 0x65]),
                 Breed: "Beagle",
                 AnimalType: "Dog"
             });

@@ -12,6 +12,13 @@ export function unwrapResponseItem(item: aws.DynamoDB.Types.AttributeValue): any
             return Buffer.from(item.B as string, "base64");
         }
         return item.B;
+    } else if (item.BS) {
+        return item.BS.map(b => {
+            if (typeof b === "string") {
+                return Buffer.from(b as string, "base64");
+            }
+            return b;
+        });
     } else if (item.BOOL) {
         return item.BOOL;
     } else if (item.L) {

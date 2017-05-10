@@ -1,8 +1,13 @@
 import * as aws from "aws-sdk";
 import {TableSchema} from "./TableSchema";
 import {
-    checkSchemaKeyAgreement, checkSchema, checkSchemaItemAgreement, checkSchemaItemsAgreement,
-    DynamoKeyPair, checkSchemaKeysAgreement, DynamoKey
+    checkSchema,
+    checkSchemaItemAgreement,
+    checkSchemaItemsAgreement,
+    checkSchemaKeyAgreement,
+    checkSchemaKeysAgreement,
+    DynamoKey,
+    DynamoKeyPair
 } from "./validation";
 
 /**
@@ -25,6 +30,8 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
                 return {NULL: true};
             } else if (item instanceof Buffer) {
                 return {B: item.toString("base64")};
+            } else if (item instanceof Uint8Array) {
+                return {B: Buffer.from(item as any).toString("base64")};
             } else if (item instanceof Date) {
                 if (tableSchema.dateSerializationFunction) {
                     return buildRequestPutItem(tableSchema, tableSchema.dateSerializationFunction(item));
@@ -39,6 +46,12 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
                     }
                     if (firstItemType === "number" && item.every(x => typeof x === "number")) {
                         return {NS: item.map(n => n.toString())};
+                    }
+                    if (firstItemType === "object" && item.every(x => x instanceof Buffer)) {
+                        return {BS: item.map(b => b.toString("base64"))};
+                    }
+                    if (firstItemType === "object" && item.every(x => x instanceof Uint8Array)) {
+                        return {BS: item.map(b => Buffer.from(b).toString("base64"))};
                     }
                 }
                 return {L: item.map(i => buildRequestPutItem(tableSchema, i))};
