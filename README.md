@@ -39,24 +39,32 @@ import * as dynameh from "dynameh";
 
 // Initialize the DynamoDB client.
 const dynamodb = new aws.DynamoDB({
-    apiVersion: "2012-08-10"
+    apiVersion: "2012-08-10",
+    region: "us-west-1"
 });
 
 // Set up the table schema.
 const tableSchema = {
     tableName: "motorcycles",
-    priaryKeyField: "id",
+    primaryKeyField: "id",
     primaryKeyType: "string"
 };
 
-async function updateMotorcycleHorsePower(motorcycleId: string, bhp: number): Promise<void> {
+async function updateMotorcycleHorsePower(motorcycleId: string, bhp: number) {
     // Fetch the item from the database.
-    const getRequet = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
+    const getRequest = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
     const getResult = await dynamodb.getItem(getRequest).promise();
-    const motorcycle = dynameh.unwrapGetOutput(getResult);
+    let motorcycle = dynameh.responseUnwrapper.unwrapGetOutput(getResult);
     
-    // Update the horse power stat.
-    motorcycle.bhp = bhp;
+    if (!motorcycle) {
+        // Item not found, create it.
+        motorcycle = {
+            id: motorcycleId
+        };
+    } else {
+        // Update the horse power stat.
+        motorcycle.bhp = bhp;
+    }
     
     // Put the updated object in the database.
     const putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, motorcycle);
@@ -98,6 +106,58 @@ For a table called `MyAdvancedTable` with a primary key `id` that is a string, a
 Optimistic locking is a strategy for preventing changes from clobbering each other.  For example two processes read from the database, make unrelated changes, and then both write to the database but the second write overwrites the first (clobbers).
 
 Enable optimistic locking by setting the `versionKeyField` on your TableSchema.  In the second TableSchema example that field is `version`.  The `versionKeyField` will be automatically incremented on the server side during a put request.  If the value for `versionKeyField` sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.
+
+```typescript
+import * as aws from "aws-sdk";
+import * as dynameh from "dynameh";
+
+// Initialize the DynamoDB client.
+const dynamodb = new aws.DynamoDB({
+    apiVersion: "2012-08-10",
+    region: "us-west-1"
+});
+
+// Set up the table schema.
+const tableSchema = {
+    tableName: "motorcycles",
+    primaryKeyField: "id",
+    primaryKeyType: "string",
+    "versionKeyField": "version"
+};
+
+async function updateMotorcycleHorsePower(motorcycleId: string, bhp: number) {
+    // Fetch the item from the database.
+    const getRequest = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
+    const getResult = await dynamodb.getItem(getRequest).promise();
+    let motorcycle = dynameh.responseUnwrapper.unwrapGetOutput(getResult);
+    
+    if (!motorcycle) {
+        // Item not found, create it.
+        motorcycle = {
+            id: motorcycleId
+        };
+    } else {
+        // Update the horse power stat.
+        motorcycle.bhp = bhp;
+    }
+    
+    // Put the updated object in the database.
+    const putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, motorcycle);
+    try {
+        await dynamodb.putItem(putRequest).promise();
+    } catch (err) {
+        if (err.code === "ConditionalCheckFailedException") {
+            // If this is the error code then the optimistic locking has failed
+            // and we should redo the update operation.
+            updateMotorcycleHorsePower(motorcycleId, bhp);
+        } else {
+            throw err;
+        }
+    }
+}
+
+updateMotorcycleHorsePower("sv-650", 73.4);
+```
 
 ### Date Serialization
 
