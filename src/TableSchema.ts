@@ -1,3 +1,6 @@
+/**
+ * Describes the DynamoDB table structure and configures some settings.
+ */
 export interface TableSchema {
 
     /**

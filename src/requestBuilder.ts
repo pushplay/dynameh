@@ -6,10 +6,10 @@ import {
 } from "./validation";
 
 /**
- * Build a put object for a single item.
+ * Build a serialized item that can be put in DynamoDB.
  * @param tableSchema
  * @param item
- * @returns the put item
+ * @returns a put item
  */
 export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.DynamoDB.AttributeValue {
     switch (typeof item) {
@@ -54,6 +54,13 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
     }
 }
 
+/**
+ * Build a request object that can be passed into `getItem`.
+ * @param tableSchema
+ * @param primaryKeyValue the key of the item to get
+ * @param sortKeyValue sort key of the item to get, if set in the schema
+ * @returns input for the `getItem` method
+ */
 export function buildGetInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.Types.GetItemInput {
     checkSchema(tableSchema);
     checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue);
@@ -72,6 +79,12 @@ export function buildGetInput(tableSchema: TableSchema, primaryKeyValue: DynamoK
     return request;
 }
 
+/**
+ * Build a request object that can be passed into `putItem`.
+ * @param tableSchema
+ * @param item
+ * @returns input for the `putItem` method
+ */
 export function buildPutInput(tableSchema: TableSchema, item: Object): aws.DynamoDB.Types.PutItemInput {
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, item);
@@ -113,6 +126,13 @@ export function buildPutInput(tableSchema: TableSchema, item: Object): aws.Dynam
     return request;
 }
 
+/**
+ * Build a request object that can be passed into `deleteItem`
+ * @param tableSchema
+ * @param primaryKeyValue the key of the item to delete
+ * @param sortKeyValue sort key of the item to delete, if set in the schema
+ * @returns input for the `deleteItem` method
+ */
 export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.Types.DeleteItemInput {
     checkSchema(tableSchema);
     checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue);
@@ -135,7 +155,7 @@ export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: Dyna
  * Build a request object that can be passed into `batchWriteItem`.
  * @param tableSchema
  * @param items the items to put
- * @returns the BatchWriteItemInput
+ * @returns input for the `batchWriteItem` method
  */
 export function buildBatchPutInput(tableSchema: TableSchema, items: Object[]): aws.DynamoDB.Types.BatchWriteItemInput {
     checkSchema(tableSchema);
@@ -160,8 +180,7 @@ export function buildBatchPutInput(tableSchema: TableSchema, items: Object[]): a
  * Build a request object that can be passed into `batchWriteItem`.
  * @param tableSchema
  * @param keyValues an array of the key values for each item to delete
- * @param clobber whether to clobber the previous value if it has changed
- * @returns the BatchWriteItemInput
+ * @returns input for the `batchWriteItem` method
  */
 export function buildBatchDeleteInput(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.Types.BatchWriteItemInput {
     checkSchema(tableSchema);
@@ -201,7 +220,7 @@ export function buildBatchDeleteInput(tableSchema: TableSchema, keyValues: Dynam
  * Build a request object that can be passed into `batchGetItem`.
  * @param tableSchema
  * @param keyValues an array of the key values for each item to request
- * @returns the get request object
+ * @returns input for the `batchGetItem` method
  */
 export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.Types.BatchGetItemInput {
     checkSchema(tableSchema);
@@ -238,7 +257,7 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
  * ProvisionedThroughput takes on default values of 1 and 1 and
  * should probably be edited.
  * @param tableSchema
- * @returns the CreateTableInput
+ * @returns input for the `createTable` method
  */
 export function buildCreateTableInput(tableSchema: TableSchema): aws.DynamoDB.Types.CreateTableInput {
     checkSchema(tableSchema);

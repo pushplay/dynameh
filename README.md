@@ -50,7 +50,7 @@ const tableSchema = {
     primaryKeyType: "string"
 };
 
-async function updateMotorcycleHorsePower(motorcycleId: string, bhp: number) {
+async function updateMotorcycleHorsePower(motorcycleId, bhp) {
     // Fetch the item from the database.
     const getRequest = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
     const getResult = await dynamodb.getItem(getRequest).promise();
@@ -61,14 +61,14 @@ async function updateMotorcycleHorsePower(motorcycleId: string, bhp: number) {
         motorcycle = {
             id: motorcycleId
         };
-    } else {
-        // Update the horse power stat.
-        motorcycle.bhp = bhp;
     }
+    
+    // Update the horse power stat.
+    motorcycle.bhp = bhp;
     
     // Put the updated object in the database.
     const putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, motorcycle);
-    const putResult = await dynamodb.putItem(putRequest).promise();
+    await dynamodb.putItem(putRequest).promise();
 }
 
 updateMotorcycleHorsePower("sv-650", 73.4);
@@ -122,10 +122,10 @@ const tableSchema = {
     tableName: "motorcycles",
     primaryKeyField: "id",
     primaryKeyType: "string",
-    "versionKeyField": "version"
+    versionKeyField: "version"
 };
 
-async function updateMotorcycleHorsePower(motorcycleId: string, bhp: number) {
+async function updateMotorcycleHorsePower(motorcycleId, bhp) {
     // Fetch the item from the database.
     const getRequest = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
     const getResult = await dynamodb.getItem(getRequest).promise();
@@ -133,13 +133,14 @@ async function updateMotorcycleHorsePower(motorcycleId: string, bhp: number) {
     
     if (!motorcycle) {
         // Item not found, create it.
+        // Note that we don't need to set the version on create.
         motorcycle = {
             id: motorcycleId
         };
-    } else {
-        // Update the horse power stat.
-        motorcycle.bhp = bhp;
     }
+    
+    // Update the horse power stat.
+    motorcycle.bhp = bhp;
     
     // Put the updated object in the database.
     const putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, motorcycle);
@@ -148,7 +149,7 @@ async function updateMotorcycleHorsePower(motorcycleId: string, bhp: number) {
     } catch (err) {
         if (err.code === "ConditionalCheckFailedException") {
             // If this is the error code then the optimistic locking has failed
-            // and we should redo the update operation.
+            // and we should redo the update operation (done here with recursion).
             updateMotorcycleHorsePower(motorcycleId, bhp);
         } else {
             throw err;
