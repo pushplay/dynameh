@@ -104,7 +104,7 @@
     primaryKeyType: <span class="hljs-string">"string"</span>
 };
 
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateMotorcycleHorsePower</span>(<span class="hljs-params">motorcycleId: <span class="hljs-built_in">string</span>, bhp: <span class="hljs-built_in">number</span></span>) </span>{
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateMotorcycleHorsePower</span>(<span class="hljs-params">motorcycleId, bhp</span>) </span>{
     <span class="hljs-comment">// Fetch the item from the database.</span>
     <span class="hljs-keyword">const</span> getRequest = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
     <span class="hljs-keyword">const</span> getResult = <span class="hljs-keyword">await</span> dynamodb.getItem(getRequest).promise();
@@ -115,14 +115,14 @@
         motorcycle = {
             id: motorcycleId
         };
-    } <span class="hljs-keyword">else</span> {
-        <span class="hljs-comment">// Update the horse power stat.</span>
-        motorcycle.bhp = bhp;
     }
+
+    <span class="hljs-comment">// Update the horse power stat.</span>
+    motorcycle.bhp = bhp;
 
     <span class="hljs-comment">// Put the updated object in the database.</span>
     <span class="hljs-keyword">const</span> putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, motorcycle);
-    <span class="hljs-keyword">const</span> putResult = <span class="hljs-keyword">await</span> dynamodb.putItem(putRequest).promise();
+    <span class="hljs-keyword">await</span> dynamodb.putItem(putRequest).promise();
 }
 
 updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span class="hljs-number">73.4</span>);
@@ -163,10 +163,10 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
     tableName: <span class="hljs-string">"motorcycles"</span>,
     primaryKeyField: <span class="hljs-string">"id"</span>,
     primaryKeyType: <span class="hljs-string">"string"</span>,
-    <span class="hljs-string">"versionKeyField"</span>: <span class="hljs-string">"version"</span>
+    versionKeyField: <span class="hljs-string">"version"</span>
 };
 
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateMotorcycleHorsePower</span>(<span class="hljs-params">motorcycleId: <span class="hljs-built_in">string</span>, bhp: <span class="hljs-built_in">number</span></span>) </span>{
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateMotorcycleHorsePower</span>(<span class="hljs-params">motorcycleId, bhp</span>) </span>{
     <span class="hljs-comment">// Fetch the item from the database.</span>
     <span class="hljs-keyword">const</span> getRequest = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
     <span class="hljs-keyword">const</span> getResult = <span class="hljs-keyword">await</span> dynamodb.getItem(getRequest).promise();
@@ -174,13 +174,14 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 
     <span class="hljs-keyword">if</span> (!motorcycle) {
         <span class="hljs-comment">// Item not found, create it.</span>
+        <span class="hljs-comment">// Note that we don't need to set the version on create.</span>
         motorcycle = {
             id: motorcycleId
         };
-    } <span class="hljs-keyword">else</span> {
-        <span class="hljs-comment">// Update the horse power stat.</span>
-        motorcycle.bhp = bhp;
     }
+
+    <span class="hljs-comment">// Update the horse power stat.</span>
+    motorcycle.bhp = bhp;
 
     <span class="hljs-comment">// Put the updated object in the database.</span>
     <span class="hljs-keyword">const</span> putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, motorcycle);
@@ -189,7 +190,7 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
     } <span class="hljs-keyword">catch</span> (err) {
         <span class="hljs-keyword">if</span> (err.code === <span class="hljs-string">"ConditionalCheckFailedException"</span>) {
             <span class="hljs-comment">// If this is the error code then the optimistic locking has failed</span>
-            <span class="hljs-comment">// and we should redo the update operation.</span>
+            <span class="hljs-comment">// and we should redo the update operation (done here with recursion).</span>
             updateMotorcycleHorsePower(motorcycleId, bhp);
         } <span class="hljs-keyword">else</span> {
             <span class="hljs-keyword">throw</span> err;

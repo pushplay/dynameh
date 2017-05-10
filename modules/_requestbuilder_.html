@@ -99,7 +99,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/d7d4960/src/requestBuilder.ts#L166">requestBuilder.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/076def1/src/requestBuilder.ts#L185">requestBuilder.ts:185</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -120,7 +120,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">aws.DynamoDB.Types.BatchWriteItemInput</span></h4>
-							<p>the BatchWriteItemInput</p>
+							<p>input for the <code>batchWriteItem</code> method</p>
 						</li>
 					</ul>
 				</section>
@@ -134,7 +134,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/d7d4960/src/requestBuilder.ts#L206">requestBuilder.ts:206</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/076def1/src/requestBuilder.ts#L225">requestBuilder.ts:225</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -155,7 +155,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">aws.DynamoDB.Types.BatchGetItemInput</span></h4>
-							<p>the get request object</p>
+							<p>input for the <code>batchGetItem</code> method</p>
 						</li>
 					</ul>
 				</section>
@@ -169,7 +169,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/d7d4960/src/requestBuilder.ts#L140">requestBuilder.ts:140</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/076def1/src/requestBuilder.ts#L160">requestBuilder.ts:160</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -190,7 +190,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">aws.DynamoDB.Types.BatchWriteItemInput</span></h4>
-							<p>the BatchWriteItemInput</p>
+							<p>input for the <code>batchWriteItem</code> method</p>
 						</li>
 					</ul>
 				</section>
@@ -204,7 +204,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/d7d4960/src/requestBuilder.ts#L243">requestBuilder.ts:243</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/076def1/src/requestBuilder.ts#L262">requestBuilder.ts:262</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -221,7 +221,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">aws.DynamoDB.Types.CreateTableInput</span></h4>
-							<p>the CreateTableInput</p>
+							<p>input for the <code>createTable</code> method</p>
 						</li>
 					</ul>
 				</section>
@@ -235,9 +235,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/d7d4960/src/requestBuilder.ts#L116">requestBuilder.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/076def1/src/requestBuilder.ts#L136">requestBuilder.ts:136</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Build a request object that can be passed into <code>deleteItem</code></p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -245,12 +250,19 @@
 								</li>
 								<li>
 									<h5>primaryKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the key of the item to delete</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> sortKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>sort key of the item to delete, if set in the schema</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">aws.DynamoDB.Types.DeleteItemInput</span></h4>
+							<p>input for the <code>deleteItem</code> method</p>
 						</li>
 					</ul>
 				</section>
@@ -264,9 +276,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/d7d4960/src/requestBuilder.ts#L57">requestBuilder.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/076def1/src/requestBuilder.ts#L64">requestBuilder.ts:64</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Build a request object that can be passed into <code>getItem</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -274,12 +291,19 @@
 								</li>
 								<li>
 									<h5>primaryKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the key of the item to get</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> sortKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>sort key of the item to get, if set in the schema</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">aws.DynamoDB.Types.GetItemInput</span></h4>
+							<p>input for the <code>getItem</code> method</p>
 						</li>
 					</ul>
 				</section>
@@ -293,9 +317,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/d7d4960/src/requestBuilder.ts#L75">requestBuilder.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/076def1/src/requestBuilder.ts#L88">requestBuilder.ts:88</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Build a request object that can be passed into <code>putItem</code>.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -306,6 +335,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">aws.DynamoDB.Types.PutItemInput</span></h4>
+							<p>input for the <code>putItem</code> method</p>
 						</li>
 					</ul>
 				</section>
@@ -319,12 +349,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/d7d4960/src/requestBuilder.ts#L14">requestBuilder.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/076def1/src/requestBuilder.ts#L14">requestBuilder.ts:14</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Build a put object for a single item.</p>
+									<p>Build a serialized item that can be put in DynamoDB.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -337,7 +367,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">AttributeValue</span></h4>
-							<p>the put item</p>
+							<p>a put item</p>
 						</li>
 					</ul>
 				</section>
@@ -351,7 +381,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/d7d4960/src/requestBuilder.ts#L280">requestBuilder.ts:280</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/076def1/src/requestBuilder.ts#L299">requestBuilder.ts:299</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
