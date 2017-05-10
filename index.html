@@ -93,24 +93,32 @@
 
 <span class="hljs-comment">// Initialize the DynamoDB client.</span>
 <span class="hljs-keyword">const</span> dynamodb = <span class="hljs-keyword">new</span> aws.DynamoDB({
-    apiVersion: <span class="hljs-string">"2012-08-10"</span>
+    apiVersion: <span class="hljs-string">"2012-08-10"</span>,
+    region: <span class="hljs-string">"us-west-1"</span>
 });
 
 <span class="hljs-comment">// Set up the table schema.</span>
 <span class="hljs-keyword">const</span> tableSchema = {
     tableName: <span class="hljs-string">"motorcycles"</span>,
-    priaryKeyField: <span class="hljs-string">"id"</span>,
+    primaryKeyField: <span class="hljs-string">"id"</span>,
     primaryKeyType: <span class="hljs-string">"string"</span>
 };
 
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateMotorcycleHorsePower</span>(<span class="hljs-params">motorcycleId: <span class="hljs-built_in">string</span>, bhp: <span class="hljs-built_in">number</span></span>): <span class="hljs-title">Promise</span>&lt;<span class="hljs-title">void</span>&gt; </span>{
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateMotorcycleHorsePower</span>(<span class="hljs-params">motorcycleId: <span class="hljs-built_in">string</span>, bhp: <span class="hljs-built_in">number</span></span>) </span>{
     <span class="hljs-comment">// Fetch the item from the database.</span>
-    <span class="hljs-keyword">const</span> getRequet = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
+    <span class="hljs-keyword">const</span> getRequest = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
     <span class="hljs-keyword">const</span> getResult = <span class="hljs-keyword">await</span> dynamodb.getItem(getRequest).promise();
-    <span class="hljs-keyword">const</span> motorcycle = dynameh.unwrapGetOutput(getResult);
+    <span class="hljs-keyword">let</span> motorcycle = dynameh.responseUnwrapper.unwrapGetOutput(getResult);
 
-    <span class="hljs-comment">// Update the horse power stat.</span>
-    motorcycle.bhp = bhp;
+    <span class="hljs-keyword">if</span> (!motorcycle) {
+        <span class="hljs-comment">// Item not found, create it.</span>
+        motorcycle = {
+            id: motorcycleId
+        };
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// Update the horse power stat.</span>
+        motorcycle.bhp = bhp;
+    }
 
     <span class="hljs-comment">// Put the updated object in the database.</span>
     <span class="hljs-keyword">const</span> putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, motorcycle);
@@ -141,6 +149,56 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 				<h3 id="optimistic-locking">Optimistic Locking</h3>
 				<p>Optimistic locking is a strategy for preventing changes from clobbering each other.  For example two processes read from the database, make unrelated changes, and then both write to the database but the second write overwrites the first (clobbers).</p>
 				<p>Enable optimistic locking by setting the <code>versionKeyField</code> on your TableSchema.  In the second TableSchema example that field is <code>version</code>.  The <code>versionKeyField</code> will be automatically incremented on the server side during a put request.  If the value for <code>versionKeyField</code> sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.</p>
+				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> aws <span class="hljs-keyword">from</span> <span class="hljs-string">"aws-sdk"</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> dynameh <span class="hljs-keyword">from</span> <span class="hljs-string">"dynameh"</span>;
+
+<span class="hljs-comment">// Initialize the DynamoDB client.</span>
+<span class="hljs-keyword">const</span> dynamodb = <span class="hljs-keyword">new</span> aws.DynamoDB({
+    apiVersion: <span class="hljs-string">"2012-08-10"</span>,
+    region: <span class="hljs-string">"us-west-1"</span>
+});
+
+<span class="hljs-comment">// Set up the table schema.</span>
+<span class="hljs-keyword">const</span> tableSchema = {
+    tableName: <span class="hljs-string">"motorcycles"</span>,
+    primaryKeyField: <span class="hljs-string">"id"</span>,
+    primaryKeyType: <span class="hljs-string">"string"</span>,
+    <span class="hljs-string">"versionKeyField"</span>: <span class="hljs-string">"version"</span>
+};
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateMotorcycleHorsePower</span>(<span class="hljs-params">motorcycleId: <span class="hljs-built_in">string</span>, bhp: <span class="hljs-built_in">number</span></span>) </span>{
+    <span class="hljs-comment">// Fetch the item from the database.</span>
+    <span class="hljs-keyword">const</span> getRequest = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
+    <span class="hljs-keyword">const</span> getResult = <span class="hljs-keyword">await</span> dynamodb.getItem(getRequest).promise();
+    <span class="hljs-keyword">let</span> motorcycle = dynameh.responseUnwrapper.unwrapGetOutput(getResult);
+
+    <span class="hljs-keyword">if</span> (!motorcycle) {
+        <span class="hljs-comment">// Item not found, create it.</span>
+        motorcycle = {
+            id: motorcycleId
+        };
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// Update the horse power stat.</span>
+        motorcycle.bhp = bhp;
+    }
+
+    <span class="hljs-comment">// Put the updated object in the database.</span>
+    <span class="hljs-keyword">const</span> putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, motorcycle);
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">await</span> dynamodb.putItem(putRequest).promise();
+    } <span class="hljs-keyword">catch</span> (err) {
+        <span class="hljs-keyword">if</span> (err.code === <span class="hljs-string">"ConditionalCheckFailedException"</span>) {
+            <span class="hljs-comment">// If this is the error code then the optimistic locking has failed</span>
+            <span class="hljs-comment">// and we should redo the update operation.</span>
+            updateMotorcycleHorsePower(motorcycleId, bhp);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">throw</span> err;
+        }
+    }
+}
+
+updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span class="hljs-number">73.4</span>);
+</code></pre>
 				<h3 id="date-serialization">Date Serialization</h3>
 				<p>Date serialization can be configured by setting <code>dateSerializationFunction</code> on your <code>TableSchema</code>.  It&#39;s a function that takes in a <code>Date</code> and returns a <code>string</code> or <code>number</code>.  By default Dates are serialized as ISO-8601 strings.</p>
 				<p>For example...</p>
