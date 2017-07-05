@@ -12,6 +12,7 @@ describe("responseUnwrapper", () => {
             const res = responseUnwrapper.unwrapGetOutput({
                 "Item": {
                     "Age": {"N": "8"},
+                    "isTargetGroup": {"BOOL": false},
                     "Colors": {
                         "L": [
                             {"S": "White"},
@@ -29,7 +30,14 @@ describe("responseUnwrapper", () => {
                                     {"S": "2014-07-08"}
                                 ]
                             },
-                            "Distemper": {"S": "2015-10-13"}
+                            "Distemper": {"S": "2015-10-13"},
+                            "RequiredShots": {
+                                M: {
+                                    "CDV": {"BOOL": true},
+                                    "CAV2": {"BOOL": true},
+                                    "CPV2": {"BOOL": false}
+                                }
+                            }
                         }
                     },
                     "Breed": {"S": "Beagle"},
@@ -39,11 +47,17 @@ describe("responseUnwrapper", () => {
             });
             chai.assert.deepEqual(res, {
                 Age: 8,
+                isTargetGroup: false,
                 Colors: ["White", "Brown", "Black"],
                 Name: "Fido",
                 Vaccinations: {
                     Rabies: ["2009-03-17", "2011-09-21", "2014-07-08"],
-                    Distemper: "2015-10-13"
+                    Distemper: "2015-10-13",
+                    RequiredShots: {
+                        CDV: true,
+                        CAV2: true,
+                        CPV2: false
+                    }
                 },
                 BarCode: Buffer.from([0x4a, 0x65, 0x66, 0x66, 0x47, 0x20, 0x77, 0x61, 0x73, 0x20, 0x68, 0x65, 0x72, 0x65]),
                 Breed: "Beagle",
