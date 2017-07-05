@@ -10,4 +10,5 @@ npm-debug.log*
 .idea/
 
 # Distribution
+dist/
 docs/
