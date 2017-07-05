@@ -19,7 +19,7 @@ export function unwrapResponseItem(item: aws.DynamoDB.Types.AttributeValue): any
             }
             return b;
         });
-    } else if (item.BOOL) {
+    } else if (item.hasOwnProperty("BOOL")) {
         return item.BOOL;
     } else if (item.L) {
         return item.L.map(i => unwrapResponseItem(i));
