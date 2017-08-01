@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import {buildQueryInput, buildRequestPutItem} from "./requestBuilder";
+import {addProjection, buildGetInput, buildQueryInput, buildRequestPutItem} from "./requestBuilder";
 import {TableSchema} from "./TableSchema";
 
 describe("requestBuilder", () => {
@@ -60,6 +60,28 @@ describe("requestBuilder", () => {
         });
     });
 
+    describe("buildGetInput", () => {
+        const defaultTableSchema: TableSchema = {
+            tableName: "table",
+            primaryKeyField: "primary",
+            primaryKeyType: "string",
+            sortKeyField: "sort",
+            sortKeyType: "string"
+        };
+
+        it("builds input for a table with a hash and sort key", () => {
+            const input = buildGetInput(defaultTableSchema, "prim", "so");
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                Key: {
+                    primary: {S: "prim"},
+                    sort: {S: "so"}
+                }
+            });
+        });
+    });
+
     describe("buildQueryInput", () => {
         const defaultTableSchema: TableSchema = {
             tableName: "table",
@@ -115,6 +137,115 @@ describe("requestBuilder", () => {
                     }
                 },
                 KeyConditionExpression: `#P = :p AND #S BETWEEN :s AND :sa`
+            });
+        });
+    });
+
+    describe("addProjection", () => {
+        const defaultTableSchema: TableSchema = {
+            tableName: "table",
+            primaryKeyField: "primary",
+            primaryKeyType: "string",
+            sortKeyField: "sort",
+            sortKeyType: "string"
+        };
+
+        it("adds a projection to get input", () => {
+            const input = buildGetInput(defaultTableSchema, "prim", "so");
+            const projectedInput = addProjection(defaultTableSchema, input, ["key", "lock"]);
+
+            chai.assert.notEqual(input, projectedInput);
+            chai.assert.deepEqual(projectedInput, {
+                TableName: "table",
+                Key: {
+                    primary: {S: "prim"},
+                    sort: {S: "so"}
+                },
+                ExpressionAttributeNames: {
+                    "#KEY": "key",
+                    "#LOCK": "lock"
+                },
+                ProjectionExpression: "#KEY,#LOCK"
+            });
+        });
+
+        it("adds a projection to an already projected expression", () => {
+            const input = buildGetInput(defaultTableSchema, "prim", "so");
+            const projectedInput = addProjection(defaultTableSchema, input, ["key", "lock"]);
+            const projectedInput2 = addProjection(defaultTableSchema, projectedInput, ["key", "value"]);
+
+            chai.assert.notEqual(input, projectedInput);
+            chai.assert.notEqual(projectedInput, projectedInput2);
+            chai.assert.deepEqual(projectedInput2, {
+                TableName: "table",
+                Key: {
+                    primary: {S: "prim"},
+                    sort: {S: "so"}
+                },
+                ExpressionAttributeNames: {
+                    "#KEY": "key",
+                    "#LOCK": "lock",
+                    "#VALUE": "value"
+                },
+                ProjectionExpression: "#KEY,#LOCK,#VALUE"
+            });
+        });
+
+        it("adds a projection to query input without key values", () => {
+            const input = buildQueryInput(defaultTableSchema, "mah value", "BETWEEN", "alpha", "beta");
+            const projectedInput = addProjection(defaultTableSchema, input, ["key", "lock"]);
+
+            chai.assert.notEqual(input, projectedInput);
+            chai.assert.deepEqual(projectedInput, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary",
+                    "#S": "sort",
+                    "#KEY": "key",
+                    "#LOCK": "lock",
+                },
+                ExpressionAttributeValues: {
+                    ":p": {
+                        "S": "mah value"
+                    },
+                    ":s": {
+                        "S": "alpha"
+                    },
+                    ":sa": {
+                        "S": "beta"
+                    }
+                },
+                KeyConditionExpression: `#P = :p AND #S BETWEEN :s AND :sa`,
+                ProjectionExpression: "#KEY,#LOCK"
+            });
+        });
+
+        it("adds a projection to query input that includes key values", () => {
+            const input = buildQueryInput(defaultTableSchema, "mah value", "BETWEEN", "alpha", "beta");
+            const projectedInput = addProjection(defaultTableSchema, input, ["primary", "sort", "key", "lock"]);
+
+            chai.assert.notEqual(input, projectedInput);
+            chai.assert.deepEqual(projectedInput, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary",
+                    "#S": "sort",
+                    "#KEY": "key",
+                    "#LOCK": "lock",
+                },
+                ExpressionAttributeValues: {
+                    ":p": {
+                        "S": "mah value"
+                    },
+                    ":s": {
+                        "S": "alpha"
+                    },
+                    ":sa": {
+                        "S": "beta"
+                    }
+                },
+                KeyConditionExpression: `#P = :p AND #S BETWEEN :s AND :sa`,
+                ProjectionExpression: "#P,#S,#KEY,#LOCK"
             });
         });
     });

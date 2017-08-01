@@ -358,6 +358,35 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
     }
 }
 
+export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.ProjectionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap}>(tableSchema: TableSchema, projectableRequest: T, attributes: string[]): T {
+    checkSchema(tableSchema);
+
+    const projection: string[] = projectableRequest.ProjectionExpression ? projectableRequest.ProjectionExpression.split(",").map(p => p.trim()) : [];
+    const names: aws.DynamoDB.ExpressionAttributeNameMap = {...projectableRequest.ExpressionAttributeNames};
+
+    for (const attribute of attributes) {
+        const existingName = Object.keys(names).filter(name => names[name] === attribute)[0];
+        if (existingName) {
+            if (projection.indexOf(existingName) === -1) {
+                projection.push(existingName);
+            }
+        } else {
+            let name = "#" + attribute.toUpperCase();
+            while (projection.indexOf(name) !== -1) {
+                name += "A";
+            }
+            projection.push(name);
+            names[name] = attribute;
+        }
+    }
+
+    return {
+        ...(projectableRequest as any),
+        ProjectionExpression: projection.join(","),
+        ExpressionAttributeNames: names
+    };
+}
+
 /**
  * Build a request object that can be passed into `createTable`.
  * ProvisionedThroughput takes on default values of 1 and 1 and
