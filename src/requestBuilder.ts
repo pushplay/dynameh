@@ -354,6 +354,17 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
     }
 }
 
+/**
+ * Add a projection expression to an input object.  A projection expression
+ * defines what attributes are returned in the result.  This can save
+ * on bandwidth.
+ *
+ * For documentation on attribute names see: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.Attributes.html
+ * @param tableSchema
+ * @param projectableRequest the input to add a projection expression to
+ * @param attributes an array of attribute names to return
+ * @returns a copy of projectableRequest with the projection expression set
+ */
 export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.ProjectionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap}>(tableSchema: TableSchema, projectableRequest: T, attributes: string[]): T {
     checkSchema(tableSchema);
 
