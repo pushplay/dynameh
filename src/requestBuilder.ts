@@ -1,13 +1,17 @@
 import * as aws from "aws-sdk";
 import {TableSchema} from "./TableSchema";
 import {
+    checkQueryConditionOperator,
     checkSchema,
     checkSchemaItemAgreement,
     checkSchemaItemsAgreement,
     checkSchemaKeyAgreement,
     checkSchemaKeysAgreement,
+    checkSchemaSortKeyAgreement,
+    checkSchemaPrimaryKeyAgreement,
     DynamoKey,
-    DynamoKeyPair
+    DynamoKeyPair,
+    DynamoQueryConditionOperator
 } from "./validation";
 
 /**
@@ -162,6 +166,95 @@ export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: Dyna
     }
 
     return request;
+}
+
+
+
+/**
+ * Build a request object that can be passed into `query`.  The query operation performs
+ * an efficient search on one partition key value with an optional condition on the sort
+ * key.
+ * @param tableSchema
+ * @param primaryKeyValue the hash key of the item to get
+ * @param sortKeyOp the operator that can be used to constrain results.  Must be one of:
+ *                  `"=", "<", "<=", ">", ">=", "BETWEEN", "begins_with"`.  If not defined
+ *                  all sort key values will be returned.
+ * @param sortKeyValues values the sortKeyOp works on.  This must be 2 values for
+ *                      `BETWEEN` and 1 for all other operators.
+ * @returns input for the `query` method
+ */
+export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyOp?: DynamoQueryConditionOperator, ...sortKeyValues: DynamoKey[]): aws.DynamoDB.Types.QueryInput {
+    checkSchema(tableSchema);
+    checkSchemaPrimaryKeyAgreement(tableSchema, primaryKeyValue);
+    if (!tableSchema.sortKeyField) {
+        throw new Error("TableSchema doesn't define a sortKeyField and the query operation is only possible when one is defined.");
+    }
+
+    const queryInput: aws.DynamoDB.Types.QueryInput = {
+        TableName: tableSchema.tableName,
+        ExpressionAttributeNames: {
+            "#P": tableSchema.primaryKeyField
+        },
+        ExpressionAttributeValues: {
+            ":p": {
+                [jsTypeToDdbType(tableSchema.primaryKeyType)]: primaryKeyValue
+            }
+        },
+        KeyConditionExpression: `#P = :p`
+    };
+
+    if (sortKeyOp) {
+        checkQueryConditionOperator(sortKeyOp);
+        const paramCount = operatorParamCount(sortKeyOp);
+        if (operatorParamCount(sortKeyOp) !== sortKeyValues.length) {
+            throw new Error(`The ${sortKeyOp} query operator requires ${paramCount} ${paramCount === 1 ? "value" : "values"} to operate on.`);
+        }
+        for (const val of sortKeyValues) {
+            checkSchemaSortKeyAgreement(tableSchema, val);
+        }
+        if (sortKeyOp === "begins_with" && tableSchema.sortKeyType !== "string") {
+            throw new Error("The begins_with query operator can only be used when sortKeyType is 'string'.");
+        }
+
+        queryInput.ExpressionAttributeNames["#S"] = tableSchema.sortKeyField;
+        for (let i = 0; i < paramCount; i++) {
+            queryInput.ExpressionAttributeValues[paramKey(i)] = {
+                [jsTypeToDdbType(tableSchema.sortKeyType)]: sortKeyValues[i]
+            };
+        }
+
+        if (sortKeyOp === "BETWEEN") {
+            // This isn't worth generalizing because it's not like other operators.
+            queryInput.KeyConditionExpression += ` AND #S BETWEEN ${paramKey(0)} AND ${paramKey(1)}`;
+        } else if (operatorIsFunction(sortKeyOp)) {
+            queryInput.KeyConditionExpression += `AND ${sortKeyOp}(#S, ${paramKey(0)})`;
+        } else {
+            queryInput.KeyConditionExpression += `AND #S ${sortKeyOp} ${paramKey(0)}`;
+        }
+    }
+
+    return queryInput;
+}
+
+function operatorParamCount(op: DynamoQueryConditionOperator): number {
+    switch (op) {
+        case "BETWEEN": return 2;
+    }
+    return 1;
+}
+
+function operatorIsFunction(op: DynamoQueryConditionOperator): boolean {
+    switch (op) {
+        case "begins_with": return true;
+    }
+    return false;
+}
+
+function paramKey(ix: number): string {
+    if (ix === 0) {
+        return ":s";
+    }
+    return ":s" + String.fromCharCode(ix + 96);
 }
 
 /**

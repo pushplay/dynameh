@@ -12,12 +12,19 @@ export const batchGetLimit = 100;
 export const batchWriteLimit = 25;
 
 /**
- * The initial wait when backing off on request rate.
+ * The initial wait when backing off on request rate, in milliseconds.
  */
-export let backoffInitial = 2000;
+export let backoffInitial = 1000;
 
 /**
- * The wait growth factor when repeatedly backing off.
+ * The maximum wait when backing off on request rate, in milliseconds.
+ */
+export let backoffMax = 30000;
+
+/**
+ * The wait growth factor when repeatedly backing off.  When backing off
+ * from an operation the first wait will be `backoff = backoffInitial`
+ * and for each consecutive wait `backoff = Math.min(backoff * backoffFactor, backoffMax)`.
  */
 export let backoffFactor = 2;
 
@@ -57,7 +64,7 @@ export async function batchGetAll(dynamodb: aws.DynamoDB, batchGetInput: aws.Dyn
         if (response.UnprocessedKeys && response.UnprocessedKeys[requestItemsTable] && response.UnprocessedKeys[requestItemsTable].Keys.length) {
             unprocessedKeys.unshift(...response.UnprocessedKeys[requestItemsTable].Keys);
             await wait(backoff);
-            backoff *= backoffFactor;
+            backoff = Math.min(backoff * backoffFactor, backoffMax);
         } else {
             backoff = backoffInitial;
         }
@@ -94,7 +101,7 @@ export async function batchWriteAll(dynamodb: aws.DynamoDB, batchPutInput: aws.D
         if (response.UnprocessedItems && response.UnprocessedItems[requestItemsTable] && response.UnprocessedItems[requestItemsTable].length) {
             unprocessedItems.unshift(...response.UnprocessedItems[requestItemsTable]);
             await wait(backoff);
-            backoff *= backoffFactor;
+            backoff = Math.min(backoff * backoffFactor, backoffMax);
         } else {
             backoff = backoffInitial;
         }

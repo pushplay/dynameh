@@ -1,6 +1,6 @@
 {
   "name": "dynameh",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "description": "DynamoDB on Node more easier",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
     "clean": "rimraf ./dist",
     "docs": "rimraf ./docs && typedoc src/ --out docs --mode modules --module commonjs --target es6 --excludePrivate --name Dynameh && touch ./docs/.nojekyll && gh-pages -d docs -t",
     "lint": "tslint --project tsconfig.json",
-    "prepublish": "npm run clean && npm run build && npm run lint && npm run test && npm run docs",
+    "prepublishOnly": "npm run clean && npm run build && npm run lint && npm run test && npm run docs",
     "test": "mocha --recursive --throw-deprecation --require ts-node/register \"src/**/*.test.ts\""
   },
   "repository": {
@@ -43,7 +43,7 @@
     "touch": "^3.1.0",
     "ts-node": "^3.2.0",
     "tslint": "^5.5.0",
-    "typedoc": "^0.7.1",
+    "typedoc": "^0.8.0",
     "typescript": "^2.4.1"
   },
   "peerDependencies": {

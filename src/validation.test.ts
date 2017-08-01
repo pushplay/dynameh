@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import {checkSchema, checkSchemaItemAgreement} from "./validation";
+import {checkQueryConditionOperator, checkSchema, checkSchemaItemAgreement} from "./validation";
 
 describe("validation", () => {
     describe("checkSchema", () => {
@@ -267,6 +267,35 @@ describe("validation", () => {
                     primary: "primary value",
                     version: "this ain't legal"
                 });
+            });
+        });
+    });
+
+    describe("checkQueryConditionOperator", () => {
+        it("requires the operator to be defined", () => {
+            chai.assert.throws(() => {
+                checkQueryConditionOperator(undefined);
+            });
+        });
+
+        it("validates operators that can be used in a query KeyConditionExpression", () => {
+            checkQueryConditionOperator("=");
+            checkQueryConditionOperator("<");
+            checkQueryConditionOperator("<=");
+            checkQueryConditionOperator(">");
+            checkQueryConditionOperator(">=");
+            checkQueryConditionOperator("BETWEEN");
+            checkQueryConditionOperator("begins_with");
+        });
+
+        it("doesn't validate operators that can't be used in a query KeyConditionExpression", () => {
+            chai.assert.throws(() => {
+                // Not to be confused with "=".
+                checkQueryConditionOperator("==" as any);
+            });
+            chai.assert.throws(() => {
+                // This is a valid comparison operator.
+                checkQueryConditionOperator("<>" as any);
             });
         });
     });

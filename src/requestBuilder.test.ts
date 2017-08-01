@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import {buildRequestPutItem} from "./requestBuilder";
+import {buildQueryInput, buildRequestPutItem} from "./requestBuilder";
 import {TableSchema} from "./TableSchema";
 
 describe("requestBuilder", () => {
@@ -57,6 +57,65 @@ describe("requestBuilder", () => {
                 dateSerializationFunction: d => d.getTime()
             }, new Date("1982-09-10"));
             chai.assert.deepEqual(serialized, {N: "400464000000"});
+        });
+    });
+
+    describe("buildQueryInput", () => {
+        const defaultTableSchema: TableSchema = {
+            tableName: "table",
+            primaryKeyField: "primary",
+            primaryKeyType: "string",
+            sortKeyField: "sort",
+            sortKeyType: "string"
+        };
+
+        it("throws an error when no sort key is defined", () => {
+            chai.assert.throws(() => {
+                buildQueryInput({
+                    tableName: "table",
+                    primaryKeyField: "primary",
+                    primaryKeyType: "string"
+                }, "mah value");
+            });
+        });
+
+        it("serializes a basic query without sort operator", () => {
+            const input = buildQueryInput(defaultTableSchema, "mah value");
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary"
+                },
+                ExpressionAttributeValues: {
+                    ":p": {
+                        "S": "mah value"
+                    }
+                },
+                KeyConditionExpression: `#P = :p`
+            });
+        });
+
+        it("serializes a BETWEEN query", () => {
+            const input = buildQueryInput(defaultTableSchema, "mah value", "BETWEEN", "alpha", "beta");
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary",
+                    "#S": "sort",
+                },
+                ExpressionAttributeValues: {
+                    ":p": {
+                        "S": "mah value"
+                    },
+                    ":s": {
+                        "S": "alpha"
+                    },
+                    ":sa": {
+                        "S": "beta"
+                    }
+                },
+                KeyConditionExpression: `#P = :p AND #S BETWEEN :s AND :sa`
+            });
         });
     });
 });

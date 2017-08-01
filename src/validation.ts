@@ -2,6 +2,9 @@ import {TableSchema} from "./TableSchema";
 
 export type DynamoKey = string | number;
 export type DynamoKeyPair = [DynamoKey, DynamoKey];
+export type DynamoQueryConditionOperator = "=" | "<" | "<=" | ">" | ">=" | "BETWEEN" | "begins_with";
+
+const queryConditionOperators: DynamoQueryConditionOperator[] = ["=", "<", "<=", ">", ">=", "BETWEEN", "begins_with"];
 
 export function checkSchema(tableSchema: TableSchema): void {
     if (!tableSchema) {
@@ -34,17 +37,32 @@ export function checkSchema(tableSchema: TableSchema): void {
  * Assumes checkSchema(tableSchema) has already been run.
  */
 export function checkSchemaKeyAgreement(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): void {
-    if (tableSchema.sortKeyField && !sortKeyValue) {
+    checkSchemaPrimaryKeyAgreement(tableSchema, primaryKeyValue);
+    if (tableSchema.sortKeyField && sortKeyValue == null) {
         throw new Error("TableSchema defines a sortKeyField but the value is missing.");
     }
-    if (!tableSchema.sortKeyField && sortKeyValue) {
+    if (!tableSchema.sortKeyField && sortKeyValue != null) {
         throw new Error("TableSchema doesn't define a sortKeyField but one was given.");
     }
+    if (sortKeyValue != null) {
+        checkSchemaSortKeyAgreement(tableSchema, sortKeyValue);
+    }
+}
 
+/**
+ * Assumes checkSchema(tableSchema) has already been run.
+ */
+export function checkSchemaPrimaryKeyAgreement(tableSchema: TableSchema, primaryKeyValue: DynamoKey): void {
     if (typeof primaryKeyValue !== tableSchema.primaryKeyType) {
         throw new Error(`TableSchema defines primaryKeyType ${tableSchema.primaryKeyType} which does not match the primaryKeyValue ${typeof primaryKeyValue}.`);
     }
-    if (sortKeyValue && typeof sortKeyValue !== tableSchema.sortKeyType) {
+}
+
+/**
+ * Assumes checkSchema(tableSchema) has already been run.
+ */
+export function checkSchemaSortKeyAgreement(tableSchema: TableSchema, sortKeyValue: DynamoKey): void {
+    if (sortKeyValue != null && typeof sortKeyValue !== tableSchema.sortKeyType) {
         throw new Error(`TableSchema defines sortKeyType ${tableSchema.sortKeyType} which does not match the sortKeyValue ${typeof sortKeyValue}.`);
     }
 }
@@ -114,12 +132,21 @@ export function checkSchemaItemsAgreement(tableSchema: TableSchema, items: Objec
         throw new Error("items must be a non-empty array.");
     }
 
-    let i = 0;
+    let i: number;
     try {
         for (i = 0; i < items.length; i++) {
             checkSchemaItemAgreement(tableSchema, items[i]);
         }
     } catch (err) {
         throw new Error(`${err.message} Item index ${i}.`);
+    }
+}
+
+export function checkQueryConditionOperator(op: DynamoQueryConditionOperator): void {
+    if (!op) {
+        throw new Error("Query condition operator is not defined.");
+    }
+    if (queryConditionOperators.indexOf(op) === -1) {
+        throw new Error(`Query condition operator must be one of: ${queryConditionOperators.join(", ")}.`);
     }
 }

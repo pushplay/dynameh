@@ -4,12 +4,12 @@ DynamoDB on Node more easier
 Dynameh works with the existing [DynamoDB JavaScript API](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html) and its objects rather than wrapping them and hiding the details.  The goal is to make the existing API easier to work with where naturally possible, without ever limiting its power.  Obscure and rarely used flags are still accessible while common operations are quicker to write.
 
 Dynameh makes it easier to:
-- build request objects
-- unwrap response objects
-- run large batch requests
-- run requests concurrently that can't be run in batch
-- implement optimistic locking
-- configure Date serialization
+- [build request objects](https://giftbit.github.io/dynameh/modules/_requestbuilder_.html)
+- [unwrap response objects](https://giftbit.github.io/dynameh/modules/_responseunwrapper_.html)
+- [run large batch requests](https://giftbit.github.io/dynameh/modules/_batchhelper_.html)
+- [run requests concurrently that can't be run in batch](https://giftbit.github.io/dynameh/modules/_concurrenthelper_.html)
+- [implement optimistic locking](https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield)
+- [configure Date serialization](https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#dateserializationfunction)
 
 ## Installation
 
