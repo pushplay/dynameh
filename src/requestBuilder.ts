@@ -196,9 +196,7 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
             "#P": tableSchema.primaryKeyField
         },
         ExpressionAttributeValues: {
-            ":p": {
-                [jsTypeToDdbType(tableSchema.primaryKeyType)]: primaryKeyValue
-            }
+            ":p": buildRequestPutItem(tableSchema, primaryKeyValue)
         },
         KeyConditionExpression: `#P = :p`
     };
@@ -218,18 +216,16 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
 
         queryInput.ExpressionAttributeNames["#S"] = tableSchema.sortKeyField;
         for (let i = 0; i < paramCount; i++) {
-            queryInput.ExpressionAttributeValues[paramKey(i)] = {
-                [jsTypeToDdbType(tableSchema.sortKeyType)]: sortKeyValues[i]
-            };
+            queryInput.ExpressionAttributeValues[paramKey(i)] = buildRequestPutItem(tableSchema, sortKeyValues[i]);
         }
 
         if (sortKeyOp === "BETWEEN") {
             // This isn't worth generalizing because it's not like other operators.
             queryInput.KeyConditionExpression += ` AND #S BETWEEN ${paramKey(0)} AND ${paramKey(1)}`;
         } else if (operatorIsFunction(sortKeyOp)) {
-            queryInput.KeyConditionExpression += `AND ${sortKeyOp}(#S, ${paramKey(0)})`;
+            queryInput.KeyConditionExpression += ` AND ${sortKeyOp}(#S, ${paramKey(0)})`;
         } else {
-            queryInput.KeyConditionExpression += `AND #S ${sortKeyOp} ${paramKey(0)}`;
+            queryInput.KeyConditionExpression += ` AND #S ${sortKeyOp} ${paramKey(0)}`;
         }
     }
 

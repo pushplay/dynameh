@@ -83,12 +83,20 @@ describe("requestBuilder", () => {
     });
 
     describe("buildQueryInput", () => {
-        const defaultTableSchema: TableSchema = {
+        const stringSortTableSchema: TableSchema = {
             tableName: "table",
             primaryKeyField: "primary",
             primaryKeyType: "string",
             sortKeyField: "sort",
             sortKeyType: "string"
+        };
+
+        const numberSortTableSchema: TableSchema = {
+            tableName: "table",
+            primaryKeyField: "primary",
+            primaryKeyType: "string",
+            sortKeyField: "sort",
+            sortKeyType: "number"
         };
 
         it("throws an error when no sort key is defined", () => {
@@ -102,7 +110,7 @@ describe("requestBuilder", () => {
         });
 
         it("serializes a basic query without sort operator", () => {
-            const input = buildQueryInput(defaultTableSchema, "mah value");
+            const input = buildQueryInput(stringSortTableSchema, "mah value");
             chai.assert.deepEqual(input, {
                 TableName: "table",
                 ExpressionAttributeNames: {
@@ -113,12 +121,12 @@ describe("requestBuilder", () => {
                         "S": "mah value"
                     }
                 },
-                KeyConditionExpression: `#P = :p`
+                KeyConditionExpression: "#P = :p"
             });
         });
 
         it("serializes a BETWEEN query", () => {
-            const input = buildQueryInput(defaultTableSchema, "mah value", "BETWEEN", "alpha", "beta");
+            const input = buildQueryInput(numberSortTableSchema, "mah value", "BETWEEN", 1, 10);
             chai.assert.deepEqual(input, {
                 TableName: "table",
                 ExpressionAttributeNames: {
@@ -130,13 +138,53 @@ describe("requestBuilder", () => {
                         "S": "mah value"
                     },
                     ":s": {
-                        "S": "alpha"
+                        "N": "1"
                     },
                     ":sa": {
-                        "S": "beta"
+                        "N": "10"
                     }
                 },
-                KeyConditionExpression: `#P = :p AND #S BETWEEN :s AND :sa`
+                KeyConditionExpression: "#P = :p AND #S BETWEEN :s AND :sa"
+            });
+        });
+
+        it("serializes a begins_with query", () => {
+            const input = buildQueryInput(stringSortTableSchema, "mah value", "begins_with", "a");
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary",
+                    "#S": "sort",
+                },
+                ExpressionAttributeValues: {
+                    ":p": {
+                        "S": "mah value"
+                    },
+                    ":s": {
+                        "S": "a"
+                    }
+                },
+                KeyConditionExpression: "#P = :p AND begins_with(#S, :s)"
+            });
+        });
+
+        it("serializes a <= query", () => {
+            const input = buildQueryInput(numberSortTableSchema, "mah value", "<=", 92);
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary",
+                    "#S": "sort",
+                },
+                ExpressionAttributeValues: {
+                    ":p": {
+                        "S": "mah value"
+                    },
+                    ":s": {
+                        "N": "92"
+                    }
+                },
+                KeyConditionExpression: "#P = :p AND #S <= :s"
             });
         });
     });
