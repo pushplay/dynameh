@@ -64,5 +64,16 @@ describe("responseUnwrapper", () => {
                 AnimalType: "Dog"
             });
         });
+
+        it("unwraps null", () => {
+            const res = responseUnwrapper.unwrapGetOutput({
+                "Item": {
+                    "iamnull": {"NULL": true}
+                }
+            });
+            chai.assert.deepEqual(res, {
+                iamnull: null
+            });
+        });
     });
 });

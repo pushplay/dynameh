@@ -7,12 +7,12 @@ import {TableSchema} from "./TableSchema";
  * @returns the extracted value
  */
 export function unwrapResponseItem(item: aws.DynamoDB.Types.AttributeValue): any {
-    if (item.B) {
+    if (item.hasOwnProperty("B")) {
         if (typeof item.B === "string") {
             return Buffer.from(item.B as string, "base64");
         }
         return item.B;
-    } else if (item.BS) {
+    } else if (item.hasOwnProperty("BS")) {
         return item.BS.map(b => {
             if (typeof b === "string") {
                 return Buffer.from(b as string, "base64");
@@ -21,19 +21,19 @@ export function unwrapResponseItem(item: aws.DynamoDB.Types.AttributeValue): any
         });
     } else if (item.hasOwnProperty("BOOL")) {
         return item.BOOL;
-    } else if (item.L) {
+    } else if (item.hasOwnProperty("L")) {
         return item.L.map(i => unwrapResponseItem(i));
-    } else if (item.N) {
+    } else if (item.hasOwnProperty("N")) {
         return parseFloat(item.N);
-    } else if (item.NS) {
+    } else if (item.hasOwnProperty("NS")) {
         return item.NS.map(n => parseFloat(n));
-    } else if (item.NULL) {
+    } else if (item.hasOwnProperty("NULL")) {
         return null;
-    } else if (item.S) {
+    } else if (item.hasOwnProperty("S")) {
         return item.S;
-    } else if (item.SS) {
+    } else if (item.hasOwnProperty("SS")) {
         return item.SS;
-    } else if (item.M) {
+    } else if (item.hasOwnProperty("M")) {
         const resp: any = {};
         Object.keys(item.M).forEach(key => resp[key] = unwrapResponseItem((item.M as any)[key]));
         return resp;
