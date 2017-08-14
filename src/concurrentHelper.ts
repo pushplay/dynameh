@@ -11,9 +11,14 @@ export let concurrentFactor = 20;
 export let backoffInitial = 2000;
 
 /**
+ * The maximum wait when backing off on request rate.
+ */
+export let backoffMax = 60000;
+
+/**
  * The wait growth factor when repeatedly backing off.
  */
-export let backoffFactor = 2;
+export let backoffFactor = 2.0;
 
 /**
  * Manages a number of concurrent dynamodb putItem requests.  Put requests
@@ -76,7 +81,7 @@ function runConcurrentThunks<T>(thunks: ThunkPromise<T>[]): Promise<(T | Error)[
                         return;
                     }
                     await new Promise(resolve => setTimeout(resolve, backoff));
-                    backoff *= backoffFactor;
+                    backoff = Math.min(backoffFactor * backoff, backoffMax);
                 }
             }
         }
