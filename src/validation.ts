@@ -122,6 +122,9 @@ export function checkSchemaItemAgreement(tableSchema: TableSchema, item: Object)
     if (tableSchema.versionKeyField && item[tableSchema.versionKeyField] && typeof item[tableSchema.versionKeyField] !== "number") {
         throw new Error(`TableSchema defines versionKeyField which must be a number and does not match the object's ${typeof item[tableSchema.versionKeyField]}.`);
     }
+    if (tableSchema.ttlField && item[tableSchema.ttlField] != null && !(item[tableSchema.ttlField] instanceof Date)) {
+        throw new Error(`TableSchema defines ttlField ${tableSchema.ttlField} which must be null or a Date.`);
+    }
 }
 
 /**

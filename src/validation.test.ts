@@ -269,6 +269,44 @@ describe("validation", () => {
                 });
             });
         });
+
+        it("validates a schema with ttlField and a Date is set", () => {
+            checkSchemaItemAgreement({
+                tableName: "tableName",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+                ttlField: "ttl"
+            }, {
+                primary: "primary value",
+                ttl: new Date()
+            });
+        });
+
+        it("validates a schema with ttlField and none is set", () => {
+            checkSchemaItemAgreement({
+                tableName: "tableName",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+                ttlField: "ttl"
+            }, {
+                primary: "primary value",
+                ttl: null
+            });
+        });
+
+        it("rejects a schema with ttlField and an object set", () => {
+            chai.assert.throws(() => {
+                checkSchemaItemAgreement({
+                    tableName: "tableName",
+                    primaryKeyField: "primary",
+                    primaryKeyType: "string",
+                    ttlField: "ttl"
+                }, {
+                    primary: "primary value",
+                    ttl: "2017-08-17T23:20:05.743Z"
+                });
+            });
+        });
     });
 
     describe("checkQueryConditionOperator", () => {

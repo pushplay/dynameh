@@ -399,9 +399,19 @@ export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.Pro
  * ProvisionedThroughput takes on default values of 1 and 1 and
  * should probably be edited.
  * @param tableSchema
+ * @param readCapacity represents one strongly consistent read per second, or two
+ *                     eventually consistent reads per second, for an item up to 4 KB in size.
+ * @param writeCapacity represents one write per second for an item up to 1 KB in size.
  * @returns input for the `createTable` method
  */
-export function buildCreateTableInput(tableSchema: TableSchema): aws.DynamoDB.Types.CreateTableInput {
+export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: number = 1, writeCapacity: number = 1): aws.DynamoDB.Types.CreateTableInput {
+    if (!Number.isInteger(readCapacity) || readCapacity < 1) {
+        throw new Error("readCapacity must be a positive integer");
+    }
+    if (!Number.isInteger(writeCapacity) || writeCapacity < 1) {
+        throw new Error("writeCapacity must be a positive integer");
+    }
+
     checkSchema(tableSchema);
 
     const request = {
@@ -418,8 +428,8 @@ export function buildCreateTableInput(tableSchema: TableSchema): aws.DynamoDB.Ty
             }
         ],
         ProvisionedThroughput: {
-            ReadCapacityUnits: 1,
-            WriteCapacityUnits: 1
+            ReadCapacityUnits: readCapacity,
+            WriteCapacityUnits: writeCapacity
         },
         TableName: tableSchema.tableName,
     };
@@ -436,6 +446,35 @@ export function buildCreateTableInput(tableSchema: TableSchema): aws.DynamoDB.Ty
     }
 
     return request;
+}
+
+/**
+ * Build a request object that can be passed into `updateTimeToLive`.
+ * Time to live settings will be enabled if `tableSchema.ttlField`
+ * is defined and disabled otherwise.
+ * @param {TableSchema} tableSchema
+ * @returns input for the `updateTimeToLive` method
+ */
+export function buildUpdateTimeToLiveInput(tableSchema: TableSchema): aws.DynamoDB.Types.UpdateTimeToLiveInput {
+    checkSchema(tableSchema);
+
+    if (tableSchema.ttlField) {
+        return {
+            TableName: tableSchema.tableName,
+            TimeToLiveSpecification: {
+                Enabled: true,
+                AttributeName: tableSchema.ttlField
+            }
+        };
+    } else {
+        return {
+            TableName: tableSchema.tableName,
+            TimeToLiveSpecification: {
+                Enabled: false,
+                AttributeName: ""
+            }
+        };
+    }
 }
 
 function jsTypeToDdbType(t: string): string {

@@ -32,12 +32,19 @@ export interface TableSchema {
 
     /**
      * The name of a field to use as the version key for optimistic
-     * locking.  If set on an item the type of the value must be "number".
+     * locking.  If set on an item, the type of the value must be `number`.
      * If set and the field is not on an item during a put then
      * there must be an existing item in the table.  If set and the field
      * is present on an item then the existing value in the table must match.
      */
     versionKeyField?: string;
+
+    /**
+     * The name of a field to use as the TTL (time to live) field.  Items with this field
+     * set will have the value converted to seconds since 12:00:00 AM January 1st, 1970 UTC.
+     * DynamoDB will automatically delete items whose `ttl` has passed (within about 48 hours).
+     */
+    ttlField?: string;
 
     /**
      * How to serialize Dates when encountered.  Defaults to ISO8601.
