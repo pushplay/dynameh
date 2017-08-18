@@ -43,6 +43,8 @@ export interface TableSchema {
      * The name of a field to use as the TTL (time to live) field.  Items with this field
      * set will have the value converted to seconds since 12:00:00 AM January 1st, 1970 UTC.
      * DynamoDB will automatically delete items whose `ttl` has passed (within about 48 hours).
+     *
+     * Support for this field is currently experimental.
      */
     ttlField?: string;
 

@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import {addProjection, buildGetInput, buildQueryInput, buildRequestPutItem} from "./requestBuilder";
+import {addProjection, buildGetInput, buildPutInput, buildQueryInput, buildRequestPutItem} from "./requestBuilder";
 import {TableSchema} from "./TableSchema";
 
 describe("requestBuilder", () => {
@@ -77,6 +77,30 @@ describe("requestBuilder", () => {
                 Key: {
                     primary: {S: "prim"},
                     sort: {S: "so"}
+                }
+            });
+        });
+    });
+
+    describe("getPutInput", () => {
+        it("serializes Date TTLs", () => {
+            const serialized = buildPutInput({tableName: "table",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+                ttlField: "ttl"
+            }, {
+                primary: "xxx",
+                ttl: new Date('2017-08-18T21:11:29.275Z')
+            });
+            chai.assert.deepEqual(serialized, {
+                TableName: "table",
+                Item: {
+                    primary: {
+                        S: "xxx"
+                    },
+                    ttl: {
+                        N: "1503090689"
+                    }
                 }
             });
         });

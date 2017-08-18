@@ -282,6 +282,18 @@ describe("validation", () => {
             });
         });
 
+        it("validates a schema with ttlField and a number set", () => {
+            checkSchemaItemAgreement({
+                tableName: "tableName",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+                ttlField: "ttl"
+            }, {
+                primary: "primary value",
+                ttl: new Date().getTime() / 1000
+            });
+        });
+
         it("validates a schema with ttlField and none is set", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
@@ -294,7 +306,7 @@ describe("validation", () => {
             });
         });
 
-        it("rejects a schema with ttlField and an object set", () => {
+        it("rejects a schema with ttlField and a string set", () => {
             chai.assert.throws(() => {
                 checkSchemaItemAgreement({
                     tableName: "tableName",
@@ -304,6 +316,22 @@ describe("validation", () => {
                 }, {
                     primary: "primary value",
                     ttl: "2017-08-17T23:20:05.743Z"
+                });
+            });
+        });
+
+        it("rejects a schema with ttlField and an object set", () => {
+            chai.assert.throws(() => {
+                checkSchemaItemAgreement({
+                    tableName: "tableName",
+                    primaryKeyField: "primary",
+                    primaryKeyType: "string",
+                    ttlField: "ttl"
+                }, {
+                    primary: "primary value",
+                    ttl: {
+                        key: "well this is clearly dumb"
+                    }
                 });
             });
         });

@@ -107,6 +107,9 @@ export function checkSchemaItemAgreement(tableSchema: TableSchema, item: object)
     if (!item) {
         throw new Error("The item is null.");
     }
+    if (typeof item !== "object") {
+        throw new Error("The item must be an object.");
+    }
     if (!item[tableSchema.primaryKeyField]) {
         throw new Error(`TableSchema defines a primaryKeyField ${tableSchema.primaryKeyField} which is not on the object.`);
     }
@@ -122,8 +125,8 @@ export function checkSchemaItemAgreement(tableSchema: TableSchema, item: object)
     if (tableSchema.versionKeyField && item[tableSchema.versionKeyField] && typeof item[tableSchema.versionKeyField] !== "number") {
         throw new Error(`TableSchema defines versionKeyField which must be a number and does not match the object's ${typeof item[tableSchema.versionKeyField]}.`);
     }
-    if (tableSchema.ttlField && item[tableSchema.ttlField] != null && !(item[tableSchema.ttlField] instanceof Date)) {
-        throw new Error(`TableSchema defines ttlField ${tableSchema.ttlField} which must be null or a Date.`);
+    if (tableSchema.ttlField && item[tableSchema.ttlField] != null && typeof item[tableSchema.ttlField] !== "number" && !(item[tableSchema.ttlField] instanceof Date)) {
+        throw new Error(`TableSchema defines ttlField ${tableSchema.ttlField} which must be a number, a Date, or null.`);
     }
 }
 

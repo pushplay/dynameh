@@ -140,6 +140,21 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
         }
     }
 
+    if (tableSchema.ttlField && item.hasOwnProperty(tableSchema.ttlField)) {
+        if (item === null || typeof item[tableSchema.ttlField] === "number") {
+            // No-op because it was already serialized correctly.
+            // I'm waffling on trying to re-interpret unix-epoch millisecond dates as seconds since
+            // the difference is 1000.  I'm worried about the potential for confusing results though.
+        } else if (item[tableSchema.ttlField] instanceof Date) {
+            request.Item[tableSchema.ttlField] = buildRequestPutItem(tableSchema, Math.round((item[tableSchema.ttlField] as Date).getTime() / 1000));
+        } else {
+            // We could try to interpret strings as Dates and then use that, but is that really
+            // a convenience?  In what scenario would someone really want to put strings here?
+            // It seems easier to hit the validation error once and then use Dates.
+            throw new Error("Unhandled case that should have been caught in validation.");
+        }
+    }
+
     return request;
 }
 
