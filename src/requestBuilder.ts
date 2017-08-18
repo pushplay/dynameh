@@ -168,8 +168,6 @@ export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: Dyna
     return request;
 }
 
-
-
 /**
  * Build a request object that can be passed into `query`.  The query operation performs
  * an efficient search on one partition key value with an optional condition on the sort
@@ -362,7 +360,7 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
  * For documentation on attribute names see: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.Attributes.html
  * @param tableSchema
  * @param projectableRequest the input to add a projection expression to
- * @param attributes an array of attribute names to return
+ * @param attributes an array of attribute names to fetch
  * @returns a copy of projectableRequest with the projection expression set
  */
 export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.ProjectionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap}>(tableSchema: TableSchema, projectableRequest: T, attributes: string[]): T {
@@ -396,8 +394,6 @@ export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.Pro
 
 /**
  * Build a request object that can be passed into `createTable`.
- * ProvisionedThroughput takes on default values of 1 and 1 and
- * should probably be edited.
  * @param tableSchema
  * @param readCapacity represents one strongly consistent read per second, or two
  *                     eventually consistent reads per second, for an item up to 4 KB in size.

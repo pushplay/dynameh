@@ -35,7 +35,7 @@ export function unwrapResponseItem(item: aws.DynamoDB.Types.AttributeValue): any
         return item.SS;
     } else if (item.hasOwnProperty("M")) {
         const resp: any = {};
-        Object.keys(item.M).forEach(key => resp[key] = unwrapResponseItem((item.M as any)[key]));
+        Object.keys(item.M).forEach(key => resp[key] = unwrapResponseItem(item.M[key]));
         return resp;
     }
     throw new Error(`Unhandled response item ${JSON.stringify(item, null, 2)}`);
