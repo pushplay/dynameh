@@ -102,7 +102,7 @@ export function buildGetInput(tableSchema: TableSchema, primaryKeyValue: DynamoK
  * @param item
  * @returns input for the `putItem` method
  */
-export function buildPutInput(tableSchema: TableSchema, item: Object): aws.DynamoDB.Types.PutItemInput {
+export function buildPutInput(tableSchema: TableSchema, item: object): aws.DynamoDB.Types.PutItemInput {
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, item);
 
@@ -257,7 +257,7 @@ function paramKey(ix: number): string {
  * @param items the items to put
  * @returns input for the `batchWriteItem` method
  */
-export function buildBatchPutInput(tableSchema: TableSchema, items: Object[]): aws.DynamoDB.Types.BatchWriteItemInput {
+export function buildBatchPutInput(tableSchema: TableSchema, items: object[]): aws.DynamoDB.Types.BatchWriteItemInput {
     checkSchema(tableSchema);
     checkSchemaItemsAgreement(tableSchema, items);
 

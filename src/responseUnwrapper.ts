@@ -55,15 +55,13 @@ export function unwrapGetOutput(response: aws.DynamoDB.Types.GetItemOutput): any
 
 /**
  * Extract the JSON objects from a response to `batchGetItem`.
- * @param tableName the string table name or TableSchema
+ * @param tableSchemaOrName the TableSchema or the string table name
  * @param response result of batchGetItem
  * @returns the objects returned
  */
-export function unwrapBatchGetOutput(tableName: string | TableSchema, response: aws.DynamoDB.Types.BatchGetItemOutput): any[] {
-    if ((tableName as TableSchema).tableName) {
-        tableName = (tableName as TableSchema).tableName;
-    }
-    const responseTableItems = response.Responses[tableName as string];
+export function unwrapBatchGetOutput(tableSchemaOrName: TableSchema | string, response: aws.DynamoDB.Types.BatchGetItemOutput): any[] {
+    const tableName = (tableSchemaOrName as TableSchema).tableName ? (tableSchemaOrName as TableSchema).tableName : tableSchemaOrName as string;
+    const responseTableItems = response.Responses && response.Responses[tableName];
     if (!responseTableItems) {
         return [];
     }

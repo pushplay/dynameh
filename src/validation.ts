@@ -103,7 +103,7 @@ export function checkSchemaKeysAgreement(tableSchema: TableSchema, keyValues: Dy
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */
-export function checkSchemaItemAgreement(tableSchema: TableSchema, item: Object): void {
+export function checkSchemaItemAgreement(tableSchema: TableSchema, item: object): void {
     if (!item) {
         throw new Error("The item is null.");
     }
@@ -130,7 +130,7 @@ export function checkSchemaItemAgreement(tableSchema: TableSchema, item: Object)
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */
-export function checkSchemaItemsAgreement(tableSchema: TableSchema, items: Object[]): void {
+export function checkSchemaItemsAgreement(tableSchema: TableSchema, items: object[]): void {
     if (!Array.isArray(items) || !items.length) {
         throw new Error("items must be a non-empty array.");
     }
