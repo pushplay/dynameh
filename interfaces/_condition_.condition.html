@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;requestUnwrapper&quot; | Dynameh</title>
+	<title>Condition | Dynameh</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,58 +56,111 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_requestunwrapper_.html">&quot;requestUnwrapper&quot;</a>
+					<a href="../modules/_condition_.html">&quot;Condition&quot;</a>
+				</li>
+				<li>
+					<a href="_condition_.condition.html">Condition</a>
 				</li>
 			</ul>
-			<h1>External module &quot;requestUnwrapper&quot;</h1>
+			<h1>Interface Condition</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>An object representing a condition.  This is used by
+						requestBuilder.addCondition().</p>
+					</div>
+					<dl class="tsd-comment-tags">
+						<dt>see:</dt>
+						<dd><p><a href="http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html">http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html</a></p>
+						</dd>
+					</dl>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">Condition</span>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Functions</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestunwrapper_.html#unwrapputinput" class="tsd-kind-icon">unwrap<wbr>Put<wbr>Input</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_condition_.condition.html#attribute" class="tsd-kind-icon">attribute</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_condition_.condition.html#operator" class="tsd-kind-icon">operator</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_condition_.condition.html#values" class="tsd-kind-icon">values</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="unwrapputinput" class="tsd-anchor"></a>
-					<h3>unwrap<wbr>Put<wbr>Input</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">unwrap<wbr>Put<wbr>Input<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB.Types.PutItemInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/cfb694f/src/requestUnwrapper.ts#L7">requestUnwrapper.ts:7</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Extract the item being put from the input.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>input: <span class="tsd-signature-type">aws.DynamoDB.Types.PutItemInput</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-						</li>
-					</ul>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="attribute" class="tsd-anchor"></a>
+					<h3>attribute</h3>
+					<div class="tsd-signature tsd-kind-icon">attribute<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/cfb694f/src/Condition.ts#L15">Condition.ts:15</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The attribute name to put the condition on.  Nested attributes
+								can be accessed using dot notation; for example <code>a.b.c</code>.  Attribute
+								names with literal dots should escape them with a backslash; for
+							example <code>a\.b\.c</code>.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="operator" class="tsd-anchor"></a>
+					<h3>operator</h3>
+					<div class="tsd-signature tsd-kind-icon">operator<span class="tsd-signature-symbol">:</span> <a href="../modules/_validation_.html#dynamoconditionoperator" class="tsd-signature-type">DynamoConditionOperator</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/cfb694f/src/Condition.ts#L21">Condition.ts:21</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A comparison operator or function name.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>see:</dt>
+							<dd><p><a href="http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html">http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html</a></p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="values" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> values</h3>
+					<div class="tsd-signature tsd-kind-icon">values<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/cfb694f/src/Condition.ts#L28">Condition.ts:28</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Any arguments necessary to the operator.  Can be omitted if the
+								operator requires 0 arguments.  For example <code>=</code> requires 1 value
+							and <code>attribute_exists</code> requires 0.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -117,43 +170,58 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_condition_.html">"<wbr>Condition"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_tableschema_.html">"<wbr>Table<wbr>Schema"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_batchhelper_.html">"batch<wbr>Helper"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_concurrenthelper_.html">"concurrent<wbr>Helper"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dynamodbreservedwords_.html">"dynamo<wbr>DbReserved<wbr>Words"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_index_.html">"index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_requestbuilder_.html">"request<wbr>Builder"</a>
-					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_requestunwrapper_.html">"request<wbr>Unwrapper"</a>
+						<a href="../modules/_condition_.html">"<wbr>Condition"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_responseunwrapper_.html">"response<wbr>Unwrapper"</a>
+						<a href="../modules/_tableschema_.html">"<wbr>Table<wbr>Schema"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_validation_.html">"validation"</a>
+						<a href="../modules/_batchhelper_.html">"batch<wbr>Helper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_concurrenthelper_.html">"concurrent<wbr>Helper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_dynamodbreservedwords_.html">"dynamo<wbr>DbReserved<wbr>Words"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_index_.html">"index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_requestbuilder_.html">"request<wbr>Builder"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_requestunwrapper_.html">"request<wbr>Unwrapper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_responseunwrapper_.html">"response<wbr>Unwrapper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_validation_.html">"validation"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_requestunwrapper_.html#unwrapputinput" class="tsd-kind-icon">unwrap<wbr>Put<wbr>Input</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_condition_.condition.html" class="tsd-kind-icon">Condition</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_condition_.condition.html#attribute" class="tsd-kind-icon">attribute</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_condition_.condition.html#operator" class="tsd-kind-icon">operator</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_condition_.condition.html#values" class="tsd-kind-icon">values</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>
