@@ -168,9 +168,11 @@ Conditions can be added to a put or delete request to make the operation conditi
 
 One of the most useful conditions is that the item must not already exist.  This is done by asserting `attribute_not_exists` on the primary key.
 
+For example...
+
 ```typescript
 const tableSchema = {
-    tableName: "BoatNames",
+    tableName: "Boats",
     primaryKeyField: "name",
     primaryKeyType: "string"
 };
@@ -192,7 +194,40 @@ async function addNewBoat(boat) {
     }
 }
 
-addNewBoat({name: "Boaty McBoatface"});
+addNewBoat({
+    name: "Boaty McBoatface",
+    type: "submarine",
+    autonomous: true
+});
+```
+
+### Projections
+
+Projections can be added to a get, batch get or query request to control what attributes are returned.  This saves bandwidth on the request.
+
+For example...
+
+```typescript
+const tableSchema = {
+    tableName: "Transactions",
+    primaryKeyField: "customerId",
+    primaryKeyType: "string",
+    sortKeyField: "transactionId",
+    sortKeyType: "string",
+};
+
+async function getTransactionDates(customerId) {
+    const queryRequest = dynameh.requestBuilder.buildQueryInput(tableSchema, customerId);
+    const projectedQueryRequest = dynameh.requestBuilder.addProjection(tableSchema, queryRequest, "date");
+    // Note that addProjection() does not change the original object.
+    // queryRequest != projectedQueryRequest
+    
+    const queryResponse = await dynamodb.query(projectedQueryRequest).promise();
+    const transactions = dynameh.responseUnwrapper.unwrapQueryOutput(queryResponse);
+    return transactions.map(t => t.date);
+}
+
+getTransactionDates("BusinessFactory");
 ```
 
 ### Date Serialization
