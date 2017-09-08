@@ -185,7 +185,7 @@ export function checkCondition(condition: Condition, operatorSet: "default" | "q
     switch (condition.operator) {
         case "attribute_type": {
             if (attributeTypes.indexOf(condition.values[0]) === -1) {
-                throw new Error(`The attribute_type operator requires a valid attribute type.  Valid types are: ${attributeTypes.join(", ")}.`)
+                throw new Error(`The attribute_type operator requires a valid attribute type.  Valid types are: ${attributeTypes.join(", ")}.`);
             }
             break;
         }
