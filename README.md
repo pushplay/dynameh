@@ -190,7 +190,7 @@ async function addNewBoat(boat) {
     }
 }
 
-addNewBoat("Boaty McBoatface");
+addNewBoat({name: "Boaty McBoatface"});
 ```
 
 ### Date Serialization
