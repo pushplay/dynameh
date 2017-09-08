@@ -1,4 +1,5 @@
 import {TableSchema} from "./TableSchema";
+import {Condition} from "./Condition";
 
 export type DynamoKey = string | number;
 export type DynamoKeyPair = [DynamoKey, DynamoKey];
@@ -6,6 +7,7 @@ export type DynamoQueryConditionOperator = "=" | "<" | "<=" | ">" | ">=" | "BETW
 const queryConditionOperators: DynamoQueryConditionOperator[] = ["=", "<", "<=", ">", ">=", "BETWEEN", "begins_with"];
 export type DynamoConditionOperator =
     "="
+    | "<>"
     | "<"
     | "<="
     | ">"
@@ -17,8 +19,8 @@ export type DynamoConditionOperator =
     | "begins_with"
     | "contains"
     | "size";
-const conditionOperators: DynamoConditionOperator[] = ["=",  "<",  "<=",  ">",  ">=",  "BETWEEN",  "attribute_exists",  "attribute_not_exists",  "attribute_type",  "begins_with",  "contains",  "size"];
-
+const conditionOperators: DynamoConditionOperator[] = ["=", "<>",  "<",  "<=",  ">",  ">=",  "BETWEEN",  "attribute_exists",  "attribute_not_exists",  "attribute_type",  "begins_with",  "contains",  "size"];
+const attributeTypes: string[] = ["S", "SS", "N", "NS", "B", "BS", "BOOL", "NULL", "L", "M"];
 
 export function checkSchema(tableSchema: TableSchema): void {
     if (!tableSchema) {
@@ -162,20 +164,89 @@ export function checkSchemaItemsAgreement(tableSchema: TableSchema, items: objec
     }
 }
 
-export function checkQueryConditionOperator(op: DynamoQueryConditionOperator): void {
-    if (!op) {
-        throw new Error("Query condition operator is not defined.");
+export function checkCondition(condition: Condition, operatorSet: "default" | "query" = "default"): void {
+    if (!condition) {
+        throw new Error("Condition is null.");
     }
-    if (queryConditionOperators.indexOf(op) === -1) {
+
+    if (!condition.operator) {
+        throw new Error("Condition operator is not defined.");
+    }
+    if (operatorSet === "default" && conditionOperators.indexOf(condition.operator) === -1) {
+        throw new Error(`Condition operator must be one of: ${conditionOperators.join(", ")}.`);
+    } else if (operatorSet === "query" && queryConditionOperators.indexOf(condition.operator as DynamoQueryConditionOperator) === -1) {
         throw new Error(`Query condition operator must be one of: ${queryConditionOperators.join(", ")}.`);
+    }
+
+    const paramCount = operatorParamValueCount(condition.operator);
+    if (paramCount !== (condition.values || []).length) {
+        throw new Error(`The ${condition.operator} operator requires ${paramCount} ${paramCount === 1 ? "value" : "values"} to operate on.`);
+    }
+    switch (condition.operator) {
+        case "attribute_type": {
+            if (attributeTypes.indexOf(condition.values[0]) === -1) {
+                throw new Error(`The attribute_type operator requires a valid attribute type.  Valid types are: ${attributeTypes.join(", ")}.`)
+            }
+            break;
+        }
+        case "begins_with":
+        case "contains":
+            if (typeof condition.values[0] !== "string") {
+                throw new Error(`The ${condition.operator} requires a string value.`);
+            }
+            break;
     }
 }
 
-export function checkConditionOperator(op: DynamoConditionOperator): void {
-    if (!op) {
-        throw new Error("Condition operator is not defined.");
+export function checkConditions(conditions: Condition[], operatorSet: "default" | "query" = "default"): void {
+    if (!Array.isArray(conditions) || !conditions.length) {
+        throw new Error("conditions must be a non-empty array.");
     }
-    if (conditionOperators.indexOf(op) === -1) {
-        throw new Error(`Condition operator must be one of: ${conditionOperators.join(", ")}.`);
+
+    let i: number;
+    try {
+        for (i = 0; i < conditions.length; i++) {
+            checkCondition(conditions[i], operatorSet);
+        }
+    } catch (err) {
+        throw new Error(`${err.message} Item index ${i}.`);
     }
+}
+
+export function operatorParamValueCount(op: DynamoConditionOperator): number {
+    switch (op) {
+        case "=":
+        case "<>":
+        case "<":
+        case "<=":
+        case ">":
+        case ">=":
+            return 1;
+        case "BETWEEN":
+            return 2;
+        case "attribute_exists":
+        case "attribute_not_exists":
+            // The first param is always the attribute name, which isn't in the param values.
+            return 0;
+        case "attribute_type":
+        case "begins_with":
+        case "contains":
+            return 1;
+        case "size":
+            return 0;
+    }
+    return -1;
+}
+
+export function operatorIsFunction(op: DynamoConditionOperator): boolean {
+    switch (op) {
+        case "attribute_exists":
+        case "attribute_not_exists":
+        case "attribute_type":
+        case "begins_with":
+        case "contains":
+        case "size":
+            return true;
+    }
+    return false;
 }

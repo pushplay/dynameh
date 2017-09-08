@@ -1,7 +1,6 @@
 import * as aws from "aws-sdk";
 import {TableSchema} from "./TableSchema";
 import {
-    checkQueryConditionOperator,
     checkSchema,
     checkSchemaItemAgreement,
     checkSchemaItemsAgreement,
@@ -9,9 +8,12 @@ import {
     checkSchemaKeysAgreement,
     checkSchemaSortKeyAgreement,
     checkSchemaPrimaryKeyAgreement,
+    checkCondition,
+    checkConditions,
+    operatorIsFunction,
     DynamoKey,
     DynamoKeyPair,
-    DynamoQueryConditionOperator, DynamoConditionOperator, checkConditionOperator
+    DynamoQueryConditionOperator
 } from "./validation";
 import {dynamoDbReservedWords} from "./dynamoDbReservedWords";
 import {Condition} from "./Condition";
@@ -204,6 +206,13 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
     if (!tableSchema.sortKeyField) {
         throw new Error("TableSchema doesn't define a sortKeyField and the query operation is only possible when one is defined.");
     }
+    if (sortKeyOp) {
+        checkCondition({
+            attribute: tableSchema.sortKeyField,
+            operator: sortKeyOp,
+            values: sortKeyValues
+        }, "query");
+    }
 
     const queryInput: aws.DynamoDB.Types.QueryInput = {
         TableName: tableSchema.tableName,
@@ -217,11 +226,6 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
     };
 
     if (sortKeyOp) {
-        checkQueryConditionOperator(sortKeyOp);
-        const paramCount = operatorParamValueCount(sortKeyOp);
-        if (paramCount !== sortKeyValues.length) {
-            throw new Error(`The ${sortKeyOp} query operator requires ${paramCount} ${paramCount === 1 ? "value" : "values"} to operate on.`);
-        }
         for (const val of sortKeyValues) {
             checkSchemaSortKeyAgreement(tableSchema, val);
         }
@@ -442,10 +446,10 @@ export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.Pro
     checkSchema(tableSchema);
 
     const projection: string[] = projectableRequest.ProjectionExpression ? projectableRequest.ProjectionExpression.split(",").map(p => p.trim()) : [];
-    const names: aws.DynamoDB.ExpressionAttributeNameMap = {...projectableRequest.ExpressionAttributeNames};
+    const nameMap: aws.DynamoDB.ExpressionAttributeNameMap = {...projectableRequest.ExpressionAttributeNames};
 
     for (const attribute of attributes) {
-        const existingName = Object.keys(names).filter(name => names[name] === attribute)[0];
+        const existingName = Object.keys(nameMap).filter(name => nameMap[name] === attribute)[0];
         if (existingName) {
             if (projection.indexOf(existingName) === -1) {
                 projection.push(existingName);
@@ -456,15 +460,20 @@ export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.Pro
                 name += "A";
             }
             projection.push(name);
-            names[name] = attribute;
+            nameMap[name] = attribute;
         }
     }
 
-    return {
-        ...(projectableRequest as any),
-        ProjectionExpression: projection.join(","),
-        ExpressionAttributeNames: names
+    const res: T = {
+        ...(projectableRequest as any)
     };
+    if (projection.length) {
+        res.ProjectionExpression = projection.join(",");
+    }
+    if (Object.keys(nameMap).length) {
+        res.ExpressionAttributeNames = nameMap;
+    }
+    return res;
 }
 
 /**
@@ -479,18 +488,12 @@ export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.Pro
  */
 export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(tableSchema: TableSchema, conditionableRequest: T, ...conditions: Condition[]): T {
     checkSchema(tableSchema);
-
+    checkConditions(conditions, "default");
     let exp: aws.DynamoDB.ConditionExpression = conditionableRequest.ConditionExpression || undefined;
     const nameMap: aws.DynamoDB.ExpressionAttributeNameMap = {...(conditionableRequest.ExpressionAttributeNames || {})};
     const valueMap: aws.DynamoDB.ExpressionAttributeValueMap = {...(conditionableRequest.ExpressionAttributeValues || {})};
 
     for (const condition of conditions) {
-        checkConditionOperator(condition.operator);
-        const paramCount = operatorParamValueCount(condition.operator);
-        if (paramCount !== (condition.values || []).length) {
-            throw new Error(`The ${condition.operator} operator requires ${paramCount} ${paramCount === 1 ? "value" : "values"} to operate on.`);
-        }
-
         const attributeName = getExpressionAttributeName(nameMap, condition.attribute);
         const valueNames = getExpressionValueNames(tableSchema, valueMap, condition.values);
 
@@ -513,49 +516,19 @@ export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.Cond
         }
     }
 
-    return {
-        ...(conditionableRequest as any),
-        ConditionExpression: exp,
-        ExpressionAttributeNames: nameMap,
-        ExpressionAttributeValues: valueMap
+    const res: T = {
+        ...(conditionableRequest as any)
     };
-}
-
-function operatorParamValueCount(op: DynamoConditionOperator): number {
-    switch (op) {
-        case "=":
-        case "<":
-        case "<=":
-        case ">":
-        case ">=":
-            return 1;
-        case "BETWEEN":
-            return 2;
-        case "attribute_exists":
-        case "attribute_not_exists":
-            // The first param is always the attribute name, which isn't in the param values.
-            return 0;
-        case "attribute_type":
-        case "begins_with":
-        case "contains":
-            return 1;
-        case "size":
-            return 0;
+    if (exp) {
+        res.ConditionExpression = exp;
     }
-    return -1;
-}
-
-function operatorIsFunction(op: DynamoConditionOperator): boolean {
-    switch (op) {
-        case "attribute_exists":
-        case "attribute_not_exists":
-        case "attribute_type":
-        case "begins_with":
-        case "contains":
-        case "size":
-            return true;
+    if (Object.keys(nameMap).length) {
+        res.ExpressionAttributeNames = nameMap;
     }
-    return false;
+    if (Object.keys(valueMap).length) {
+        res.ExpressionAttributeValues = valueMap;
+    }
+    return res;
 }
 
 /**

@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import {checkQueryConditionOperator, checkSchema, checkSchemaItemAgreement} from "./validation";
+import {checkCondition, checkSchema, checkSchemaItemAgreement} from "./validation";
 
 describe("validation", () => {
     describe("checkSchema", () => {
@@ -337,31 +337,68 @@ describe("validation", () => {
         });
     });
 
-    describe("checkQueryConditionOperator", () => {
+    describe("checkCondition", () => {
         it("requires the operator to be defined", () => {
             chai.assert.throws(() => {
-                checkQueryConditionOperator(undefined);
+                checkCondition({
+                    attribute: "a",
+                    operator: null,
+                }, "query");
             });
         });
 
         it("validates operators that can be used in a query KeyConditionExpression", () => {
-            checkQueryConditionOperator("=");
-            checkQueryConditionOperator("<");
-            checkQueryConditionOperator("<=");
-            checkQueryConditionOperator(">");
-            checkQueryConditionOperator(">=");
-            checkQueryConditionOperator("BETWEEN");
-            checkQueryConditionOperator("begins_with");
+            checkCondition({attribute: "a", operator: "=", values: [1]}, "query");
+            checkCondition({attribute: "a", operator: "<", values: [1]}, "query");
+            checkCondition({attribute: "a", operator: "<=", values: [1]}, "query");
+            checkCondition({attribute: "a", operator: ">", values: [1]}, "query");
+            checkCondition({attribute: "a", operator: ">=", values: [1]}, "query");
+            checkCondition({attribute: "a", operator: "BETWEEN", values: [1, 2]}, "query");
+            checkCondition({attribute: "a", operator: "begins_with", values: ["x"]}, "query");
+        });
+
+        it("validates operators that can be used in a ConditionExpression", () => {
+            checkCondition({attribute: "a", operator: "=", values: [1]}, "default");
+            checkCondition({attribute: "a", operator: "<>", values: [1]}, "default");
+            checkCondition({attribute: "a", operator: "<", values: [1]}, "default");
+            checkCondition({attribute: "a", operator: "<=", values: [1]}, "default");
+            checkCondition({attribute: "a", operator: ">", values: [1]}, "default");
+            checkCondition({attribute: "a", operator: ">=", values: [1]}, "default");
+            checkCondition({attribute: "a", operator: "BETWEEN", values: [1, 2]}, "default");
+            checkCondition({attribute: "a", operator: "attribute_exists"}, "default");
+            checkCondition({attribute: "a", operator: "attribute_not_exists"}, "default");
+            checkCondition({attribute: "a", operator: "attribute_type", values: ["S"]}, "default");
+            checkCondition({attribute: "a", operator: "begins_with", values: ["x"]}, "default");
+            checkCondition({attribute: "a", operator: "contains", values: ["x"]}, "default");
+            checkCondition({attribute: "a", operator: "size"}, "default");
+        });
+
+        it("doesn't validate conditions with the wrong number of arguments", () => {
+            chai.assert.throws(() => {
+                checkCondition({attribute: "a", operator: "="}, "default");
+            });
+            chai.assert.throws(() => {
+                checkCondition({attribute: "a", operator: "=", values: [1, 2]}, "default");
+            });
+            chai.assert.throws(() => {
+                checkCondition({attribute: "a", operator: "BETWEEN"}, "default");
+            });
+            chai.assert.throws(() => {
+                checkCondition({attribute: "a", operator: "BETWEEN", values: [1]}, "default");
+            });
+            chai.assert.throws(() => {
+                checkCondition({attribute: "a", operator: "BETWEEN", values: [1, 2, 3]}, "default");
+            });
         });
 
         it("doesn't validate operators that can't be used in a query KeyConditionExpression", () => {
             chai.assert.throws(() => {
                 // Not to be confused with "=".
-                checkQueryConditionOperator("==" as any);
+                checkCondition({attribute: "a", operator: "==" as any, values: [1]}, "query");
             });
             chai.assert.throws(() => {
                 // This is a valid comparison operator.
-                checkQueryConditionOperator("<>" as any);
+                checkCondition({attribute: "a", operator: "<>", values: [1]}, "query");
             });
         });
     });

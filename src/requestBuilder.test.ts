@@ -345,9 +345,7 @@ describe("requestBuilder", () => {
                         S: "foo"
                     }
                 },
-                ConditionExpression: "attribute_not_exists(primary)",
-                ExpressionAttributeNames: {},
-                ExpressionAttributeValues: {}
+                ConditionExpression: "attribute_not_exists(primary)"
             });
         });
 
@@ -379,7 +377,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 ConditionExpression: "eyes < :a AND teeth > :b AND ears = :c",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         N: "3"
@@ -429,7 +426,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 ConditionExpression: "eyes < :a AND teeth > :b AND ears = :c",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         N: "3"
