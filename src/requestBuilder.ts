@@ -11,8 +11,9 @@ import {
     checkSchemaPrimaryKeyAgreement,
     DynamoKey,
     DynamoKeyPair,
-    DynamoQueryConditionOperator
+    DynamoQueryConditionOperator, DynamoConditionOperator, checkConditionOperator
 } from "./validation";
+import {dynamoDbReservedWords} from "./dynamoDbReservedWords";
 
 /**
  * Build a serialized item that can be put in DynamoDB.
@@ -216,8 +217,8 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
 
     if (sortKeyOp) {
         checkQueryConditionOperator(sortKeyOp);
-        const paramCount = operatorParamCount(sortKeyOp);
-        if (operatorParamCount(sortKeyOp) !== sortKeyValues.length) {
+        const paramCount = operatorParamValueCount(sortKeyOp);
+        if (paramCount !== sortKeyValues.length) {
             throw new Error(`The ${sortKeyOp} query operator requires ${paramCount} ${paramCount === 1 ? "value" : "values"} to operate on.`);
         }
         for (const val of sortKeyValues) {
@@ -228,42 +229,19 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
         }
 
         queryInput.ExpressionAttributeNames["#S"] = tableSchema.sortKeyField;
-        for (let i = 0; i < paramCount; i++) {
-            queryInput.ExpressionAttributeValues[paramKey(i)] = buildRequestPutItem(tableSchema, sortKeyValues[i]);
-        }
+        const valueNames = getExpressionValueNames(tableSchema, queryInput.ExpressionAttributeValues, sortKeyValues);
 
         if (sortKeyOp === "BETWEEN") {
             // This isn't worth generalizing because it's not like other operators.
-            queryInput.KeyConditionExpression += ` AND #S BETWEEN ${paramKey(0)} AND ${paramKey(1)}`;
+            queryInput.KeyConditionExpression += ` AND #S BETWEEN ${valueNames[0]} AND ${valueNames[1]}`;
         } else if (operatorIsFunction(sortKeyOp)) {
-            queryInput.KeyConditionExpression += ` AND ${sortKeyOp}(#S, ${paramKey(0)})`;
+            queryInput.KeyConditionExpression += ` AND ${sortKeyOp}(#S, ${valueNames[0]})`;
         } else {
-            queryInput.KeyConditionExpression += ` AND #S ${sortKeyOp} ${paramKey(0)}`;
+            queryInput.KeyConditionExpression += ` AND #S ${sortKeyOp} ${valueNames[0]}`;
         }
     }
 
     return queryInput;
-}
-
-function operatorParamCount(op: DynamoQueryConditionOperator): number {
-    switch (op) {
-        case "BETWEEN": return 2;
-    }
-    return 1;
-}
-
-function operatorIsFunction(op: DynamoQueryConditionOperator): boolean {
-    switch (op) {
-        case "begins_with": return true;
-    }
-    return false;
-}
-
-function paramKey(ix: number): string {
-    if (ix === 0) {
-        return ":s";
-    }
-    return ":s" + String.fromCharCode(ix + 96);
 }
 
 /**
@@ -368,46 +346,6 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
 }
 
 /**
- * Add a projection expression to an input object.  A projection expression
- * defines what attributes are returned in the result.  This can save
- * on bandwidth.
- *
- * For documentation on attribute names see: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.Attributes.html
- * @param tableSchema
- * @param projectableRequest the input to add a projection expression to
- * @param attributes an array of attribute names to fetch
- * @returns a copy of projectableRequest with the projection expression set
- */
-export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.ProjectionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap}>(tableSchema: TableSchema, projectableRequest: T, attributes: string[]): T {
-    checkSchema(tableSchema);
-
-    const projection: string[] = projectableRequest.ProjectionExpression ? projectableRequest.ProjectionExpression.split(",").map(p => p.trim()) : [];
-    const names: aws.DynamoDB.ExpressionAttributeNameMap = {...projectableRequest.ExpressionAttributeNames};
-
-    for (const attribute of attributes) {
-        const existingName = Object.keys(names).filter(name => names[name] === attribute)[0];
-        if (existingName) {
-            if (projection.indexOf(existingName) === -1) {
-                projection.push(existingName);
-            }
-        } else {
-            let name = "#" + attribute.toUpperCase();
-            while (projection.indexOf(name) !== -1) {
-                name += "A";
-            }
-            projection.push(name);
-            names[name] = attribute;
-        }
-    }
-
-    return {
-        ...(projectableRequest as any),
-        ProjectionExpression: projection.join(","),
-        ExpressionAttributeNames: names
-    };
-}
-
-/**
  * Build a request object that can be passed into `createTable`.
  * @param tableSchema
  * @param readCapacity represents one strongly consistent read per second, or two
@@ -486,6 +424,192 @@ export function buildUpdateTimeToLiveInput(tableSchema: TableSchema): aws.Dynamo
             }
         };
     }
+}
+
+/**
+ * Add a projection expression to an input object.  A projection expression
+ * defines what attributes are returned in the result.  This can save
+ * on bandwidth.
+ *
+ * For documentation on attribute names see: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.Attributes.html
+ * @param tableSchema
+ * @param projectableRequest the input to add a projection expression to
+ * @param attributes an array of attribute names to fetch
+ * @returns a copy of projectableRequest with the projection expression set
+ */
+export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.ProjectionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap}>(tableSchema: TableSchema, projectableRequest: T, attributes: string[]): T {
+    checkSchema(tableSchema);
+
+    const projection: string[] = projectableRequest.ProjectionExpression ? projectableRequest.ProjectionExpression.split(",").map(p => p.trim()) : [];
+    const names: aws.DynamoDB.ExpressionAttributeNameMap = {...projectableRequest.ExpressionAttributeNames};
+
+    for (const attribute of attributes) {
+        const existingName = Object.keys(names).filter(name => names[name] === attribute)[0];
+        if (existingName) {
+            if (projection.indexOf(existingName) === -1) {
+                projection.push(existingName);
+            }
+        } else {
+            let name = "#" + attribute.toUpperCase();
+            while (projection.indexOf(name) !== -1) {
+                name += "A";
+            }
+            projection.push(name);
+            names[name] = attribute;
+        }
+    }
+
+    return {
+        ...(projectableRequest as any),
+        ProjectionExpression: projection.join(","),
+        ExpressionAttributeNames: names
+    };
+}
+
+export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(tableSchema: TableSchema, conditionableRequest: T, ...conditions: { attribute: string, operator: DynamoConditionOperator, values?: any[] }[]): T {
+    let exp: aws.DynamoDB.ConditionExpression = conditionableRequest.ConditionExpression || undefined;
+    const nameMap: aws.DynamoDB.ExpressionAttributeNameMap = {...(conditionableRequest.ExpressionAttributeNames || {})};
+    const valueMap: aws.DynamoDB.ExpressionAttributeValueMap = {...(conditionableRequest.ExpressionAttributeValues || {})};
+
+    for (const condition of conditions) {
+        checkConditionOperator(condition.operator);
+        const paramCount = operatorParamValueCount(condition.operator);
+        if (paramCount !== (condition.values || []).length) {
+            throw new Error(`The ${condition.operator} operator requires ${paramCount} ${paramCount === 1 ? "value" : "values"} to operate on.`);
+        }
+
+        const attributeName = getExpressionAttributeName(nameMap, condition.attribute);
+        const valueNames = getExpressionValueNames(tableSchema, valueMap, condition.values);
+
+        if (exp) {
+            exp += " AND ";
+        } else {
+            exp = "";
+        }
+        if (condition.operator === "BETWEEN") {
+            // This isn't worth generalizing because it's not like other operators.
+            exp += `${attributeName} BETWEEN ${valueNames[0]} AND ${valueNames[1]}`;
+        } else if (operatorIsFunction(condition.operator)) {
+            if (valueNames.length > 0) {
+                exp += `${condition.operator}(${attributeName}, ${valueNames.join(", ")})`;
+            } else {
+                exp += `${condition.operator}(${attributeName})`;
+            }
+        } else {
+            exp += `${attributeName} ${condition.operator} ${valueNames[0]}`;
+        }
+    }
+
+    return {
+        ...(conditionableRequest as any),
+        ConditionExpression: exp,
+        ExpressionAttributeNames: nameMap,
+        ExpressionAttributeValues: valueMap
+    };
+}
+
+function operatorParamValueCount(op: DynamoConditionOperator): number {
+    switch (op) {
+        case "=":
+        case "<":
+        case "<=":
+        case ">":
+        case ">=":
+            return 1;
+        case "BETWEEN":
+            return 2;
+        case "attribute_exists":
+        case "attribute_not_exists":
+            // The first param is always the attribute name, which isn't in the param values.
+            return 0;
+        case "attribute_type":
+        case "begins_with":
+        case "contains":
+            return 1;
+        case "size":
+            return 0;
+    }
+    return -1;
+}
+
+function operatorIsFunction(op: DynamoConditionOperator): boolean {
+    switch (op) {
+        case "attribute_exists":
+        case "attribute_not_exists":
+        case "attribute_type":
+        case "begins_with":
+        case "contains":
+        case "size":
+            return true;
+    }
+    return false;
+}
+
+/**
+ * Get a name that is not currently used in the given ExpressionAttributeValueMap.
+ */
+function getExpressionValueName(tableSchema: TableSchema, valueMap: aws.DynamoDB.ExpressionAttributeValueMap, value: any): string {
+    let name: string = ":v";
+    for (let i = 0; valueMap[name]; i++) {
+        name = `:v${String.fromCharCode(i + 97)}`;
+    }
+
+    valueMap[name] = buildRequestPutItem(tableSchema, value);
+    return name;
+}
+
+/**
+ * Get a name that is not currently used in the given ExpressionAttributeValueMap.
+ */
+function getExpressionValueNames(tableSchema: TableSchema, valueMap: aws.DynamoDB.ExpressionAttributeValueMap, values: any[] = []): string[] {
+    const valueNames: string[] = [];
+    for (let i=0; i < values.length; i++) {
+        valueNames[i] = getExpressionValueName(tableSchema, valueMap, values[i]);
+    }
+    return valueNames;
+}
+
+/**
+ * Get the attribute name that can be used in expressions.  If it is a reserved word
+ * or has a literal `.` (as indicated by an )
+ */
+function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttributeNameMap, attribute: string): string {
+    const attributeParts = attribute.split(/\./);
+
+    // 'a\\.b' was split into ['a\\', 'b'] and needs to be joined into 'a.b'
+    for (let i=0; i < attributeParts.length - 1; i++) {
+        if (attributeParts[i].endsWith("\\")) {
+            attributeParts.splice(i, 2, attributeParts[i].substring(0, attributeParts[i].length - 1) + "." + attributeParts[i + 1]);
+            i--;
+        }
+    }
+
+    if (attributeParts.find(namePart => /^[a-z][^ #:]*$/ && dynamoDbReservedWords.indexOf(namePart) === -1)) {
+        // This name is clean for user as is.
+        return attribute;
+    }
+
+    let name: string = null;
+    for (const attributePart of attributeParts) {
+        let namePart = Object.keys(attributeMap).find(namePart => attributeMap[namePart] === attribute);
+
+        if (!namePart) {
+            const prefix = attributePart[0].toUpperCase();
+            namePart = `#${prefix}`;
+            for (let i = 0; attributeMap[namePart]; i++) {
+                namePart = `#${prefix}${String.fromCharCode(i + 65)}`;
+            }
+            attributeMap[namePart] = attributePart;
+        }
+
+        if (name == null) {
+            name = attributePart;
+        } else {
+            name = name + "." + attributePart;
+        }
+    }
+
+    return name;
 }
 
 function jsTypeToDdbType(t: string): string {

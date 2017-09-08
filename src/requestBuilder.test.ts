@@ -1,5 +1,8 @@
 import * as chai from "chai";
-import {addProjection, buildGetInput, buildPutInput, buildQueryInput, buildRequestPutItem} from "./requestBuilder";
+import {
+    addCondition, addProjection, buildGetInput, buildPutInput, buildQueryInput,
+    buildRequestPutItem
+} from "./requestBuilder";
 import {TableSchema} from "./TableSchema";
 
 describe("requestBuilder", () => {
@@ -161,14 +164,14 @@ describe("requestBuilder", () => {
                     ":p": {
                         "S": "mah value"
                     },
-                    ":s": {
+                    ":v": {
                         "N": "1"
                     },
-                    ":sa": {
+                    ":va": {
                         "N": "10"
                     }
                 },
-                KeyConditionExpression: "#P = :p AND #S BETWEEN :s AND :sa"
+                KeyConditionExpression: "#P = :p AND #S BETWEEN :v AND :va"
             });
         });
 
@@ -184,11 +187,11 @@ describe("requestBuilder", () => {
                     ":p": {
                         "S": "mah value"
                     },
-                    ":s": {
+                    ":v": {
                         "S": "a"
                     }
                 },
-                KeyConditionExpression: "#P = :p AND begins_with(#S, :s)"
+                KeyConditionExpression: "#P = :p AND begins_with(#S, :v)"
             });
         });
 
@@ -204,11 +207,11 @@ describe("requestBuilder", () => {
                     ":p": {
                         "S": "mah value"
                     },
-                    ":s": {
+                    ":v": {
                         "N": "92"
                     }
                 },
-                KeyConditionExpression: "#P = :p AND #S <= :s"
+                KeyConditionExpression: "#P = :p AND #S <= :v"
             });
         });
     });
@@ -280,14 +283,14 @@ describe("requestBuilder", () => {
                     ":p": {
                         "S": "mah value"
                     },
-                    ":s": {
+                    ":v": {
                         "S": "alpha"
                     },
-                    ":sa": {
+                    ":va": {
                         "S": "beta"
                     }
                 },
-                KeyConditionExpression: `#P = :p AND #S BETWEEN :s AND :sa`,
+                KeyConditionExpression: `#P = :p AND #S BETWEEN :v AND :va`,
                 ProjectionExpression: "#KEY,#LOCK"
             });
         });
@@ -309,15 +312,135 @@ describe("requestBuilder", () => {
                     ":p": {
                         "S": "mah value"
                     },
-                    ":s": {
+                    ":v": {
                         "S": "alpha"
                     },
-                    ":sa": {
+                    ":va": {
                         "S": "beta"
                     }
                 },
-                KeyConditionExpression: `#P = :p AND #S BETWEEN :s AND :sa`,
+                KeyConditionExpression: `#P = :p AND #S BETWEEN :v AND :va`,
                 ProjectionExpression: "#P,#S,#KEY,#LOCK"
+            });
+        });
+    });
+
+
+    describe("addCondition", () => {
+        const defaultTableSchema: TableSchema = {
+            tableName: "table",
+            primaryKeyField: "primary",
+            primaryKeyType: "string"
+        };
+
+        it("adds a condition to put input", () => {
+            const input = buildPutInput(defaultTableSchema, {primary: "foo"});
+            const conditionalInput = addCondition(defaultTableSchema, input, {attribute: "primary", operator: "attribute_not_exists"});
+
+            chai.assert.notEqual(input, conditionalInput);
+            chai.assert.deepEqual(conditionalInput, {
+                TableName: "table",
+                Item: {
+                    primary: {
+                        S: "foo"
+                    }
+                },
+                ConditionExpression: "attribute_not_exists(primary)",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {}
+            });
+        });
+
+        it("adds three conditions to put input", () => {
+            const input = buildPutInput(defaultTableSchema, {primary: "hick", eyes: 2, teeth: 12, ears: 2});
+            const conditionalInput = addCondition(
+                defaultTableSchema,
+                input,
+                {attribute: "eyes", operator: "<", values: [3]},
+                {attribute: "teeth", operator: ">", values: [4]},
+                {attribute: "ears", operator: "=", values: [2]}
+            );
+
+            chai.assert.notEqual(input, conditionalInput);
+            chai.assert.deepEqual(conditionalInput, {
+                TableName: "table",
+                Item: {
+                    primary: {
+                        S: "hick"
+                    },
+                    eyes: {
+                        N: "2"
+                    },
+                    teeth: {
+                        N: "12"
+                    },
+                    ears: {
+                        N: "2"
+                    }
+                },
+                ConditionExpression: "eyes < :v AND teeth > :va AND ears = :vb",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":v": {
+                        N: "3"
+                    },
+                    ":va": {
+                        N: "4"
+                    },
+                    ":vb": {
+                        N: "2"
+                    }
+                }
+            });
+        });
+
+        it("adds conditions to input that already has conditions", () => {
+            const input = buildPutInput(defaultTableSchema, {primary: "hick", eyes: 2, teeth: 12, ears: 2});
+            const conditionalInput1 = addCondition(
+                defaultTableSchema,
+                input,
+                {attribute: "eyes", operator: "<", values: [3]}
+            );
+            const conditionalInput2 = addCondition(
+                defaultTableSchema,
+                conditionalInput1,
+                {attribute: "teeth", operator: ">", values: [4]}
+            );
+            const conditionalInput3 = addCondition(
+                defaultTableSchema,
+                conditionalInput2,
+                {attribute: "ears", operator: "=", values: [2]}
+            );
+
+            chai.assert.deepEqual(conditionalInput3, {
+                TableName: "table",
+                Item: {
+                    primary: {
+                        S: "hick"
+                    },
+                    eyes: {
+                        N: "2"
+                    },
+                    teeth: {
+                        N: "12"
+                    },
+                    ears: {
+                        N: "2"
+                    }
+                },
+                ConditionExpression: "eyes < :v AND teeth > :va AND ears = :vb",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":v": {
+                        N: "3"
+                    },
+                    ":va": {
+                        N: "4"
+                    },
+                    ":vb": {
+                        N: "2"
+                    }
+                }
             });
         });
     });

@@ -3,8 +3,22 @@ import {TableSchema} from "./TableSchema";
 export type DynamoKey = string | number;
 export type DynamoKeyPair = [DynamoKey, DynamoKey];
 export type DynamoQueryConditionOperator = "=" | "<" | "<=" | ">" | ">=" | "BETWEEN" | "begins_with";
-
 const queryConditionOperators: DynamoQueryConditionOperator[] = ["=", "<", "<=", ">", ">=", "BETWEEN", "begins_with"];
+export type DynamoConditionOperator =
+    "="
+    | "<"
+    | "<="
+    | ">"
+    | ">="
+    | "BETWEEN"
+    | "attribute_exists"
+    | "attribute_not_exists"
+    | "attribute_type"
+    | "begins_with"
+    | "contains"
+    | "size";
+const conditionOperators: DynamoConditionOperator[] = ["=",  "<",  "<=",  ">",  ">=",  "BETWEEN",  "attribute_exists",  "attribute_not_exists",  "attribute_type",  "begins_with",  "contains",  "size"];
+
 
 export function checkSchema(tableSchema: TableSchema): void {
     if (!tableSchema) {
@@ -154,5 +168,14 @@ export function checkQueryConditionOperator(op: DynamoQueryConditionOperator): v
     }
     if (queryConditionOperators.indexOf(op) === -1) {
         throw new Error(`Query condition operator must be one of: ${queryConditionOperators.join(", ")}.`);
+    }
+}
+
+export function checkConditionOperator(op: DynamoConditionOperator): void {
+    if (!op) {
+        throw new Error("Condition operator is not defined.");
+    }
+    if (conditionOperators.indexOf(op) === -1) {
+        throw new Error(`Condition operator must be one of: ${conditionOperators.join(", ")}.`);
     }
 }
