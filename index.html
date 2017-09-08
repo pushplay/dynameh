@@ -205,8 +205,9 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 				<h3 id="conditions">Conditions</h3>
 				<p>Conditions can be added to a put or delete request to make the operation conditional.  This is the general case of the optimistic locking above.</p>
 				<p>One of the most useful conditions is that the item must not already exist.  This is done by asserting <code>attribute_not_exists</code> on the primary key.</p>
+				<p>For example...</p>
 				<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> tableSchema = {
-    tableName: <span class="hljs-string">"BoatNames"</span>,
+    tableName: <span class="hljs-string">"Boats"</span>,
     primaryKeyField: <span class="hljs-string">"name"</span>,
     primaryKeyType: <span class="hljs-string">"string"</span>
 };
@@ -228,7 +229,35 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
     }
 }
 
-addNewBoat({name: <span class="hljs-string">"Boaty McBoatface"</span>});
+addNewBoat({
+    name: <span class="hljs-string">"Boaty McBoatface"</span>,
+    <span class="hljs-keyword">type</span>: <span class="hljs-string">"submarine"</span>,
+    autonomous: <span class="hljs-literal">true</span>
+});
+</code></pre>
+				<h3 id="projections">Projections</h3>
+				<p>Projections can be added to a get, batch get or query request to control what attributes are returned.  This saves bandwidth on the request.</p>
+				<p>For example...</p>
+				<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> tableSchema = {
+    tableName: <span class="hljs-string">"Transactions"</span>,
+    primaryKeyField: <span class="hljs-string">"customerId"</span>,
+    primaryKeyType: <span class="hljs-string">"string"</span>,
+    sortKeyField: <span class="hljs-string">"transactionId"</span>,
+    sortKeyType: <span class="hljs-string">"string"</span>,
+};
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getTransactionDates</span>(<span class="hljs-params">customerId</span>) </span>{
+    <span class="hljs-keyword">const</span> queryRequest = dynameh.requestBuilder.buildQueryInput(tableSchema, customerId);
+    <span class="hljs-keyword">const</span> projectedQueryRequest = dynameh.requestBuilder.addProjection(tableSchema, queryRequest, <span class="hljs-string">"date"</span>);
+    <span class="hljs-comment">// Note that addProjection() does not change the original object.</span>
+    <span class="hljs-comment">// queryRequest != projectedQueryRequest</span>
+
+    <span class="hljs-keyword">const</span> queryResponse = <span class="hljs-keyword">await</span> dynamodb.query(projectedQueryRequest).promise();
+    <span class="hljs-keyword">const</span> transactions = dynameh.responseUnwrapper.unwrapQueryOutput(queryResponse);
+    <span class="hljs-keyword">return</span> transactions.map(<span class="hljs-function"><span class="hljs-params">t</span> =&gt;</span> t.date);
+}
+
+getTransactionDates(<span class="hljs-string">"BusinessFactory"</span>);
 </code></pre>
 				<h3 id="date-serialization">Date Serialization</h3>
 				<p>Date serialization can be configured by setting <code>dateSerializationFunction</code> on your <code>TableSchema</code>.  It&#39;s a function that takes in a <code>Date</code> and returns a <code>string</code> or <code>number</code>.  By default Dates are serialized as ISO-8601 strings.</p>
