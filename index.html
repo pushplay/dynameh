@@ -216,7 +216,7 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
     <span class="hljs-keyword">const</span> conditionalPutRequest = dynameh.requestBuilder.addCondition(tableSchema, putRequest, {attribute: <span class="hljs-string">"primary"</span>, operator: <span class="hljs-string">"attribute_not_exists"</span>});
 
     <span class="hljs-keyword">try</span> {
-        <span class="hljs-keyword">await</span> dynamodb.putItem(putRequest).promise();
+        <span class="hljs-keyword">await</span> dynamodb.putItem(conditionalPutRequest).promise();
     } <span class="hljs-keyword">catch</span> (err) {
         <span class="hljs-keyword">if</span> (err.code === <span class="hljs-string">"ConditionalCheckFailedException"</span>) {
             <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"This boat already exists!"</span>);
