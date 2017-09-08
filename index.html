@@ -213,7 +213,7 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addNewBoat</span>(<span class="hljs-params">boat</span>) </span>{
     <span class="hljs-keyword">const</span> putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, boat);
-    <span class="hljs-keyword">const</span> conditionalPutRequest = dynameh.requestBuilder.addCondition(tableSchema, putRequest, {attribute: <span class="hljs-string">"primary"</span>, operator: <span class="hljs-string">"attribute_not_exists"</span>});
+    <span class="hljs-keyword">const</span> conditionalPutRequest = dynameh.requestBuilder.addCondition(tableSchema, putRequest, {attribute: <span class="hljs-string">"name"</span>, operator: <span class="hljs-string">"attribute_not_exists"</span>});
     <span class="hljs-comment">// Note that addCondition() does not change the original object.</span>
     <span class="hljs-comment">// putRequest != conditionalPutRequest</span>
 
