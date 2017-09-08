@@ -178,7 +178,8 @@ const tableSchema = {
 async function addNewBoat(boat) {
     const putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, boat);
     const conditionalPutRequest = dynameh.requestBuilder.addCondition(tableSchema, putRequest, {attribute: "primary", operator: "attribute_not_exists"});
-    // Note that addCondition() does not change the original object, so putRequest != conditionalPutRequest.
+    // Note that addCondition() does not change the original object.
+    // putRequest != conditionalPutRequest
     
     try {
         await dynamodb.putItem(conditionalPutRequest).promise();
