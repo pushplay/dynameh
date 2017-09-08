@@ -5,6 +5,8 @@ Dynameh works with the existing [DynamoDB JavaScript API](http://docs.aws.amazon
 
 Dynameh makes it easier to:
 - [build request objects](https://giftbit.github.io/dynameh/modules/_requestbuilder_.html)
+- [build a projection expression](https://giftbit.github.io/dynameh/modules/_requestbuilder_.html#addprojection)
+- [build a condition expression](https://giftbit.github.io/dynameh/modules/_requestbuilder_.html#addcondition)
 - [unwrap response objects](https://giftbit.github.io/dynameh/modules/_responseunwrapper_.html)
 - [run large batch requests](https://giftbit.github.io/dynameh/modules/_batchhelper_.html)
 - [run requests concurrently that can't be run in batch](https://giftbit.github.io/dynameh/modules/_concurrenthelper_.html)
@@ -160,6 +162,37 @@ async function updateMotorcycleHorsePower(motorcycleId, bhp) {
 updateMotorcycleHorsePower("sv-650", 73.4);
 ```
 
+### Conditions
+
+Conditions can be added to a put or delete request to make the operation conditional.  This is the general case of the optimistic locking above.
+
+One of the most useful conditions is that the item must not already exist.  This is done by asserting `attribute_not_exists` on the primary key.
+
+```typescript
+const tableSchema = {
+    tableName: "BoatNames",
+    primaryKeyField: "name",
+    primaryKeyType: "string"
+};
+
+async function addNewBoat(boat) {
+    const putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, boat);
+    const conditionalPutRequest = dynameh.requestBuilder.addCondition(tableSchema, putRequest, {attribute: "primary", operator: "attribute_not_exists"});
+    
+    try {
+        await dynamodb.putItem(putRequest).promise();
+    } catch (err) {
+        if (err.code === "ConditionalCheckFailedException") {
+            throw new Error("This boat already exists!");
+        } else {
+            throw err;
+        }
+    }
+}
+
+addNewBoat("Boaty McBoatface");
+```
+
 ### Date Serialization
 
 Date serialization can be configured by setting `dateSerializationFunction` on your `TableSchema`.  It's a function that takes in a `Date` and returns a `string` or `number`.  By default Dates are serialized as ISO-8601 strings.
@@ -172,6 +205,5 @@ const tableSchema = {
     primaryKeyField: "id",
     primaryKeyType: "number",
     dateSerializationFunction: date => date.toISOString()   // same as default
-}
-
+};
 ```

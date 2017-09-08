@@ -14,6 +14,7 @@ import {
     DynamoQueryConditionOperator, DynamoConditionOperator, checkConditionOperator
 } from "./validation";
 import {dynamoDbReservedWords} from "./dynamoDbReservedWords";
+import {Condition} from "./Condition";
 
 /**
  * Build a serialized item that can be put in DynamoDB.
@@ -466,7 +467,19 @@ export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.Pro
     };
 }
 
-export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(tableSchema: TableSchema, conditionableRequest: T, ...conditions: { attribute: string, operator: DynamoConditionOperator, values?: any[] }[]): T {
+/**
+ * Adds a condition expression to a input object.  A condition expression
+ * defines under what conditions the item can be put/deleted.  Any existing
+ * condition expression will be amended.
+ *
+ * @param tableSchema
+ * @param conditionableRequest the input to add a condition expression to
+ * @param conditions one or more conditions to turn into a condition expression
+ * @returns a copy of conditionableRequest with the condition expression set
+ */
+export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(tableSchema: TableSchema, conditionableRequest: T, ...conditions: Condition[]): T {
+    checkSchema(tableSchema);
+
     let exp: aws.DynamoDB.ConditionExpression = conditionableRequest.ConditionExpression || undefined;
     const nameMap: aws.DynamoDB.ExpressionAttributeNameMap = {...(conditionableRequest.ExpressionAttributeNames || {})};
     const valueMap: aws.DynamoDB.ExpressionAttributeValueMap = {...(conditionableRequest.ExpressionAttributeValues || {})};
@@ -549,11 +562,8 @@ function operatorIsFunction(op: DynamoConditionOperator): boolean {
  * Get a name that is not currently used in the given ExpressionAttributeValueMap.
  */
 function getExpressionValueName(tableSchema: TableSchema, valueMap: aws.DynamoDB.ExpressionAttributeValueMap, value: any): string {
-    let name: string = ":v";
-    for (let i = 0; valueMap[name]; i++) {
-        name = `:v${String.fromCharCode(i + 97)}`;
-    }
-
+    let name: string;
+    for (let i = 0; valueMap[name = `:${indexToAlias(i, false)}`]; i++) {}
     valueMap[name] = buildRequestPutItem(tableSchema, value);
     return name;
 }
@@ -563,7 +573,7 @@ function getExpressionValueName(tableSchema: TableSchema, valueMap: aws.DynamoDB
  */
 function getExpressionValueNames(tableSchema: TableSchema, valueMap: aws.DynamoDB.ExpressionAttributeValueMap, values: any[] = []): string[] {
     const valueNames: string[] = [];
-    for (let i=0; i < values.length; i++) {
+    for (let i = 0; i < values.length; i++) {
         valueNames[i] = getExpressionValueName(tableSchema, valueMap, values[i]);
     }
     return valueNames;
@@ -577,14 +587,14 @@ function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttribu
     const attributeParts = attribute.split(/\./);
 
     // 'a\\.b' was split into ['a\\', 'b'] and needs to be joined into 'a.b'
-    for (let i=0; i < attributeParts.length - 1; i++) {
+    for (let i = 0; i < attributeParts.length - 1; i++) {
         if (attributeParts[i].endsWith("\\")) {
             attributeParts.splice(i, 2, attributeParts[i].substring(0, attributeParts[i].length - 1) + "." + attributeParts[i + 1]);
             i--;
         }
     }
 
-    if (attributeParts.find(namePart => /^[a-z][^ #:]*$/ && dynamoDbReservedWords.indexOf(namePart) === -1)) {
+    if (!attributeParts.find(attributePart => !/^[a-z][^ #:.]*$/.test(attributePart) || dynamoDbReservedWords.indexOf(attributePart) !== -1)) {
         // This name is clean for user as is.
         return attribute;
     }
@@ -594,22 +604,29 @@ function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttribu
         let namePart = Object.keys(attributeMap).find(namePart => attributeMap[namePart] === attribute);
 
         if (!namePart) {
-            const prefix = attributePart[0].toUpperCase();
-            namePart = `#${prefix}`;
-            for (let i = 0; attributeMap[namePart]; i++) {
-                namePart = `#${prefix}${String.fromCharCode(i + 65)}`;
-            }
+            for (let i = 0; attributeMap[namePart = `#${indexToAlias(i, true)}`]; i++) {}
             attributeMap[namePart] = attributePart;
         }
 
         if (name == null) {
-            name = attributePart;
+            name = namePart;
         } else {
-            name = name + "." + attributePart;
+            name = name + "." + namePart;
         }
     }
 
     return name;
+}
+
+function indexToAlias(ix: number, caps: boolean): string {
+    const asciiOffset = caps ? 65 : 97;
+    if (ix < 26) {
+        return String.fromCharCode(ix + asciiOffset);
+    } else if (ix < 65536) {
+        return String.fromCharCode(ix / 26 - 1 + asciiOffset) + String.fromCharCode(ix % 26 + asciiOffset);
+    } else {
+        throw new Error("Seriously?");
+    }
 }
 
 function jsTypeToDdbType(t: string): string {

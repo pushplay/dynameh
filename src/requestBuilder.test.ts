@@ -164,14 +164,14 @@ describe("requestBuilder", () => {
                     ":p": {
                         "S": "mah value"
                     },
-                    ":v": {
+                    ":a": {
                         "N": "1"
                     },
-                    ":va": {
+                    ":b": {
                         "N": "10"
                     }
                 },
-                KeyConditionExpression: "#P = :p AND #S BETWEEN :v AND :va"
+                KeyConditionExpression: "#P = :p AND #S BETWEEN :a AND :b"
             });
         });
 
@@ -187,11 +187,11 @@ describe("requestBuilder", () => {
                     ":p": {
                         "S": "mah value"
                     },
-                    ":v": {
+                    ":a": {
                         "S": "a"
                     }
                 },
-                KeyConditionExpression: "#P = :p AND begins_with(#S, :v)"
+                KeyConditionExpression: "#P = :p AND begins_with(#S, :a)"
             });
         });
 
@@ -207,11 +207,11 @@ describe("requestBuilder", () => {
                     ":p": {
                         "S": "mah value"
                     },
-                    ":v": {
+                    ":a": {
                         "N": "92"
                     }
                 },
-                KeyConditionExpression: "#P = :p AND #S <= :v"
+                KeyConditionExpression: "#P = :p AND #S <= :a"
             });
         });
     });
@@ -283,14 +283,14 @@ describe("requestBuilder", () => {
                     ":p": {
                         "S": "mah value"
                     },
-                    ":v": {
+                    ":a": {
                         "S": "alpha"
                     },
-                    ":va": {
+                    ":b": {
                         "S": "beta"
                     }
                 },
-                KeyConditionExpression: `#P = :p AND #S BETWEEN :v AND :va`,
+                KeyConditionExpression: `#P = :p AND #S BETWEEN :a AND :b`,
                 ProjectionExpression: "#KEY,#LOCK"
             });
         });
@@ -312,14 +312,14 @@ describe("requestBuilder", () => {
                     ":p": {
                         "S": "mah value"
                     },
-                    ":v": {
+                    ":a": {
                         "S": "alpha"
                     },
-                    ":va": {
+                    ":b": {
                         "S": "beta"
                     }
                 },
-                KeyConditionExpression: `#P = :p AND #S BETWEEN :v AND :va`,
+                KeyConditionExpression: `#P = :p AND #S BETWEEN :a AND :b`,
                 ProjectionExpression: "#P,#S,#KEY,#LOCK"
             });
         });
@@ -378,23 +378,23 @@ describe("requestBuilder", () => {
                         N: "2"
                     }
                 },
-                ConditionExpression: "eyes < :v AND teeth > :va AND ears = :vb",
+                ConditionExpression: "eyes < :a AND teeth > :b AND ears = :c",
                 ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
-                    ":v": {
+                    ":a": {
                         N: "3"
                     },
-                    ":va": {
+                    ":b": {
                         N: "4"
                     },
-                    ":vb": {
+                    ":c": {
                         N: "2"
                     }
                 }
             });
         });
 
-        it("adds conditions to input that already has conditions", () => {
+        it("adds three conditions to put input, one at a time", () => {
             const input = buildPutInput(defaultTableSchema, {primary: "hick", eyes: 2, teeth: 12, ears: 2});
             const conditionalInput1 = addCondition(
                 defaultTableSchema,
@@ -428,17 +428,86 @@ describe("requestBuilder", () => {
                         N: "2"
                     }
                 },
-                ConditionExpression: "eyes < :v AND teeth > :va AND ears = :vb",
+                ConditionExpression: "eyes < :a AND teeth > :b AND ears = :c",
                 ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
-                    ":v": {
+                    ":a": {
                         N: "3"
                     },
-                    ":va": {
+                    ":b": {
                         N: "4"
                     },
-                    ":vb": {
+                    ":c": {
                         N: "2"
+                    }
+                }
+            });
+        });
+
+        it("adds a condition to put input with versioning", () => {
+            const input = buildPutInput({...defaultTableSchema, versionKeyField: "version"}, {primary: "foo", alphabet: "αβγδε"});
+            const conditionalInput = addCondition(defaultTableSchema, input, {attribute: "alphabet", operator: "begins_with", values: ["abc"]});
+
+            chai.assert.notEqual(input, conditionalInput);
+            chai.assert.deepEqual(conditionalInput, {
+                TableName: "table",
+                Item: {
+                    primary: {
+                        S: "foo"
+                    },
+                    alphabet: {
+                        S: "αβγδε"
+                    },
+                    version: {
+                        N: "1"
+                    }
+                },
+                ConditionExpression: "attribute_not_exists(#V) AND begins_with(alphabet, :a)",
+                ExpressionAttributeNames: {
+                    "#V": "version"
+                },
+                ExpressionAttributeValues: {
+                    ":a": {
+                        S: "abc"
+                    }
+                }
+            });
+        });
+
+        it("adds a condition to put input with reserved words", () => {
+            const input = buildPutInput(defaultTableSchema, {primary: "foo"});
+            const conditionalInput = addCondition(
+                defaultTableSchema,
+                input,
+                {attribute: "ASCII", operator: "begins_with", values: ["abc"]},
+                {attribute: "GOTO", operator: ">", values: [11]},
+                {attribute: "a.b\\.c", operator: "<", values: [0]},
+            );
+
+            chai.assert.notEqual(input, conditionalInput);
+            chai.assert.deepEqual(conditionalInput, {
+                TableName: "table",
+                Item: {
+                    primary: {
+                        S: "foo"
+                    }
+                },
+                ConditionExpression: "begins_with(#A, :a) AND #B > :b AND #C.#D < :c",
+                ExpressionAttributeNames: {
+                    "#A": "ASCII",
+                    "#B": "GOTO",
+                    "#C": "a",
+                    "#D": "b.c"
+                },
+                ExpressionAttributeValues: {
+                    ":a": {
+                        S: "abc"
+                    },
+                    ":b": {
+                        N: "11"
+                    },
+                    ":c": {
+                        N: "0"
                     }
                 }
             });

@@ -1,6 +1,6 @@
 {
   "name": "dynameh",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "description": "DynamoDB on Node more easier",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,18 +33,18 @@
   "homepage": "https://github.com/Giftbit/dynameh#readme",
   "dependencies": {},
   "devDependencies": {
-    "@types/chai": "^4.0.1",
-    "@types/mocha": "^2.2.41",
-    "@types/node": "^8.0.7",
-    "chai": "^4.0.2",
+    "@types/chai": "^4.0.4",
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^8.0.27",
+    "chai": "^4.1.2",
     "gh-pages": "^1.0.0",
     "mocha": "^3.4.2",
     "rimraf": "^2.6.1",
     "touch": "^3.1.0",
     "ts-node": "^3.2.0",
-    "tslint": "^5.5.0",
+    "tslint": "^5.7.0",
     "typedoc": "^0.8.0",
-    "typescript": "^2.4.1"
+    "typescript": "^2.5.2"
   },
   "peerDependencies": {
     "aws-sdk": "^2.49.0"
