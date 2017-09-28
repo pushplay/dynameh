@@ -2,7 +2,7 @@ import * as aws from "aws-sdk";
 import {unwrapBatchGetOutput} from "./responseUnwrapper";
 
 /**
- * The maximum number of items that can be gotten in a single request.
+ * The maximum number of items that can be got in a single request.
  */
 export const batchGetLimit = 100;
 
@@ -23,14 +23,35 @@ export let backoffMax = 30000;
 
 /**
  * The wait growth factor when repeatedly backing off.  When backing off
- * from an operation the first wait will be `backoff = backoffInitial`
+ * from an operation the first wait `backoff = backoffInitial`
  * and for each consecutive wait `backoff = Math.min(backoff * backoffFactor, backoffMax)`.
  */
 export let backoffFactor = 2;
 
 /**
- * Batch get in multiple requests.  Can handle more than 100 keys at once and
- * reattempts UnprocessedKeys.
+ * Configure module settings for: backoffInitial, backoffMax, backoffFactor.
+ * See the module member for individual documentation.
+ * @param options an object with optional values for the settings
+ */
+export function configure(options: {
+    backoffInitial?: number;
+    backoffMax?: number;
+    backoffFactor?: number;
+}) {
+    if (options.hasOwnProperty("backoffInitial")) {
+        backoffInitial = options.backoffInitial;
+    }
+    if (options.hasOwnProperty("backoffMax")) {
+        backoffMax = options.backoffMax;
+    }
+    if (options.hasOwnProperty("backoffFactor")) {
+        backoffFactor = options.backoffFactor;
+    }
+}
+
+/**
+ * Batch get all items in the request.  Can handle more than 100 keys at once by making
+ * multiple requests.  Reattempts UnprocessedKeys.
  * @param dynamodb
  * @param batchGetInput
  * @returns the stored objects
@@ -74,8 +95,8 @@ export async function batchGetAll(dynamodb: aws.DynamoDB, batchGetInput: aws.Dyn
 }
 
 /**
- * Batch write in multiple requests.  Can handle more than 25 objects at once
- * and reattempts UnprocessedItems.
+ * Batch write all items in the request.  Can handle more than 25 objects at once
+ * by making multiple requests.  Reattempts UnprocessedItems.
  * @param dynamodb
  * @param batchPutInput
  */

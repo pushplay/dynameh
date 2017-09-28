@@ -8,7 +8,7 @@ Dynameh makes it easier to:
 - [build a projection expression](https://giftbit.github.io/dynameh/modules/_requestbuilder_.html#addprojection)
 - [build a condition expression](https://giftbit.github.io/dynameh/modules/_requestbuilder_.html#addcondition)
 - [unwrap response objects](https://giftbit.github.io/dynameh/modules/_responseunwrapper_.html)
-- [run large batch requests](https://giftbit.github.io/dynameh/modules/_batchhelper_.html)
+- [run oversized batch requests](https://giftbit.github.io/dynameh/modules/_batchhelper_.html)
 - [run requests concurrently that can't be run in batch](https://giftbit.github.io/dynameh/modules/_concurrenthelper_.html)
 - [implement optimistic locking](https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield)
 - [configure Date serialization](https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#dateserializationfunction)
