@@ -166,7 +166,7 @@ updateMotorcycleHorsePower("sv-650", 73.4);
 
 Conditions can be added to a put or delete request to make the operation conditional.  This is the general case of the optimistic locking above.
 
-One of the most useful conditions is that the item must not already exist.  This is done by asserting `attribute_not_exists` on the primary key.
+One of the most useful conditions is that the item must not already exist (create but not update).  This is done by asserting `attribute_not_exists` on the primary key.
 
 For example...
 
