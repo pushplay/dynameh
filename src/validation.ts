@@ -13,13 +13,14 @@ export type DynamoConditionOperator =
     | ">"
     | ">="
     | "BETWEEN"
+    | "IN"
     | "attribute_exists"
     | "attribute_not_exists"
     | "attribute_type"
     | "begins_with"
     | "contains"
     | "size";
-const conditionOperators: DynamoConditionOperator[] = ["=", "<>",  "<",  "<=",  ">",  ">=",  "BETWEEN",  "attribute_exists",  "attribute_not_exists",  "attribute_type",  "begins_with",  "contains",  "size"];
+const conditionOperators: DynamoConditionOperator[] = ["=", "<>",  "<",  "<=",  ">",  ">=",  "BETWEEN", "IN",  "attribute_exists",  "attribute_not_exists",  "attribute_type",  "begins_with",  "contains",  "size"];
 const attributeTypes: string[] = ["S", "SS", "N", "NS", "B", "BS", "BOOL", "NULL", "L", "M"];
 
 export function checkSchema(tableSchema: TableSchema): void {
@@ -164,6 +165,9 @@ export function checkSchemaItemsAgreement(tableSchema: TableSchema, items: objec
     }
 }
 
+/**
+ * Assumes checkSchema(tableSchema) has already been run.
+ */
 export function checkCondition(condition: Condition, operatorSet: "default" | "query" = "default"): void {
     if (!condition) {
         throw new Error("Condition is null.");
@@ -178,9 +182,15 @@ export function checkCondition(condition: Condition, operatorSet: "default" | "q
         throw new Error(`Query condition operator must be one of: ${queryConditionOperators.join(", ")}.`);
     }
 
-    const paramCount = operatorParamValueCount(condition.operator);
-    if (paramCount !== (condition.values || []).length) {
-        throw new Error(`The ${condition.operator} operator requires ${paramCount} ${paramCount === 1 ? "value" : "values"} to operate on.`);
+    if (condition.operator === "IN") {
+        if (!condition.values || !condition.values.length) {
+            throw new Error("The IN operator requires at least 1 value to operate on.");
+        }
+    } else {
+        const paramCount = operatorParamValueCount(condition.operator);
+        if (paramCount !== (condition.values || []).length) {
+            throw new Error(`The ${condition.operator} operator requires ${paramCount} ${paramCount === 1 ? "value" : "values"} to operate on.`);
+        }
     }
     switch (condition.operator) {
         case "attribute_type": {
@@ -198,6 +208,9 @@ export function checkCondition(condition: Condition, operatorSet: "default" | "q
     }
 }
 
+/**
+ * Assumes checkSchema(tableSchema) has already been run.
+ */
 export function checkConditions(conditions: Condition[], operatorSet: "default" | "query" = "default"): void {
     if (!Array.isArray(conditions) || !conditions.length) {
         throw new Error("conditions must be a non-empty array.");
@@ -213,6 +226,9 @@ export function checkConditions(conditions: Condition[], operatorSet: "default" 
     }
 }
 
+/**
+ * Get the number of value parameters required for the operator.
+ */
 export function operatorParamValueCount(op: DynamoConditionOperator): number {
     switch (op) {
         case "=":
@@ -238,6 +254,9 @@ export function operatorParamValueCount(op: DynamoConditionOperator): number {
     return -1;
 }
 
+/**
+ * Get whether the operator is expressed as a function in the condition expression syntax.
+ */
 export function operatorIsFunction(op: DynamoConditionOperator): boolean {
     switch (op) {
         case "attribute_exists":

@@ -23,7 +23,7 @@ npm install --save dynameh
 
 ## Usage
 
-```typescript
+```ecmascript 6
 import * as dynameh from "dynameh";
 // or
 const dynameh = require("dynameh");
@@ -35,7 +35,7 @@ See the [documentation](https://giftbit.github.io/dynameh/) for details on each 
 
 This example is written using async/await which is available in TypeScript and Babel.
 
-```typescript
+```ecmascript 6
 import * as aws from "aws-sdk";
 import * as dynameh from "dynameh";
 
@@ -109,7 +109,7 @@ Optimistic locking is a strategy for preventing changes from clobbering each oth
 
 Enable optimistic locking by setting the `versionKeyField` on your TableSchema.  In the second TableSchema example that field is `version`.  The `versionKeyField` will be automatically incremented on the server side during a put request.  If the value for `versionKeyField` sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.
 
-```typescript
+```ecmascript 6
 import * as aws from "aws-sdk";
 import * as dynameh from "dynameh";
 
@@ -164,13 +164,11 @@ updateMotorcycleHorsePower("sv-650", 73.4);
 
 ### Conditions
 
-Conditions can be added to a put or delete request to make the operation conditional.  This is the general case of the optimistic locking above.
+Conditions can be added to a put or delete request to make the operation conditional.
 
-One of the most useful conditions is that the item must not already exist (create but not update).  This is done by asserting `attribute_not_exists` on the primary key.
+One of the most useful conditions is that the item must not already exist (create but not update).  This is done by asserting `attribute_not_exists` on the primary key.  For example...
 
-For example...
-
-```typescript
+```ecmascript 6
 const tableSchema = {
     tableName: "Boats",
     primaryKeyField: "name",
@@ -201,13 +199,32 @@ addNewBoat({
 });
 ```
 
+The following conditions are available...
+
+| condition            | # of value parameters |
+|----------------------|-----------------------|
+| =                    | 1                     |
+| <>                   | 1                     |
+| <                    | 1                     |
+| <=                   | 1                     |
+| >                    | 1                     |
+| >=                   | 1                     |
+| BETWEEN              | 2                     |
+| IN                   | at least 1            |
+| attribute_exists     | 0                     |
+| attribute_not_exists | 0                     |
+| attribute_type       | 1                     |
+| begins_with          | 1                     |
+| contains             | 1                     |
+| size                 | 0                     |
+
 ### Projections
 
 Projections can be added to a get, batch get or query request to control what attributes are returned.  This saves bandwidth on the request.
 
 For example...
 
-```typescript
+```ecmascript 6
 const tableSchema = {
     tableName: "Transactions",
     primaryKeyField: "customerId",
@@ -218,7 +235,7 @@ const tableSchema = {
 
 async function getTransactionDates(customerId) {
     const queryRequest = dynameh.requestBuilder.buildQueryInput(tableSchema, customerId);
-    const projectedQueryRequest = dynameh.requestBuilder.addProjection(tableSchema, queryRequest, "date");
+    const projectedQueryRequest = dynameh.requestBuilder.addProjection(tableSchema, queryRequest, ["date"]);
     // Note that addProjection() does not change the original object.
     // queryRequest != projectedQueryRequest
     
@@ -236,7 +253,7 @@ Date serialization can be configured by setting `dateSerializationFunction` on y
 
 For example...
 
-```typescript
+```ecmascript 6
 const tableSchema = {
     tableName: "MyTable",
     primaryKeyField: "id",
