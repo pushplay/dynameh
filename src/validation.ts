@@ -120,30 +120,30 @@ export function checkSchemaKeysAgreement(tableSchema: TableSchema, keyValues: Dy
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */
-export function checkSchemaItemAgreement(tableSchema: TableSchema, item: object): void {
+export function checkSchemaItemAgreement(tableSchema: TableSchema, item: object, paramName: string = "the object"): void {
     if (!item) {
-        throw new Error("The item is null.");
+        throw new Error(`${paramName} must not be null.`);
     }
     if (typeof item !== "object") {
-        throw new Error("The item must be an object.");
+        throw new Error(`${paramName} must be an object.`);
     }
     if (!item[tableSchema.primaryKeyField]) {
-        throw new Error(`TableSchema defines a primaryKeyField ${tableSchema.primaryKeyField} which is not on the object.`);
+        throw new Error(`TableSchema defines a primaryKeyField ${tableSchema.primaryKeyField} which is not on ${paramName}.`);
     }
     if (typeof item[tableSchema.primaryKeyField] !== tableSchema.primaryKeyType) {
-        throw new Error(`TableSchema defines primaryKeyType ${tableSchema.primaryKeyType} which does not match the object's ${typeof item[tableSchema.primaryKeyField]}.`);
+        throw new Error(`TableSchema defines primaryKeyType ${tableSchema.primaryKeyType} which does not match ${paramName}'s ${typeof item[tableSchema.primaryKeyField]}.`);
     }
     if (tableSchema.sortKeyField && !item[tableSchema.sortKeyField]) {
-        throw new Error(`TableSchema defines a sortKeyField ${tableSchema.sortKeyField} which is not on the object.`);
+        throw new Error(`TableSchema defines a sortKeyField ${tableSchema.sortKeyField} which is not on ${paramName}.`);
     }
     if (tableSchema.sortKeyField && typeof item[tableSchema.sortKeyField] !== tableSchema.sortKeyType) {
-        throw new Error(`TableSchema defines sortKeyType ${tableSchema.sortKeyType} which does not match the object's ${typeof item[tableSchema.sortKeyField]}.`);
+        throw new Error(`TableSchema defines sortKeyType ${tableSchema.sortKeyType} which does not match ${paramName}'s ${typeof item[tableSchema.sortKeyField]}.`);
     }
     if (tableSchema.versionKeyField && item[tableSchema.versionKeyField] && typeof item[tableSchema.versionKeyField] !== "number") {
-        throw new Error(`TableSchema defines versionKeyField which must be a number and does not match the object's ${typeof item[tableSchema.versionKeyField]}.`);
+        throw new Error(`TableSchema defines versionKeyField which must be a number and does not match ${paramName}'s ${typeof item[tableSchema.versionKeyField]}.`);
     }
     if (tableSchema.ttlField && item[tableSchema.ttlField] != null && typeof item[tableSchema.ttlField] !== "number" && !(item[tableSchema.ttlField] instanceof Date)) {
-        throw new Error(`TableSchema defines ttlField ${tableSchema.ttlField} which must be a number, a Date, or null.`);
+        throw new Error(`TableSchema defines ttlField ${tableSchema.ttlField} which must be a number or Date and does not match ${paramName}'s ${typeof item[tableSchema.ttlField]}.`);
     }
 }
 
@@ -154,14 +154,8 @@ export function checkSchemaItemsAgreement(tableSchema: TableSchema, items: objec
     if (!Array.isArray(items) || !items.length) {
         throw new Error("items must be a non-empty array.");
     }
-
-    let i: number;
-    try {
-        for (i = 0; i < items.length; i++) {
-            checkSchemaItemAgreement(tableSchema, items[i]);
-        }
-    } catch (err) {
-        throw new Error(`${err.message} Item index ${i}.`);
+    for (let i = 0; i < items.length; i++) {
+        checkSchemaItemAgreement(tableSchema, items[i], `items[${i}]`);
     }
 }
 

@@ -6,7 +6,7 @@ import {TableSchema} from "./TableSchema";
  * @param item
  * @returns the extracted value
  */
-export function unwrapResponseItem(item: aws.DynamoDB.Types.AttributeValue): any {
+export function unwrapResponseItem(item: aws.DynamoDB.AttributeValue): any {
     if (item.hasOwnProperty("B")) {
         if (typeof item.B === "string") {
             return Buffer.from(item.B as string, "base64");
@@ -46,7 +46,7 @@ export function unwrapResponseItem(item: aws.DynamoDB.Types.AttributeValue): any
  * @param response result of getItem
  * @returns the object returned
  */
-export function unwrapGetOutput(response: aws.DynamoDB.Types.GetItemOutput): any {
+export function unwrapGetOutput(response: aws.DynamoDB.GetItemOutput): any {
     if (!response.Item) {
         return null;
     }
@@ -59,7 +59,7 @@ export function unwrapGetOutput(response: aws.DynamoDB.Types.GetItemOutput): any
  * @param response result of batchGetItem
  * @returns the objects returned
  */
-export function unwrapBatchGetOutput(tableSchemaOrName: TableSchema | string, response: aws.DynamoDB.Types.BatchGetItemOutput): any[] {
+export function unwrapBatchGetOutput(tableSchemaOrName: TableSchema | string, response: aws.DynamoDB.BatchGetItemOutput): any[] {
     const tableName = (tableSchemaOrName as TableSchema).tableName ? (tableSchemaOrName as TableSchema).tableName : tableSchemaOrName as string;
     const responseTableItems = response.Responses && response.Responses[tableName];
     if (!responseTableItems) {
@@ -73,7 +73,7 @@ export function unwrapBatchGetOutput(tableSchemaOrName: TableSchema | string, re
  * @param response result of scan
  * @returns the objects returned
  */
-export function unwrapScanOutput(response: aws.DynamoDB.Types.ScanOutput): any[] {
+export function unwrapScanOutput(response: aws.DynamoDB.ScanOutput): any[] {
     const responseTableItems = response.Items;
     if (!responseTableItems) {
         return [];
@@ -86,7 +86,7 @@ export function unwrapScanOutput(response: aws.DynamoDB.Types.ScanOutput): any[]
  * @param response result of query
  * @returns the objects returned
  */
-export function unwrapQueryOutput(response: aws.DynamoDB.Types.QueryOutput): any[] {
+export function unwrapQueryOutput(response: aws.DynamoDB.QueryOutput): any[] {
     const responseTableItems = response.Items;
     if (!responseTableItems) {
         return [];

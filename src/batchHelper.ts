@@ -56,7 +56,7 @@ export function configure(options: {
  * @param batchGetInput
  * @returns the stored objects
  */
-export async function batchGetAll(dynamodb: aws.DynamoDB, batchGetInput: aws.DynamoDB.Types.BatchGetItemInput): Promise<any[]> {
+export async function batchGetAll(dynamodb: aws.DynamoDB, batchGetInput: aws.DynamoDB.BatchGetItemInput): Promise<any[]> {
     const requestItemsTables = Object.keys(batchGetInput.RequestItems);
     if (requestItemsTables.length !== 1) {
         throw new Error("Only batchGet from a single table at a time is supported in this method.");
@@ -69,7 +69,7 @@ export async function batchGetAll(dynamodb: aws.DynamoDB, batchGetInput: aws.Dyn
 
     while (unprocessedKeys.length) {
         // Take values from the input but override the Keys we fetch.
-        const request: aws.DynamoDB.Types.BatchGetItemInput = {
+        const request: aws.DynamoDB.BatchGetItemInput = {
             ...batchGetInput,
             RequestItems: {
                 [requestItemsTable]: {
@@ -100,7 +100,7 @@ export async function batchGetAll(dynamodb: aws.DynamoDB, batchGetInput: aws.Dyn
  * @param dynamodb
  * @param batchPutInput
  */
-export async function batchWriteAll(dynamodb: aws.DynamoDB, batchPutInput: aws.DynamoDB.Types.BatchWriteItemInput): Promise<void> {
+export async function batchWriteAll(dynamodb: aws.DynamoDB, batchPutInput: aws.DynamoDB.BatchWriteItemInput): Promise<void> {
     const requestItemsTables = Object.keys(batchPutInput.RequestItems);
     if (requestItemsTables.length !== 1) {
         throw new Error("Only batchWrite to a single table at a time is supported in this method.");
@@ -111,7 +111,7 @@ export async function batchWriteAll(dynamodb: aws.DynamoDB, batchPutInput: aws.D
     let backoff = backoffInitial;
 
     while (unprocessedItems.length) {
-        const request: aws.DynamoDB.Types.BatchWriteItemInput = {
+        const request: aws.DynamoDB.BatchWriteItemInput = {
             ...batchPutInput,
             RequestItems: {
                 [requestItemsTable]: unprocessedItems.splice(0, Math.min(unprocessedItems.length, batchWriteLimit))

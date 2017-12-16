@@ -82,22 +82,14 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
  * @param sortKeyValue sort key of the item to get, if set in the schema
  * @returns input for the `getItem` method
  */
-export function buildGetInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.Types.GetItemInput {
+export function buildGetInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.GetItemInput {
     checkSchema(tableSchema);
     checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue);
 
-    const request: aws.DynamoDB.Types.GetItemInput = {
-        Key: {
-            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKeyValue)
-        },
+    return {
+        Key: getKey(tableSchema, primaryKeyValue, sortKeyValue),
         TableName: tableSchema.tableName
     };
-
-    if (sortKeyValue) {
-        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKeyValue);
-    }
-
-    return request;
 }
 
 /**
@@ -106,11 +98,11 @@ export function buildGetInput(tableSchema: TableSchema, primaryKeyValue: DynamoK
  * @param item
  * @returns input for the `putItem` method
  */
-export function buildPutInput(tableSchema: TableSchema, item: object): aws.DynamoDB.Types.PutItemInput {
+export function buildPutInput(tableSchema: TableSchema, item: object): aws.DynamoDB.PutItemInput {
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, item);
 
-    const request: aws.DynamoDB.Types.PutItemInput = {
+    const request: aws.DynamoDB.PutItemInput = {
         Item: buildRequestPutItem(tableSchema, item).M,
         TableName: tableSchema.tableName
     };
@@ -163,28 +155,54 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
 }
 
 /**
+ * Build a request object that can be passed into `updateItem` by diffing the two objects.
+ * Changes to the object will be made in the database, but unchanged fields will remain
+ * unchanged even if that is not the value currently in the database.
+ * @param tableSchema
+ * @param original the object as it currently exists in the database
+ * @param update the object with changes that should be reflected in the database
+ * @returns input for the `updateItem` method
+ */
+// export function buildUpdateInputFromDiff(tableSchema: TableSchema, original: object, update: object): aws.DynamoDB.UpdateItemInput {
+//     checkSchema(tableSchema);
+//     checkSchemaItemAgreement(tableSchema, original, "the original");
+//     checkSchemaItemAgreement(tableSchema, update, "the update");
+//
+//     if (original[tableSchema.primaryKeyField] !== update[tableSchema.primaryKeyField]) {
+//         throw new Error("Update cannot change the key of a record in DynamoDB.")
+//     }
+//     if (tableSchema.sortKeyField && original[tableSchema.sortKeyField] !== update[tableSchema.sortKeyField]) {
+//         throw new Error("Update cannot change the key of a record in DynamoDB.")
+//     }
+//
+//     const request: aws.DynamoDB.UpdateItemInput = {
+//         Key: getKey(tableSchema, original[tableSchema.primaryKeyField], tableSchema.sortKeyField && original[tableSchema.sortKeyField]),
+//         TableName: tableSchema.tableName
+//     };
+//     if (tableSchema.sortKeyField) {
+//         request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, original[tableSchema.sortKeyField]);
+//     }
+//
+//     // TODO diff the objects and put the diff in an expression statement
+//
+//     return request;
+// }
+
+/**
  * Build a request object that can be passed into `deleteItem`
  * @param tableSchema
  * @param primaryKeyValue the key of the item to delete
  * @param sortKeyValue sort key of the item to delete, if set in the schema
  * @returns input for the `deleteItem` method
  */
-export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.Types.DeleteItemInput {
+export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.DeleteItemInput {
     checkSchema(tableSchema);
     checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue);
 
-    const request: aws.DynamoDB.Types.DeleteItemInput = {
-        Key: {
-            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKeyValue)
-        },
+    return {
+        Key: getKey(tableSchema, primaryKeyValue, sortKeyValue),
         TableName: tableSchema.tableName
     };
-
-    if (sortKeyValue) {
-        request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKeyValue);
-    }
-
-    return request;
 }
 
 /**
@@ -200,7 +218,7 @@ export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: Dyna
  *                      `BETWEEN` and 1 for all other operators.
  * @returns input for the `query` method
  */
-export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyOp?: DynamoQueryConditionOperator, ...sortKeyValues: DynamoKey[]): aws.DynamoDB.Types.QueryInput {
+export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyOp?: DynamoQueryConditionOperator, ...sortKeyValues: DynamoKey[]): aws.DynamoDB.QueryInput {
     checkSchema(tableSchema);
     checkSchemaPrimaryKeyAgreement(tableSchema, primaryKeyValue);
     if (!tableSchema.sortKeyField) {
@@ -214,7 +232,7 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
         }, "query");
     }
 
-    const queryInput: aws.DynamoDB.Types.QueryInput = {
+    const queryInput: aws.DynamoDB.QueryInput = {
         TableName: tableSchema.tableName,
         ExpressionAttributeNames: {
             "#P": tableSchema.primaryKeyField
@@ -255,7 +273,7 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
  * @param items the items to put
  * @returns input for the `batchWriteItem` method
  */
-export function buildBatchPutInput(tableSchema: TableSchema, items: object[]): aws.DynamoDB.Types.BatchWriteItemInput {
+export function buildBatchPutInput(tableSchema: TableSchema, items: object[]): aws.DynamoDB.BatchWriteItemInput {
     checkSchema(tableSchema);
     checkSchemaItemsAgreement(tableSchema, items);
 
@@ -280,7 +298,7 @@ export function buildBatchPutInput(tableSchema: TableSchema, items: object[]): a
  * @param keyValues an array of the key values for each item to delete
  * @returns input for the `batchWriteItem` method
  */
-export function buildBatchDeleteInput(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.Types.BatchWriteItemInput {
+export function buildBatchDeleteInput(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.BatchWriteItemInput {
     checkSchema(tableSchema);
     checkSchemaKeysAgreement(tableSchema, keyValues);
 
@@ -320,7 +338,7 @@ export function buildBatchDeleteInput(tableSchema: TableSchema, keyValues: Dynam
  * @param keyValues an array of the key values for each item to request
  * @returns input for the `batchGetItem` method
  */
-export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.Types.BatchGetItemInput {
+export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.BatchGetItemInput {
     checkSchema(tableSchema);
     checkSchemaKeysAgreement(tableSchema, keyValues);
 
@@ -358,7 +376,7 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
  * @param writeCapacity represents one write per second for an item up to 1 KB in size.
  * @returns input for the `createTable` method
  */
-export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: number = 1, writeCapacity: number = 1): aws.DynamoDB.Types.CreateTableInput {
+export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: number = 1, writeCapacity: number = 1): aws.DynamoDB.CreateTableInput {
     if (!Number.isInteger(readCapacity) || readCapacity < 1) {
         throw new Error("readCapacity must be a positive integer");
     }
@@ -409,7 +427,7 @@ export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: nu
  * @param {TableSchema} tableSchema
  * @returns input for the `updateTimeToLive` method
  */
-export function buildUpdateTimeToLiveInput(tableSchema: TableSchema): aws.DynamoDB.Types.UpdateTimeToLiveInput {
+export function buildUpdateTimeToLiveInput(tableSchema: TableSchema): aws.DynamoDB.UpdateTimeToLiveInput {
     checkSchema(tableSchema);
 
     if (tableSchema.ttlField) {
@@ -531,6 +549,16 @@ export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.Cond
         res.ExpressionAttributeValues = valueMap;
     }
     return res;
+}
+
+function getKey(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.Key {
+    const key: aws.DynamoDB.Key = {
+        [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKeyValue)
+    };
+    if (sortKeyValue) {
+        key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKeyValue);
+    }
+    return key;
 }
 
 /**

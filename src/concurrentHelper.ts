@@ -28,7 +28,7 @@ export let backoffFactor = 2.0;
  * @param putInputs
  * @returns a Promise of an array of objects of errors with the corresponding input
  */
-export async function concurrentPutAll(dynamodb: aws.DynamoDB, putInputs: aws.DynamoDB.Types.PutItemInput[]): Promise<{input: aws.DynamoDB.Types.PutItemInput, error: Error}[]> {
+export async function concurrentPutAll(dynamodb: aws.DynamoDB, putInputs: aws.DynamoDB.PutItemInput[]): Promise<{input: aws.DynamoDB.PutItemInput, error: Error}[]> {
     const putThunks = putInputs.map(putInput => async() => dynamodb.putItem(putInput).promise());
     const results = await runConcurrentThunks(putThunks);
     return results
