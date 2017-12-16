@@ -155,40 +155,6 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
 }
 
 /**
- * Build a request object that can be passed into `updateItem` by diffing the two objects.
- * Changes to the object will be made in the database, but unchanged fields will remain
- * unchanged even if that is not the value currently in the database.
- * @param tableSchema
- * @param original the object as it currently exists in the database
- * @param update the object with changes that should be reflected in the database
- * @returns input for the `updateItem` method
- */
-// export function buildUpdateInputFromDiff(tableSchema: TableSchema, original: object, update: object): aws.DynamoDB.UpdateItemInput {
-//     checkSchema(tableSchema);
-//     checkSchemaItemAgreement(tableSchema, original, "the original");
-//     checkSchemaItemAgreement(tableSchema, update, "the update");
-//
-//     if (original[tableSchema.primaryKeyField] !== update[tableSchema.primaryKeyField]) {
-//         throw new Error("Update cannot change the key of a record in DynamoDB.")
-//     }
-//     if (tableSchema.sortKeyField && original[tableSchema.sortKeyField] !== update[tableSchema.sortKeyField]) {
-//         throw new Error("Update cannot change the key of a record in DynamoDB.")
-//     }
-//
-//     const request: aws.DynamoDB.UpdateItemInput = {
-//         Key: getKey(tableSchema, original[tableSchema.primaryKeyField], tableSchema.sortKeyField && original[tableSchema.sortKeyField]),
-//         TableName: tableSchema.tableName
-//     };
-//     if (tableSchema.sortKeyField) {
-//         request.Key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, original[tableSchema.sortKeyField]);
-//     }
-//
-//     // TODO diff the objects and put the diff in an expression statement
-//
-//     return request;
-// }
-
-/**
  * Build a request object that can be passed into `deleteItem`
  * @param tableSchema
  * @param primaryKeyValue the key of the item to delete
@@ -526,11 +492,7 @@ export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.Cond
         } else if (condition.operator === "IN") {
             exp += `${attributeName} IN (${valueNames.join(", ")})`;
         } else if (operatorIsFunction(condition.operator)) {
-            if (valueNames.length > 0) {
-                exp += `${condition.operator}(${attributeName}, ${valueNames.join(", ")})`;
-            } else {
-                exp += `${condition.operator}(${attributeName})`;
-            }
+            exp += `${condition.operator}(${[attributeName, ...valueNames].join(", ")})`;
         } else {
             exp += `${attributeName} ${condition.operator} ${valueNames[0]}`;
         }
