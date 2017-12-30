@@ -46,7 +46,7 @@ export function checkSchema(tableSchema: TableSchema): void {
         throw new Error("TableSchema defines sortKeyType but missing sortKeyField.");
     }
     if (tableSchema.sortKeyField && tableSchema.sortKeyType !== "string" && tableSchema.sortKeyType !== "number") {
-        throw new Error(`TableSchema defines sortKeyField, sortKeyType must be 'string' or 'number'.  Got ${tableSchema.sortKeyType}.`);
+        throw new Error(`TableSchema defines sortKeyField; sortKeyType must be 'string' or 'number'.  Got ${tableSchema.sortKeyType}.`);
     }
 }
 
@@ -73,6 +73,14 @@ export function checkSchemaPrimaryKeyAgreement(tableSchema: TableSchema, primary
     if (typeof primaryKeyValue !== tableSchema.primaryKeyType) {
         throw new Error(`TableSchema defines primaryKeyType ${tableSchema.primaryKeyType} which does not match the primaryKeyValue ${typeof primaryKeyValue}.`);
     }
+    if (typeof primaryKeyValue === "string") {
+        if (primaryKeyValue.length === 0) {
+            throw new Error(`The primary key value cannot be an empty string.`);
+        }
+        if (primaryKeyValue.length > 2048) {
+            throw new Error(`The primary key value exceeds the max length of 2048.`);
+        }
+    }
 }
 
 /**
@@ -81,6 +89,14 @@ export function checkSchemaPrimaryKeyAgreement(tableSchema: TableSchema, primary
 export function checkSchemaSortKeyAgreement(tableSchema: TableSchema, sortKeyValue: DynamoKey): void {
     if (sortKeyValue != null && typeof sortKeyValue !== tableSchema.sortKeyType) {
         throw new Error(`TableSchema defines sortKeyType ${tableSchema.sortKeyType} which does not match the sortKeyValue ${typeof sortKeyValue}.`);
+    }
+    if (typeof sortKeyValue === "string") {
+        if (sortKeyValue.length === 0) {
+            throw new Error(`The sort key value cannot be an empty string.`);
+        }
+        if (sortKeyValue.length > 1024) {
+            throw new Error(`The sort key value exceeds the max length of 1024.`);
+        }
     }
 }
 

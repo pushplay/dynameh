@@ -9,6 +9,11 @@ export interface TableSchema {
     tableName: string;
 
     /**
+     * Global secondary index name to use for query or scan.
+     */
+    indexName?: string;
+
+    /**
      * The name of primary key field.
      */
     primaryKeyField: string;

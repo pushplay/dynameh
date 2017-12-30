@@ -261,3 +261,9 @@ const tableSchema = {
     dateSerializationFunction: date => date.toISOString()   // same as default
 };
 ```
+
+## TODO
+
+- document TableSchema.indexName
+- add paging support for [query](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html#DDB-Query-response-LastEvaluatedKey) and [scan](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Scan.html#DDB-Scan-response-LastEvaluatedKey) 
+- rename primary key to partition key

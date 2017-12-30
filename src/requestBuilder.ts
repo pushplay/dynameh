@@ -209,6 +209,10 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
         KeyConditionExpression: `#P = :p`
     };
 
+    if (tableSchema.indexName) {
+        queryInput.IndexName = tableSchema.indexName;
+    }
+
     if (sortKeyOp) {
         for (const val of sortKeyValues) {
             checkSchemaSortKeyAgreement(tableSchema, val);
@@ -231,6 +235,29 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
     }
 
     return queryInput;
+}
+
+/**
+ * Build a request object that can be passed into `scan`.  The scan operation performs
+ * a linear search through all objects in the table.  It can be filtered to only return
+ * some values, though all objects in the database will still be read and your account
+ * billed accordingly.
+ * @see addFilter
+ * @param tableSchema
+ * @returns input for the `scan` method
+ */
+export function buildScanInput(tableSchema: TableSchema): aws.DynamoDB.ScanInput {
+    checkSchema(tableSchema);
+
+    const scanInput: aws.DynamoDB.ScanInput = {
+        TableName: tableSchema.tableName
+    };
+
+    if (tableSchema.indexName) {
+        scanInput.IndexName = tableSchema.indexName;
+    }
+
+    return scanInput;
 }
 
 /**

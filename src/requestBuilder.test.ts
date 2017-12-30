@@ -6,7 +6,7 @@ import {
     buildGetInput,
     buildPutInput,
     buildQueryInput,
-    buildRequestPutItem
+    buildRequestPutItem, buildScanInput
 } from "./requestBuilder";
 import {TableSchema} from "./TableSchema";
 
@@ -222,6 +222,48 @@ describe("requestBuilder", () => {
                     }
                 },
                 KeyConditionExpression: "#P = :p AND #S <= :a"
+            });
+        });
+
+        it("supports global secondary indexes", () => {
+            const input = buildQueryInput({...stringSortTableSchema, indexName: "globalIndex"}, "ell seven");
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                IndexName: "globalIndex",
+                ExpressionAttributeNames: {
+                    "#P": "primary"
+                },
+                ExpressionAttributeValues: {
+                    ":p": {
+                        "S": "ell seven"
+                    }
+                },
+                KeyConditionExpression: "#P = :p"
+            });
+        });
+    });
+
+    describe("buildScanInput", () => {
+        const defaultTableSchema: TableSchema = {
+            tableName: "table",
+            primaryKeyField: "primary",
+            primaryKeyType: "string"
+        };
+
+        it("creates a basic scan input", () => {
+            const input = buildScanInput(defaultTableSchema);
+
+            chai.assert.deepEqual(input, {
+                TableName: "table"
+            });
+        });
+
+        it("supports global secondary indexes", () => {
+            const input = buildScanInput({...defaultTableSchema, indexName: "globalIndex"});
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                IndexName: "globalIndex"
             });
         });
     });
