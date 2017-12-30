@@ -85,6 +85,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_batchhelper_.html#batchgetall" class="tsd-kind-icon">batch<wbr>Get<wbr>All</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_batchhelper_.html#batchwriteall" class="tsd-kind-icon">batch<wbr>Write<wbr>All</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_batchhelper_.html#configure" class="tsd-kind-icon">configure</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_batchhelper_.html#wait" class="tsd-kind-icon">wait</a></li>
 							</ul>
 						</section>
@@ -99,13 +100,13 @@
 					<div class="tsd-signature tsd-kind-icon">backoff<wbr>Factor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;2</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/batchHelper.ts#L29">batchHelper.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/batchHelper.ts#L29">batchHelper.ts:29</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The wait growth factor when repeatedly backing off.  When backing off
-								from an operation the first wait will be <code>backoff = backoffInitial</code>
+								from an operation the first wait <code>backoff = backoffInitial</code>
 							and for each consecutive wait <code>backoff = Math.min(backoff * backoffFactor, backoffMax)</code>.</p>
 						</div>
 					</div>
@@ -116,7 +117,7 @@
 					<div class="tsd-signature tsd-kind-icon">backoff<wbr>Initial<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1000</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/batchHelper.ts#L17">batchHelper.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/batchHelper.ts#L17">batchHelper.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -131,7 +132,7 @@
 					<div class="tsd-signature tsd-kind-icon">backoff<wbr>Max<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;30000</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/batchHelper.ts#L22">batchHelper.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/batchHelper.ts#L22">batchHelper.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -146,12 +147,12 @@
 					<div class="tsd-signature tsd-kind-icon">batch<wbr>Get<wbr>Limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">100</span><span class="tsd-signature-symbol"> =&nbsp;100</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/batchHelper.ts#L7">batchHelper.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/batchHelper.ts#L7">batchHelper.ts:7</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The maximum number of items that can be gotten in a single request.</p>
+							<p>The maximum number of items that can be got in a single request.</p>
 						</div>
 					</div>
 				</section>
@@ -161,7 +162,7 @@
 					<div class="tsd-signature tsd-kind-icon">batch<wbr>Write<wbr>Limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">25</span><span class="tsd-signature-symbol"> =&nbsp;25</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/batchHelper.ts#L12">batchHelper.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/batchHelper.ts#L12">batchHelper.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -177,19 +178,19 @@
 					<a name="batchgetall" class="tsd-anchor"></a>
 					<h3>batch<wbr>Get<wbr>All</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">batch<wbr>Get<wbr>All<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DynamoDB</span>, batchGetInput<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB.Types.BatchGetItemInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">batch<wbr>Get<wbr>All<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DynamoDB</span>, batchGetInput<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BatchGetItemInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/batchHelper.ts#L38">batchHelper.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/batchHelper.ts#L59">batchHelper.ts:59</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Batch get in multiple requests.  Can handle more than 100 keys at once and
-									reattempts UnprocessedKeys.</p>
+									<p>Batch get all items in the request.  Can handle more than 100 keys at once by making
+									multiple requests.  Reattempts UnprocessedKeys.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -198,7 +199,7 @@
 									<h5>dynamodb: <span class="tsd-signature-type">DynamoDB</span></h5>
 								</li>
 								<li>
-									<h5>batchGetInput: <span class="tsd-signature-type">aws.DynamoDB.Types.BatchGetItemInput</span></h5>
+									<h5>batchGetInput: <span class="tsd-signature-type">BatchGetItemInput</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -210,19 +211,19 @@
 					<a name="batchwriteall" class="tsd-anchor"></a>
 					<h3>batch<wbr>Write<wbr>All</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">batch<wbr>Write<wbr>All<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DynamoDB</span>, batchPutInput<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB.Types.BatchWriteItemInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">batch<wbr>Write<wbr>All<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DynamoDB</span>, batchPutInput<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BatchWriteItemInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/batchHelper.ts#L82">batchHelper.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/batchHelper.ts#L103">batchHelper.ts:103</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Batch write in multiple requests.  Can handle more than 25 objects at once
-									and reattempts UnprocessedItems.</p>
+									<p>Batch write all items in the request.  Can handle more than 25 objects at once
+									by making multiple requests.  Reattempts UnprocessedItems.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -231,12 +232,55 @@
 									<h5>dynamodb: <span class="tsd-signature-type">DynamoDB</span></h5>
 								</li>
 								<li>
-									<h5>batchPutInput: <span class="tsd-signature-type">aws.DynamoDB.Types.BatchWriteItemInput</span></h5>
+									<h5>batchPutInput: <span class="tsd-signature-type">BatchWriteItemInput</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="configure" class="tsd-anchor"></a>
+					<h3>configure</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">configure<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/batchHelper.ts#L36">batchHelper.ts:36</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Configure module settings for: backoffInitial, backoffMax, backoffFactor.
+									See the module member for individual documentation.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <span class="tsd-signature-type">object</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>an object with optional values for the settings</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> backoff<wbr>Factor<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> backoff<wbr>Initial<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> backoff<wbr>Max<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -250,7 +294,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/batchHelper.ts#L111">batchHelper.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/batchHelper.ts#L132">batchHelper.ts:132</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -325,6 +369,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_batchhelper_.html#batchwriteall" class="tsd-kind-icon">batch<wbr>Write<wbr>All</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_batchhelper_.html#configure" class="tsd-kind-icon">configure</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
 						<a href="_batchhelper_.html#wait" class="tsd-kind-icon">wait</a>

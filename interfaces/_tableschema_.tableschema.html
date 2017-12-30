@@ -92,6 +92,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#dateserializationfunction" class="tsd-kind-icon">date<wbr>Serialization<wbr>Function</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#indexname" class="tsd-kind-icon">index<wbr>Name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#primarykeyfield" class="tsd-kind-icon">primary<wbr>Key<wbr>Field</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#primarykeytype" class="tsd-kind-icon">primary<wbr>Key<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#sortkeyfield" class="tsd-kind-icon">sort<wbr>Key<wbr>Field</a></li>
@@ -112,7 +113,7 @@
 					<div class="tsd-signature tsd-kind-icon">date<wbr>Serialization<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/TableSchema.ts#L56">TableSchema.ts:56</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/TableSchema.ts#L61">TableSchema.ts:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -154,12 +155,27 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="indexname" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> index<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">index<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/TableSchema.ts#L14">TableSchema.ts:14</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Global secondary index name to use for query or scan.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="primarykeyfield" class="tsd-anchor"></a>
 					<h3>primary<wbr>Key<wbr>Field</h3>
 					<div class="tsd-signature tsd-kind-icon">primary<wbr>Key<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/TableSchema.ts#L14">TableSchema.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/TableSchema.ts#L19">TableSchema.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -174,7 +190,7 @@
 					<div class="tsd-signature tsd-kind-icon">primary<wbr>Key<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/TableSchema.ts#L19">TableSchema.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/TableSchema.ts#L24">TableSchema.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -189,7 +205,7 @@
 					<div class="tsd-signature tsd-kind-icon">sort<wbr>Key<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/TableSchema.ts#L25">TableSchema.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/TableSchema.ts#L30">TableSchema.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -205,7 +221,7 @@
 					<div class="tsd-signature tsd-kind-icon">sort<wbr>Key<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/TableSchema.ts#L31">TableSchema.ts:31</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/TableSchema.ts#L36">TableSchema.ts:36</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -221,7 +237,7 @@
 					<div class="tsd-signature tsd-kind-icon">table<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/TableSchema.ts#L9">TableSchema.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/TableSchema.ts#L9">TableSchema.ts:9</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -236,7 +252,7 @@
 					<div class="tsd-signature tsd-kind-icon">ttl<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/TableSchema.ts#L49">TableSchema.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/TableSchema.ts#L54">TableSchema.ts:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -254,7 +270,7 @@
 					<div class="tsd-signature tsd-kind-icon">version<wbr>Key<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/13d0ba3/src/TableSchema.ts#L40">TableSchema.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/7e012f7/src/TableSchema.ts#L45">TableSchema.ts:45</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -316,6 +332,9 @@
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_tableschema_.tableschema.html#dateserializationfunction" class="tsd-kind-icon">date<wbr>Serialization<wbr>Function</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_tableschema_.tableschema.html#indexname" class="tsd-kind-icon">index<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_tableschema_.tableschema.html#primarykeyfield" class="tsd-kind-icon">primary<wbr>Key<wbr>Field</a>
