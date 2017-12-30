@@ -471,9 +471,28 @@ export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.Pro
  * @returns a copy of conditionableRequest with the condition expression set
  */
 export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(tableSchema: TableSchema, conditionableRequest: T, ...conditions: Condition[]): T {
+    return addExpression("ConditionExpression", tableSchema, conditionableRequest, conditions);
+}
+
+/**
+ * Adds a filter expression to a input object.  A filter expression
+ * refines results returned from a scan or query.  The filter applies
+ * after the search and you will be billed for the bandwidth of all results
+ * before the filter is applied.
+ *
+ * @param tableSchema
+ * @param filterableRequest the input to add a filter expression to
+ * @param filters one or more filters to turn into a filter expression
+ * @returns a copy of filterableRequest with the condition expression set
+ */
+export function addFilter<T extends { FilterExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(tableSchema: TableSchema, filterableRequest: T, ...filters: Condition[]): T {
+    return addExpression("FilterExpression", tableSchema, filterableRequest, filters);
+}
+
+function addExpression<T extends {ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap}, K extends keyof T>(expressionKey: string, tableSchema: TableSchema, conditionableRequest: T, conditions: Condition[]): T {
     checkSchema(tableSchema);
     checkConditions(conditions, "default");
-    let exp: aws.DynamoDB.ConditionExpression = conditionableRequest.ConditionExpression || undefined;
+    let exp: aws.DynamoDB.ConditionExpression = conditionableRequest[expressionKey] || undefined;
     const nameMap: aws.DynamoDB.ExpressionAttributeNameMap = {...(conditionableRequest.ExpressionAttributeNames || {})};
     const valueMap: aws.DynamoDB.ExpressionAttributeValueMap = {...(conditionableRequest.ExpressionAttributeValues || {})};
 
@@ -502,7 +521,7 @@ export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.Cond
         ...(conditionableRequest as any)
     };
     if (exp) {
-        res.ConditionExpression = exp;
+        res[expressionKey] = exp;
     }
     if (Object.keys(nameMap).length) {
         res.ExpressionAttributeNames = nameMap;

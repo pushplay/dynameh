@@ -1,6 +1,11 @@
 import * as chai from "chai";
 import {
-    addCondition, addProjection, buildGetInput, buildPutInput, buildQueryInput,
+    addCondition,
+    addFilter,
+    addProjection,
+    buildGetInput,
+    buildPutInput,
+    buildQueryInput,
     buildRequestPutItem
 } from "./requestBuilder";
 import {TableSchema} from "./TableSchema";
@@ -29,11 +34,13 @@ describe("requestBuilder", () => {
                 Buffer.from([0x4a, 0x65, 0x66, 0x66, 0x47, 0x20, 0x77, 0x61, 0x73, 0x20, 0x68, 0x65, 0x72, 0x65]),
                 Buffer.from([0x6b, 0x77, 0x79, 0x6a, 0x69, 0x62, 0x6f])
             ]);
-            chai.assert.deepEqual(serialized, {BS: [
-                "SGVsbG8gV29ybGQ=",
-                "SmVmZkcgd2FzIGhlcmU=",
-                "a3d5amlibw=="
-            ]});
+            chai.assert.deepEqual(serialized, {
+                BS: [
+                    "SGVsbG8gV29ybGQ=",
+                    "SmVmZkcgd2FzIGhlcmU=",
+                    "a3d5amlibw=="
+                ]
+            });
         });
 
         it("serializes an array of Uint8Arrays", () => {
@@ -42,11 +49,13 @@ describe("requestBuilder", () => {
                 new Uint8Array([0x4a, 0x65, 0x66, 0x66, 0x47, 0x20, 0x77, 0x61, 0x73, 0x20, 0x68, 0x65, 0x72, 0x65]),
                 new Uint8Array([0x6b, 0x77, 0x79, 0x6a, 0x69, 0x62, 0x6f])
             ]);
-            chai.assert.deepEqual(serialized, {BS: [
-                "SGVsbG8gV29ybGQ=",
-                "SmVmZkcgd2FzIGhlcmU=",
-                "a3d5amlibw=="
-            ]});
+            chai.assert.deepEqual(serialized, {
+                BS: [
+                    "SGVsbG8gV29ybGQ=",
+                    "SmVmZkcgd2FzIGhlcmU=",
+                    "a3d5amlibw=="
+                ]
+            });
         });
 
         it("marshals dates to ISO8601 strings by default", () => {
@@ -87,7 +96,8 @@ describe("requestBuilder", () => {
 
     describe("getPutInput", () => {
         it("serializes Date TTLs", () => {
-            const serialized = buildPutInput({tableName: "table",
+            const serialized = buildPutInput({
+                tableName: "table",
                 primaryKeyField: "primary",
                 primaryKeyType: "string",
                 ttlField: "ttl"
@@ -325,7 +335,6 @@ describe("requestBuilder", () => {
         });
     });
 
-
     describe("addCondition", () => {
         const defaultTableSchema: TableSchema = {
             tableName: "table",
@@ -335,7 +344,10 @@ describe("requestBuilder", () => {
 
         it("adds a condition to put input", () => {
             const input = buildPutInput(defaultTableSchema, {primary: "foo"});
-            const conditionalInput = addCondition(defaultTableSchema, input, {attribute: "primary", operator: "attribute_not_exists"});
+            const conditionalInput = addCondition(defaultTableSchema, input, {
+                attribute: "primary",
+                operator: "attribute_not_exists"
+            });
 
             chai.assert.notEqual(input, conditionalInput);
             chai.assert.deepEqual(conditionalInput, {
@@ -441,8 +453,15 @@ describe("requestBuilder", () => {
         });
 
         it("adds a condition to put input with versioning", () => {
-            const input = buildPutInput({...defaultTableSchema, versionKeyField: "version"}, {primary: "foo", alphabet: "αβγδε"});
-            const conditionalInput = addCondition(defaultTableSchema, input, {attribute: "alphabet", operator: "begins_with", values: ["abc"]});
+            const input = buildPutInput({...defaultTableSchema, versionKeyField: "version"}, {
+                primary: "foo",
+                alphabet: "αβγδε"
+            });
+            const conditionalInput = addCondition(defaultTableSchema, input, {
+                attribute: "alphabet",
+                operator: "begins_with",
+                values: ["abc"]
+            });
 
             chai.assert.notEqual(input, conditionalInput);
             chai.assert.deepEqual(conditionalInput, {
@@ -506,6 +525,160 @@ describe("requestBuilder", () => {
                         N: "0"
                     }
                 }
+            });
+        });
+    });
+
+    describe("addFilter", () => {
+        const defaultTableSchema: TableSchema = {
+            tableName: "table",
+            primaryKeyField: "primary",
+            primaryKeyType: "string",
+            sortKeyField: "sort",
+            sortKeyType: "number"
+        };
+
+        it("adds a filter to query input", () => {
+            const input = buildQueryInput(defaultTableSchema, "foo");
+            const filteredInput = addFilter(defaultTableSchema, input, {
+                attribute: "nonprimary",
+                operator: "=",
+                values: [11]
+            });
+
+            chai.assert.notEqual(input, filteredInput);
+            chai.assert.deepEqual(filteredInput, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary"
+                },
+                ExpressionAttributeValues: {
+                    ":a": {
+                        N: "11"
+                    },
+                    ":p": {
+                        S: "foo"
+                    }
+                },
+                KeyConditionExpression: "#P = :p",
+                FilterExpression: "nonprimary = :a"
+            });
+        });
+
+        it("adds three filters to query input", () => {
+            const input = buildQueryInput(defaultTableSchema, "foo");
+            const filteredInput = addFilter(
+                defaultTableSchema,
+                input,
+                {attribute: "eyes", operator: "<", values: [3]},
+                {attribute: "teeth", operator: ">", values: [4]},
+                {attribute: "ears", operator: "=", values: [2]}
+            );
+
+            chai.assert.notEqual(input, filteredInput);
+            chai.assert.deepEqual(filteredInput, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary"
+                },
+                ExpressionAttributeValues: {
+                    ":a": {
+                        N: "3"
+                    },
+                    ":b": {
+                        N: "4"
+                    },
+                    ":c": {
+                        N: "2"
+                    },
+                    ":p": {
+                        S: "foo"
+                    }
+                },
+                KeyConditionExpression: "#P = :p",
+                FilterExpression: "eyes < :a AND teeth > :b AND ears = :c"
+            });
+        });
+
+        it("adds three filters to query input, one at a time", () => {
+            const input = buildQueryInput(defaultTableSchema, "foo");
+            const filteredInput1 = addFilter(
+                defaultTableSchema,
+                input,
+                {attribute: "eyes", operator: "<", values: [3]}
+            );
+            const filteredInput2 = addFilter(
+                defaultTableSchema,
+                filteredInput1,
+                {attribute: "teeth", operator: ">", values: [4]}
+            );
+            const filteredInput3 = addFilter(
+                defaultTableSchema,
+                filteredInput2,
+                {attribute: "ears", operator: "=", values: [2]}
+            );
+
+            chai.assert.notEqual(input, filteredInput3);
+            chai.assert.deepEqual(filteredInput3, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary"
+                },
+                ExpressionAttributeValues: {
+                    ":a": {
+                        N: "3"
+                    },
+                    ":b": {
+                        N: "4"
+                    },
+                    ":c": {
+                        N: "2"
+                    },
+                    ":p": {
+                        S: "foo"
+                    }
+                },
+                KeyConditionExpression: "#P = :p",
+                FilterExpression: "eyes < :a AND teeth > :b AND ears = :c"
+            });
+        });
+
+        it("adds a filter to query input with reserved words", () => {
+            const input = buildQueryInput(defaultTableSchema, "foo");
+            const filteredInput = addFilter(
+                defaultTableSchema,
+                input,
+                {attribute: "ASCII", operator: "begins_with", values: ["abc"]},
+                {attribute: "GOTO", operator: ">", values: [11]},
+                {attribute: "a.b\\.c", operator: "<", values: [0]},
+            );
+
+            chai.assert.notEqual(input, filteredInput);
+            chai.assert.deepEqual(filteredInput, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary",
+                    "#A": "ASCII",
+                    "#B": "GOTO",
+                    "#C": "a",
+                    "#D": "b.c"
+                },
+                ExpressionAttributeValues: {
+                    ":a": {
+                        S: "abc"
+                    },
+                    ":b": {
+                        N: "11"
+                    },
+                    ":c": {
+                        N: "0"
+                    },
+                    ":p": {
+                        S: "foo"
+                    }
+                },
+                KeyConditionExpression: "#P = :p",
+                FilterExpression: "begins_with(#A, :a) AND #B > :b AND #C.#D < :c"
             });
         });
     });
