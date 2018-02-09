@@ -154,6 +154,16 @@ describe("validation", () => {
             });
         });
 
+        it("validates a schema with number and value 0", () => {
+            checkSchemaItemAgreement({
+                tableName: "tableName",
+                primaryKeyField: "primary",
+                primaryKeyType: "number"
+            }, {
+                primary: 0
+            });
+        });
+
         it("rejects a schema with string given number", () => {
             chai.assert.throws(() => {
                 checkSchemaItemAgreement({
@@ -201,6 +211,19 @@ describe("validation", () => {
             }, {
                 primary: "primary value",
                 sort: 67852345
+            });
+        });
+
+        it("validates a schema with string and number sort key of value 0", () => {
+            checkSchemaItemAgreement({
+                tableName: "tableName",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+                sortKeyField: "sort",
+                sortKeyType: "number"
+            }, {
+                primary: "primary value",
+                sort: 0
             });
         });
 

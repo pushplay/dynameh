@@ -143,13 +143,13 @@ export function checkSchemaItemAgreement(tableSchema: TableSchema, item: object,
     if (typeof item !== "object") {
         throw new Error(`${paramName} must be an object.`);
     }
-    if (!item[tableSchema.primaryKeyField]) {
+    if (!item.hasOwnProperty(tableSchema.primaryKeyField)) {
         throw new Error(`TableSchema defines a primaryKeyField '${tableSchema.primaryKeyField}' which is not on ${paramName}.`);
     }
     if (typeof item[tableSchema.primaryKeyField] !== tableSchema.primaryKeyType) {
         throw new Error(`TableSchema defines primaryKeyType '${tableSchema.primaryKeyType}' which does not match ${paramName}'s '${typeof item[tableSchema.primaryKeyField]}'.`);
     }
-    if (tableSchema.sortKeyField && !item[tableSchema.sortKeyField]) {
+    if (tableSchema.sortKeyField && !item.hasOwnProperty(tableSchema.sortKeyField)) {
         throw new Error(`TableSchema defines a sortKeyField '${tableSchema.sortKeyField}' which is not on ${paramName}.`);
     }
     if (tableSchema.sortKeyField && typeof item[tableSchema.sortKeyField] !== tableSchema.sortKeyType) {
