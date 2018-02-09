@@ -37,7 +37,7 @@ export function checkSchema(tableSchema: TableSchema): void {
         throw new Error("TableSchema missing primaryKeyType.");
     }
     if (tableSchema.primaryKeyType !== "string" && tableSchema.primaryKeyType !== "number") {
-        throw new Error(`TableSchema primaryKeyType must be 'string' or 'number'.  Got ${tableSchema.primaryKeyType}.`);
+        throw new Error(`TableSchema primaryKeyType must be 'string' or 'number'.  Got '${tableSchema.primaryKeyType}'.`);
     }
     if (tableSchema.sortKeyField && !tableSchema.sortKeyType) {
         throw new Error("TableSchema defines sortKeyField but missing sortKeyType.");
@@ -46,7 +46,7 @@ export function checkSchema(tableSchema: TableSchema): void {
         throw new Error("TableSchema defines sortKeyType but missing sortKeyField.");
     }
     if (tableSchema.sortKeyField && tableSchema.sortKeyType !== "string" && tableSchema.sortKeyType !== "number") {
-        throw new Error(`TableSchema defines sortKeyField; sortKeyType must be 'string' or 'number'.  Got ${tableSchema.sortKeyType}.`);
+        throw new Error(`TableSchema defines sortKeyField; sortKeyType must be 'string' or 'number'.  Got '${tableSchema.sortKeyType}'.`);
     }
 }
 
@@ -71,7 +71,7 @@ export function checkSchemaKeyAgreement(tableSchema: TableSchema, primaryKeyValu
  */
 export function checkSchemaPrimaryKeyAgreement(tableSchema: TableSchema, primaryKeyValue: DynamoKey): void {
     if (typeof primaryKeyValue !== tableSchema.primaryKeyType) {
-        throw new Error(`TableSchema defines primaryKeyType ${tableSchema.primaryKeyType} which does not match the primaryKeyValue ${typeof primaryKeyValue}.`);
+        throw new Error(`TableSchema defines primaryKeyType '${tableSchema.primaryKeyType}' which does not match the primaryKeyValue '${typeof primaryKeyValue}'.`);
     }
     if (typeof primaryKeyValue === "string") {
         if (primaryKeyValue.length === 0) {
@@ -88,7 +88,7 @@ export function checkSchemaPrimaryKeyAgreement(tableSchema: TableSchema, primary
  */
 export function checkSchemaSortKeyAgreement(tableSchema: TableSchema, sortKeyValue: DynamoKey): void {
     if (sortKeyValue != null && typeof sortKeyValue !== tableSchema.sortKeyType) {
-        throw new Error(`TableSchema defines sortKeyType ${tableSchema.sortKeyType} which does not match the sortKeyValue ${typeof sortKeyValue}.`);
+        throw new Error(`TableSchema defines sortKeyType '${tableSchema.sortKeyType}' which does not match the sortKeyValue '${typeof sortKeyValue}'.`);
     }
     if (typeof sortKeyValue === "string") {
         if (sortKeyValue.length === 0) {
@@ -144,22 +144,22 @@ export function checkSchemaItemAgreement(tableSchema: TableSchema, item: object,
         throw new Error(`${paramName} must be an object.`);
     }
     if (!item[tableSchema.primaryKeyField]) {
-        throw new Error(`TableSchema defines a primaryKeyField ${tableSchema.primaryKeyField} which is not on ${paramName}.`);
+        throw new Error(`TableSchema defines a primaryKeyField '${tableSchema.primaryKeyField}' which is not on ${paramName}.`);
     }
     if (typeof item[tableSchema.primaryKeyField] !== tableSchema.primaryKeyType) {
-        throw new Error(`TableSchema defines primaryKeyType ${tableSchema.primaryKeyType} which does not match ${paramName}'s ${typeof item[tableSchema.primaryKeyField]}.`);
+        throw new Error(`TableSchema defines primaryKeyType '${tableSchema.primaryKeyType}' which does not match ${paramName}'s '${typeof item[tableSchema.primaryKeyField]}'.`);
     }
     if (tableSchema.sortKeyField && !item[tableSchema.sortKeyField]) {
-        throw new Error(`TableSchema defines a sortKeyField ${tableSchema.sortKeyField} which is not on ${paramName}.`);
+        throw new Error(`TableSchema defines a sortKeyField '${tableSchema.sortKeyField}' which is not on ${paramName}.`);
     }
     if (tableSchema.sortKeyField && typeof item[tableSchema.sortKeyField] !== tableSchema.sortKeyType) {
-        throw new Error(`TableSchema defines sortKeyType ${tableSchema.sortKeyType} which does not match ${paramName}'s ${typeof item[tableSchema.sortKeyField]}.`);
+        throw new Error(`TableSchema defines sortKeyType '${tableSchema.sortKeyType}' which does not match ${paramName}'s '${typeof item[tableSchema.sortKeyField]}'.`);
     }
     if (tableSchema.versionKeyField && item[tableSchema.versionKeyField] && typeof item[tableSchema.versionKeyField] !== "number") {
-        throw new Error(`TableSchema defines versionKeyField which must be a number and does not match ${paramName}'s ${typeof item[tableSchema.versionKeyField]}.`);
+        throw new Error(`TableSchema defines versionKeyField which must be a number and does not match ${paramName}'s '${typeof item[tableSchema.versionKeyField]}'.`);
     }
     if (tableSchema.ttlField && item[tableSchema.ttlField] != null && typeof item[tableSchema.ttlField] !== "number" && !(item[tableSchema.ttlField] instanceof Date)) {
-        throw new Error(`TableSchema defines ttlField ${tableSchema.ttlField} which must be a number or Date and does not match ${paramName}'s ${typeof item[tableSchema.ttlField]}.`);
+        throw new Error(`TableSchema defines ttlField '${tableSchema.ttlField}' which must be a number or Date and does not match ${paramName}'s '${typeof item[tableSchema.ttlField]}'.`);
     }
 }
 
