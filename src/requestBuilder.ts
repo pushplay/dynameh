@@ -19,7 +19,8 @@ import {dynamoDbReservedWords} from "./dynamoDbReservedWords";
 import {Condition} from "./Condition";
 
 /**
- * Build a serialized item that can be put in DynamoDB.
+ * Build a serialized item that can be put in DynamoDB.  This syntax is also used for
+ * expression and key values.
  * @param tableSchema
  * @param item
  * @returns a put item
@@ -563,7 +564,7 @@ function getKey(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyVal
     const key: aws.DynamoDB.Key = {
         [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKeyValue)
     };
-    if (sortKeyValue) {
+    if (sortKeyValue != null) {
         key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKeyValue);
     }
     return key;

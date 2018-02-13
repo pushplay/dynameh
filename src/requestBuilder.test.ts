@@ -2,7 +2,7 @@ import * as chai from "chai";
 import {
     addCondition,
     addFilter,
-    addProjection,
+    addProjection, buildDeleteInput,
     buildGetInput,
     buildPutInput,
     buildQueryInput,
@@ -73,16 +73,29 @@ describe("requestBuilder", () => {
     });
 
     describe("buildGetInput", () => {
-        const defaultTableSchema: TableSchema = {
-            tableName: "table",
-            primaryKeyField: "primary",
-            primaryKeyType: "string",
-            sortKeyField: "sort",
-            sortKeyType: "string"
-        };
+        it("builds input for a table with a hash key", () => {
+            const input = buildGetInput({
+                tableName: "table",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+            }, "prim");
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                Key: {
+                    primary: {S: "prim"}
+                }
+            });
+        });
 
         it("builds input for a table with a hash and sort key", () => {
-            const input = buildGetInput(defaultTableSchema, "prim", "so");
+            const input = buildGetInput({
+                tableName: "table",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+                sortKeyField: "sort",
+                sortKeyType: "string"
+            }, "prim", "so");
 
             chai.assert.deepEqual(input, {
                 TableName: "table",
@@ -92,9 +105,27 @@ describe("requestBuilder", () => {
                 }
             });
         });
+
+        it("builds input when the sort key value is 0", () => {
+            const input = buildGetInput({
+                tableName: "table",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+                sortKeyField: "sort",
+                sortKeyType: "number"
+            }, "prim", 0);
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                Key: {
+                    primary: {S: "prim"},
+                    sort: {N: "0"}
+                }
+            });
+        });
     });
 
-    describe("getPutInput", () => {
+    describe("buildPutInput", () => {
         it("serializes Date TTLs", () => {
             const serialized = buildPutInput({
                 tableName: "table",
@@ -114,6 +145,59 @@ describe("requestBuilder", () => {
                     ttl: {
                         N: "1503090689"
                     }
+                }
+            });
+        });
+    });
+
+    describe("buildDeleteInput", () => {
+        it("builds input for a table with a hash key", () => {
+            const input = buildDeleteInput({
+                tableName: "table",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+            }, "prim");
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                Key: {
+                    primary: {S: "prim"}
+                }
+            });
+        });
+
+        it("builds input for a table with a hash and sort key", () => {
+            const input = buildDeleteInput({
+                tableName: "table",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+                sortKeyField: "sort",
+                sortKeyType: "string"
+            }, "prim", "so");
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                Key: {
+                    primary: {S: "prim"},
+                    sort: {S: "so"}
+                }
+            });
+        });
+
+        it("builds input when the sort key value is 0", () => {
+            const input = buildDeleteInput({
+                tableName: "table",
+                primaryKeyField: "primary",
+                primaryKeyType: "string",
+                sortKeyField: "sort",
+                sortKeyType: "number"
+            }, "prim", 0);
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                Key: {
+                    primary: {S: "prim"},
+                    sort: {N: "0"}
                 }
             });
         });

@@ -1,6 +1,6 @@
 {
   "name": "dynameh",
-  "version": "2.10.2",
+  "version": "2.10.3",
   "description": "DynamoDB on Node more easier",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
