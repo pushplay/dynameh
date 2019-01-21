@@ -47,22 +47,26 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
                 } else {
                     return {S: item.toISOString()};
                 }
-            } else if (Array.isArray(item)) {
-                if (item.length > 0) {
-                    const firstItemType = typeof item[0];
-                    if (firstItemType === "string" && item.every(x => typeof x === "string")) {
-                        return {SS: item.map(s => s.toString())};
+            }
+            else if(item instanceof Set){
+                if (item.size > 0) {
+                    const items = Array.from(item);
+                    
+                    if (items.every(x => typeof x === "string")) {
+                        return {SS: items.map(s => s.toString())};
                     }
-                    if (firstItemType === "number" && item.every(x => typeof x === "number")) {
-                        return {NS: item.map(n => n.toString())};
+                    if (items.every(x => typeof x === "number")) {
+                        return {NS: items.map(n => n.toString())};
                     }
-                    if (firstItemType === "object" && item.every(x => x instanceof Buffer)) {
-                        return {BS: item.map(b => b.toString("base64"))};
+                    if (items.every(x => x instanceof Buffer)) {
+                        return {BS: items.map(b => b.toString("base64"))};
                     }
-                    if (firstItemType === "object" && item.every(x => x instanceof Uint8Array)) {
-                        return {BS: item.map(b => Buffer.from(b).toString("base64"))};
+                    if (items.every(x => x instanceof Uint8Array)) {
+                        return {BS: items.map(b => Buffer.from(b).toString("base64"))};
                     }
                 }
+            } 
+            else if (Array.isArray(item)) {
                 return {L: item.map(i => buildRequestPutItem(tableSchema, i))};
             } else {
                 const valueMap: any = {};
