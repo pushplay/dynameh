@@ -13,12 +13,12 @@ export function unwrapResponseItem(item: aws.DynamoDB.AttributeValue): any {
         }
         return item.B;
     } else if (item.hasOwnProperty("BS")) {
-        return item.BS.map(b => {
+        return new Set(item.BS.map(b => {
             if (typeof b === "string") {
                 return Buffer.from(b as string, "base64");
             }
             return b;
-        });
+        }));
     } else if (item.hasOwnProperty("BOOL")) {
         return item.BOOL;
     } else if (item.hasOwnProperty("L")) {
@@ -26,13 +26,13 @@ export function unwrapResponseItem(item: aws.DynamoDB.AttributeValue): any {
     } else if (item.hasOwnProperty("N")) {
         return parseFloat(item.N);
     } else if (item.hasOwnProperty("NS")) {
-        return item.NS.map(n => parseFloat(n));
+        return new Set(item.NS.map(n => parseFloat(n)));
     } else if (item.hasOwnProperty("NULL")) {
         return null;
     } else if (item.hasOwnProperty("S")) {
         return item.S;
     } else if (item.hasOwnProperty("SS")) {
-        return item.SS;
+        return new Set(item.SS);
     } else if (item.hasOwnProperty("M")) {
         const resp: any = {};
         Object.keys(item.M).forEach(key => resp[key] = unwrapResponseItem(item.M[key]));

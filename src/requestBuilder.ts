@@ -48,10 +48,10 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
                     return {S: item.toISOString()};
                 }
             }
-            else if(item instanceof Set){
+            else if (item instanceof Set) {
                 if (item.size > 0) {
                     const items = Array.from(item);
-                    
+
                     if (items.every(x => typeof x === "string")) {
                         return {SS: items.map(s => s.toString())};
                     }
@@ -65,11 +65,10 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
                         return {BS: items.map(b => Buffer.from(b).toString("base64"))};
                     }
                 }
-            } 
-            else if (Array.isArray(item)) {
+            } else if (Array.isArray(item)) {
                 return {L: item.map(i => buildRequestPutItem(tableSchema, i))};
             } else {
-                const valueMap: any = {};
+                const valueMap: aws.DynamoDB.MapAttributeValue = {};
                 Object.keys(item).forEach(key => valueMap[key] = buildRequestPutItem(tableSchema, item[key]));
                 return {M: valueMap};
             }
