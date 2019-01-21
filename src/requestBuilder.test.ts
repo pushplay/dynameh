@@ -28,12 +28,26 @@ describe("requestBuilder", () => {
             chai.assert.deepEqual(serialized, {B: "SGVsbG8gV29ybGQ="});
         });
 
-        it("serializes an array of Buffers", () => {
+        it("serializes an array of Numbers", () => {
             const serialized = buildRequestPutItem(defaultTableSchema, [
+                2, 
+                4,
+            ]);
+            chai.assert.deepEqual(serialized, {
+                L: [
+                    {N: "2"},
+                    {N: "4"}   
+                ]
+            });
+        });
+
+
+        it("serializes an Set of Buffers", () => {
+            const serialized = buildRequestPutItem(defaultTableSchema, new Set([
                 Buffer.from([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f, 0x72, 0x6c, 0x64]),
                 Buffer.from([0x4a, 0x65, 0x66, 0x66, 0x47, 0x20, 0x77, 0x61, 0x73, 0x20, 0x68, 0x65, 0x72, 0x65]),
                 Buffer.from([0x6b, 0x77, 0x79, 0x6a, 0x69, 0x62, 0x6f])
-            ]);
+            ]));
             chai.assert.deepEqual(serialized, {
                 BS: [
                     "SGVsbG8gV29ybGQ=",
@@ -43,12 +57,12 @@ describe("requestBuilder", () => {
             });
         });
 
-        it("serializes an array of Uint8Arrays", () => {
-            const serialized = buildRequestPutItem(defaultTableSchema, [
+        it("serializes an Set of Uint8Arrays", () => {
+            const serialized = buildRequestPutItem(defaultTableSchema, new Set([
                 new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f, 0x72, 0x6c, 0x64]),
                 new Uint8Array([0x4a, 0x65, 0x66, 0x66, 0x47, 0x20, 0x77, 0x61, 0x73, 0x20, 0x68, 0x65, 0x72, 0x65]),
                 new Uint8Array([0x6b, 0x77, 0x79, 0x6a, 0x69, 0x62, 0x6f])
-            ]);
+            ]));
             chai.assert.deepEqual(serialized, {
                 BS: [
                     "SGVsbG8gV29ybGQ=",
