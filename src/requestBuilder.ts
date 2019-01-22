@@ -7,7 +7,7 @@ import {
     checkSchemaKeyAgreement,
     checkSchemaKeysAgreement,
     checkSchemaSortKeyAgreement,
-    checkSchemaPrimaryKeyAgreement,
+    checkSchemaPartitionKeyAgreement,
     checkCondition,
     checkConditions,
     operatorIsFunction,
@@ -82,16 +82,16 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
 /**
  * Build a request object that can be passed into `getItem`.
  * @param tableSchema
- * @param primaryKeyValue the key of the item to get
+ * @param partitionKeyValue the key of the item to get
  * @param sortKeyValue sort key of the item to get, if set in the schema
  * @returns input for the `getItem` method
  */
-export function buildGetInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.GetItemInput {
+export function buildGetInput(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.GetItemInput {
     checkSchema(tableSchema);
-    checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue);
+    checkSchemaKeyAgreement(tableSchema, partitionKeyValue, sortKeyValue);
 
     return {
-        Key: getKey(tableSchema, primaryKeyValue, sortKeyValue),
+        Key: getKey(tableSchema, partitionKeyValue, sortKeyValue),
         TableName: tableSchema.tableName
     };
 }
@@ -161,16 +161,16 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
 /**
  * Build a request object that can be passed into `deleteItem`
  * @param tableSchema
- * @param primaryKeyValue the key of the item to delete
+ * @param partitionKeyValue the key of the item to delete
  * @param sortKeyValue sort key of the item to delete, if set in the schema
  * @returns input for the `deleteItem` method
  */
-export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.DeleteItemInput {
+export function buildDeleteInput(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.DeleteItemInput {
     checkSchema(tableSchema);
-    checkSchemaKeyAgreement(tableSchema, primaryKeyValue, sortKeyValue);
+    checkSchemaKeyAgreement(tableSchema, partitionKeyValue, sortKeyValue);
 
     return {
-        Key: getKey(tableSchema, primaryKeyValue, sortKeyValue),
+        Key: getKey(tableSchema, partitionKeyValue, sortKeyValue),
         TableName: tableSchema.tableName
     };
 }
@@ -179,8 +179,11 @@ export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: Dyna
  * Build a request object that can be passed into `query`.  The query operation performs
  * an efficient search on one partition key value with an optional condition on the sort
  * key.
+ *
+ * * If `tableSchema.indexName` is set the query will be performed on the secondary index
+ * with that name.
  * @param tableSchema
- * @param primaryKeyValue the hash key of the item to get
+ * @param partitionKeyValue the hash key of the item to get
  * @param sortKeyOp the operator that can be used to constrain results.  Must be one of:
  *                  `"=", "<", "<=", ">", ">=", "BETWEEN", "begins_with"`.  If not defined
  *                  all sort key values will be returned.
@@ -188,9 +191,9 @@ export function buildDeleteInput(tableSchema: TableSchema, primaryKeyValue: Dyna
  *                      `BETWEEN` and 1 for all other operators.
  * @returns input for the `query` method
  */
-export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyOp?: DynamoQueryConditionOperator, ...sortKeyValues: DynamoKey[]): aws.DynamoDB.QueryInput {
+export function buildQueryInput(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyOp?: DynamoQueryConditionOperator, ...sortKeyValues: DynamoKey[]): aws.DynamoDB.QueryInput {
     checkSchema(tableSchema);
-    checkSchemaPrimaryKeyAgreement(tableSchema, primaryKeyValue);
+    checkSchemaPartitionKeyAgreement(tableSchema, partitionKeyValue);
     if (!tableSchema.sortKeyField) {
         throw new Error("TableSchema doesn't define a sortKeyField and the query operation is only possible when one is defined.");
     }
@@ -205,10 +208,10 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
     const queryInput: aws.DynamoDB.QueryInput = {
         TableName: tableSchema.tableName,
         ExpressionAttributeNames: {
-            "#P": tableSchema.primaryKeyField
+            "#P": tableSchema.partitionKeyField
         },
         ExpressionAttributeValues: {
-            ":p": buildRequestPutItem(tableSchema, primaryKeyValue)
+            ":p": buildRequestPutItem(tableSchema, partitionKeyValue)
         },
         KeyConditionExpression: `#P = :p`
     };
@@ -246,6 +249,9 @@ export function buildQueryInput(tableSchema: TableSchema, primaryKeyValue: Dynam
  * a linear search through all objects in the table.  It can be filtered to only return
  * some values, though all objects in the database will still be read and your account
  * billed accordingly.
+ *
+ * If `tableSchema.indexName` is set the scan will be performed on the secondary index
+ * with that name.
  * @see addFilter
  * @param tableSchema
  * @returns input for the `scan` method
@@ -306,7 +312,7 @@ export function buildBatchDeleteInput(tableSchema: TableSchema, keyValues: Dynam
                 [tableSchema.tableName]: keyPairs.map(keyPair => ({
                     DeleteRequest: {
                         Key: {
-                            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, keyPair[0]),
+                            [tableSchema.partitionKeyField]: buildRequestPutItem(tableSchema, keyPair[0]),
                             [tableSchema.sortKeyField]: buildRequestPutItem(tableSchema, keyPair[1])
                         }
                     }
@@ -320,7 +326,7 @@ export function buildBatchDeleteInput(tableSchema: TableSchema, keyValues: Dynam
                 [tableSchema.tableName]: flatKeys.map(key => ({
                     DeleteRequest: {
                         Key: {
-                            [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, key)
+                            [tableSchema.partitionKeyField]: buildRequestPutItem(tableSchema, key)
                         }
                     }
                 }))
@@ -345,7 +351,7 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
             RequestItems: {
                 [tableSchema.tableName]: {
                     Keys: keyPairs.map(keyPair => ({
-                        [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, keyPair[0]),
+                        [tableSchema.partitionKeyField]: buildRequestPutItem(tableSchema, keyPair[0]),
                         [tableSchema.sortKeyField]: buildRequestPutItem(tableSchema, keyPair[1])
                     }))
                 }
@@ -357,7 +363,7 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
             RequestItems: {
                 [tableSchema.tableName]: {
                     Keys: flatKeys.map(key => ({
-                        [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, key)
+                        [tableSchema.partitionKeyField]: buildRequestPutItem(tableSchema, key)
                     }))
                 }
             }
@@ -374,6 +380,9 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
  * @returns input for the `createTable` method
  */
 export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: number = 1, writeCapacity: number = 1): aws.DynamoDB.CreateTableInput {
+    if (tableSchema.indexName) {
+        throw new Error("tableSchema.indexName is set, implying this is a schema for a secondary index; buildCreateTableInput() is for creating a table and its primary index");
+    }
     if (!Number.isInteger(readCapacity) || readCapacity < 1) {
         throw new Error("readCapacity must be a positive integer");
     }
@@ -386,13 +395,13 @@ export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: nu
     const request = {
         AttributeDefinitions: [
             {
-                AttributeName: tableSchema.primaryKeyField,
-                AttributeType: jsTypeToDdbType(tableSchema.primaryKeyType)
+                AttributeName: tableSchema.partitionKeyField,
+                AttributeType: jsTypeToDdbType(tableSchema.partitionKeyType)
             }
         ],
         KeySchema: [
             {
-                AttributeName: tableSchema.primaryKeyField,
+                AttributeName: tableSchema.partitionKeyField,
                 KeyType: "HASH"
             }
         ],
@@ -563,9 +572,9 @@ function addExpression<T extends {ExpressionAttributeNames?: aws.DynamoDB.Expres
     return res;
 }
 
-function getKey(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.Key {
+function getKey(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.Key {
     const key: aws.DynamoDB.Key = {
-        [tableSchema.primaryKeyField]: buildRequestPutItem(tableSchema, primaryKeyValue)
+        [tableSchema.partitionKeyField]: buildRequestPutItem(tableSchema, partitionKeyValue)
     };
     if (sortKeyValue != null) {
         key[tableSchema.sortKeyField] = buildRequestPutItem(tableSchema, sortKeyValue);

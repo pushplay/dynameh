@@ -6,8 +6,8 @@ describe("validation", () => {
         it("rejects a schema missing the table name", () => {
             chai.assert.throws(() => {
                 checkSchema({
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string"
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
                 } as any);
             });
         });
@@ -15,16 +15,16 @@ describe("validation", () => {
         it("validates a schema with string primary key", () => {
             checkSchema({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string"
+                partitionKeyField: "primary",
+                partitionKeyType: "string"
             });
         });
 
         it("validates a schema with number primary key", () => {
             checkSchema({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string"
+                partitionKeyField: "primary",
+                partitionKeyType: "string"
             });
         });
 
@@ -32,7 +32,7 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchema({
                     tableName: "tableName",
-                    primaryKeyType: "string"
+                    partitionKeyType: "string"
                 } as any);
             });
         });
@@ -41,7 +41,7 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchema({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
+                    partitionKeyField: "primary",
                 } as any);
             });
         });
@@ -50,8 +50,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchema({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "boolean"
+                    partitionKeyField: "primary",
+                    partitionKeyType: "boolean"
                 } as any);
             });
         });
@@ -60,8 +60,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchema({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "object"
+                    partitionKeyField: "primary",
+                    partitionKeyType: "object"
                 } as any);
             });
         });
@@ -69,8 +69,8 @@ describe("validation", () => {
         it("validates a schema with string sort key", () => {
             checkSchema({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 sortKeyField: "sort",
                 sortKeyType: "string"
             });
@@ -79,8 +79,8 @@ describe("validation", () => {
         it("validates a schema with number sort key", () => {
             checkSchema({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 sortKeyField: "sort",
                 sortKeyType: "number"
             });
@@ -90,8 +90,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchema({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
                     sortKeyField: "sort",
                     sortKeyType: "boolean"
                 } as any);
@@ -102,8 +102,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchema({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
                     sortKeyField: "sort",
                     sortKeyType: "object"
                 } as any);
@@ -114,8 +114,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchema({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
                     sortKeyField: "sort"
                 } as any);
             });
@@ -125,8 +125,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchema({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
                     sortKeyType: "object"
                 } as any);
             });
@@ -137,8 +137,8 @@ describe("validation", () => {
         it("validates a schema with string", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string"
+                partitionKeyField: "primary",
+                partitionKeyType: "string"
             }, {
                 primary: "primary value"
             });
@@ -147,8 +147,8 @@ describe("validation", () => {
         it("validates a schema with number", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "number"
+                partitionKeyField: "primary",
+                partitionKeyType: "number"
             }, {
                 primary: 789
             });
@@ -157,8 +157,8 @@ describe("validation", () => {
         it("validates a schema with number and value 0", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "number"
+                partitionKeyField: "primary",
+                partitionKeyType: "number"
             }, {
                 primary: 0
             });
@@ -168,8 +168,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchemaItemAgreement({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string"
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
                 }, {
                     primary: 3456234
                 });
@@ -180,8 +180,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchemaItemAgreement({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string"
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
                 }, {
                     primary: {}
                 });
@@ -191,8 +191,8 @@ describe("validation", () => {
         it("validates a schema with string and string sort key", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 sortKeyField: "sort",
                 sortKeyType: "string"
             }, {
@@ -204,8 +204,8 @@ describe("validation", () => {
         it("validates a schema with string and number sort key", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 sortKeyField: "sort",
                 sortKeyType: "number"
             }, {
@@ -217,8 +217,8 @@ describe("validation", () => {
         it("validates a schema with string and number sort key of value 0", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 sortKeyField: "sort",
                 sortKeyType: "number"
             }, {
@@ -231,8 +231,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchemaItemAgreement({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
                     sortKeyField: "sort",
                     sortKeyType: "string"
                 }, {
@@ -245,8 +245,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchemaItemAgreement({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
                     sortKeyField: "sort",
                     sortKeyType: "string"
                 }, {
@@ -259,8 +259,8 @@ describe("validation", () => {
         it("validates a schema with version key field", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 versionKeyField: "version"
             }, {
                 primary: "primary value",
@@ -271,8 +271,8 @@ describe("validation", () => {
         it("validates a schema with version key field when the item does not have it set", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 versionKeyField: "version"
             }, {
                 primary: "primary value"
@@ -283,8 +283,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchemaItemAgreement({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
                     versionKeyField: "version"
                 }, {
                     primary: "primary value",
@@ -296,8 +296,8 @@ describe("validation", () => {
         it("validates a schema with ttlField and a Date is set", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 ttlField: "ttl"
             }, {
                 primary: "primary value",
@@ -308,8 +308,8 @@ describe("validation", () => {
         it("validates a schema with ttlField and a number set", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 ttlField: "ttl"
             }, {
                 primary: "primary value",
@@ -320,8 +320,8 @@ describe("validation", () => {
         it("validates a schema with ttlField and none is set", () => {
             checkSchemaItemAgreement({
                 tableName: "tableName",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 ttlField: "ttl"
             }, {
                 primary: "primary value",
@@ -333,8 +333,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchemaItemAgreement({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
                     ttlField: "ttl"
                 }, {
                     primary: "primary value",
@@ -347,8 +347,8 @@ describe("validation", () => {
             chai.assert.throws(() => {
                 checkSchemaItemAgreement({
                     tableName: "tableName",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
                     ttlField: "ttl"
                 }, {
                     primary: "primary value",

@@ -30,14 +30,14 @@ export function checkSchema(tableSchema: TableSchema): void {
     if (!tableSchema.tableName) {
         throw new Error("TableSchema missing tableName.");
     }
-    if (!tableSchema.primaryKeyField) {
-        throw new Error("TableSchema missing primaryKeyField.");
+    if (!tableSchema.partitionKeyField) {
+        throw new Error("TableSchema missing partitionKeyField.");
     }
-    if (!tableSchema.primaryKeyType) {
-        throw new Error("TableSchema missing primaryKeyType.");
+    if (!tableSchema.partitionKeyType) {
+        throw new Error("TableSchema missing partitionKeyType.");
     }
-    if (tableSchema.primaryKeyType !== "string" && tableSchema.primaryKeyType !== "number") {
-        throw new Error(`TableSchema primaryKeyType must be 'string' or 'number'.  Got '${tableSchema.primaryKeyType}'.`);
+    if (tableSchema.partitionKeyType !== "string" && tableSchema.partitionKeyType !== "number") {
+        throw new Error(`TableSchema partitionKeyType must be 'string' or 'number'.  Got '${tableSchema.partitionKeyType}'.`);
     }
     if (tableSchema.sortKeyField && !tableSchema.sortKeyType) {
         throw new Error("TableSchema defines sortKeyField but missing sortKeyType.");
@@ -53,8 +53,8 @@ export function checkSchema(tableSchema: TableSchema): void {
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */
-export function checkSchemaKeyAgreement(tableSchema: TableSchema, primaryKeyValue: DynamoKey, sortKeyValue?: DynamoKey): void {
-    checkSchemaPrimaryKeyAgreement(tableSchema, primaryKeyValue);
+export function checkSchemaKeyAgreement(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey): void {
+    checkSchemaPartitionKeyAgreement(tableSchema, partitionKeyValue);
     if (tableSchema.sortKeyField && sortKeyValue == null) {
         throw new Error("TableSchema defines a sortKeyField but the value is missing.");
     }
@@ -69,16 +69,16 @@ export function checkSchemaKeyAgreement(tableSchema: TableSchema, primaryKeyValu
 /**
  * Assumes checkSchema(tableSchema) has already been run.
  */
-export function checkSchemaPrimaryKeyAgreement(tableSchema: TableSchema, primaryKeyValue: DynamoKey): void {
-    if (typeof primaryKeyValue !== tableSchema.primaryKeyType) {
-        throw new Error(`TableSchema defines primaryKeyType '${tableSchema.primaryKeyType}' which does not match the primaryKeyValue '${typeof primaryKeyValue}'.`);
+export function checkSchemaPartitionKeyAgreement(tableSchema: TableSchema, partitionKeyValue: DynamoKey): void {
+    if (typeof partitionKeyValue !== tableSchema.partitionKeyType) {
+        throw new Error(`TableSchema defines partitionKeyType '${tableSchema.partitionKeyType}' which does not match the partitionKeyValue '${typeof partitionKeyValue}'.`);
     }
-    if (typeof primaryKeyValue === "string") {
-        if (primaryKeyValue.length === 0) {
-            throw new Error(`The primary key value cannot be an empty string.`);
+    if (typeof partitionKeyValue === "string") {
+        if (partitionKeyValue.length === 0) {
+            throw new Error(`The partition key value cannot be an empty string.`);
         }
-        if (primaryKeyValue.length > 2048) {
-            throw new Error(`The primary key value exceeds the max length of 2048.`);
+        if (partitionKeyValue.length > 2048) {
+            throw new Error(`The partition key value exceeds the max length of 2048.`);
         }
     }
 }
@@ -143,11 +143,11 @@ export function checkSchemaItemAgreement(tableSchema: TableSchema, item: object,
     if (typeof item !== "object") {
         throw new Error(`${paramName} must be an object.`);
     }
-    if (!item.hasOwnProperty(tableSchema.primaryKeyField)) {
-        throw new Error(`TableSchema defines a primaryKeyField '${tableSchema.primaryKeyField}' which is not on ${paramName}.`);
+    if (!item.hasOwnProperty(tableSchema.partitionKeyField)) {
+        throw new Error(`TableSchema defines a partitionKeyField '${tableSchema.partitionKeyField}' which is not on ${paramName}.`);
     }
-    if (typeof item[tableSchema.primaryKeyField] !== tableSchema.primaryKeyType) {
-        throw new Error(`TableSchema defines primaryKeyType '${tableSchema.primaryKeyType}' which does not match ${paramName}'s '${typeof item[tableSchema.primaryKeyField]}'.`);
+    if (typeof item[tableSchema.partitionKeyField] !== tableSchema.partitionKeyType) {
+        throw new Error(`TableSchema defines partitionKeyType '${tableSchema.partitionKeyType}' which does not match ${paramName}'s '${typeof item[tableSchema.partitionKeyField]}'.`);
     }
     if (tableSchema.sortKeyField && !item.hasOwnProperty(tableSchema.sortKeyField)) {
         throw new Error(`TableSchema defines a sortKeyField '${tableSchema.sortKeyField}' which is not on ${paramName}.`);

@@ -47,8 +47,8 @@ const dynamodb = new aws.DynamoDB({
 // Set up the table schema.
 const tableSchema = {
     tableName: "motorcycles",
-    primaryKeyField: "id",
-    primaryKeyType: "string"
+    partitionKeyField: "id",
+    partitionKeyType: "string"
 };
 
 async function updateMotorcycleHorsePower(motorcycleId, bhp) {
@@ -79,23 +79,23 @@ updateMotorcycleHorsePower("sv-650", 73.4);
 
 The key to easy building of requests in Dynameh is the [TableSchema](https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html).  This simple object defines all the extra information Dynameh needs to build requests.
 
-For a table called `MyTable` with a primary key `id` that is a number...
+For a table called `MyTable` with a partition key `id` that is a number...
 
 ```json
 {
   "tableName": "MyTable",
-  "primaryKeyField": "id",
-  "primaryKeyType": "number"
+  "partitionKeyField": "id",
+  "partitionKeyType": "number"
 }
 ```
 
-For a table called `MyAdvancedTable` with a primary key `id` that is a string, a range key `date` that is a number, and a version field `version`...
+For a table called `MyAdvancedTable` with a partition key `id` that is a string, a sort key `date` that is a number, and a version field `version`...
 
 ```json
 {
   "tableName": "MyAdvancedTable",
-  "primaryKeyField": "id",
-  "primaryKeyType": "string",
+  "partitionKeyField": "id",
+  "partitionKeyType": "string",
   "sortKeyField": "date",
   "sortKeyType": "number",
   "versionKeyField": "version"
@@ -121,8 +121,8 @@ const dynamodb = new aws.DynamoDB({
 // Set up the table schema.
 const tableSchema = {
     tableName: "motorcycles",
-    primaryKeyField: "id",
-    primaryKeyType: "string",
+    partitionKeyField: "id",
+    partitionKeyType: "string",
     versionKeyField: "version"
 };
 
@@ -170,8 +170,8 @@ One of the most useful conditions is that the item must not already exist (creat
 ```ecmascript 6
 const tableSchema = {
     tableName: "Boats",
-    primaryKeyField: "name",
-    primaryKeyType: "string"
+    partitionKeyField: "name",
+    partitionKeyType: "string"
 };
 
 async function addNewBoat(boat) {
@@ -226,8 +226,8 @@ For example...
 ```ecmascript 6
 const tableSchema = {
     tableName: "Transactions",
-    primaryKeyField: "customerId",
-    primaryKeyType: "string",
+    partitionKeyField: "customerId",
+    partitionKeyType: "string",
     sortKeyField: "transactionId",
     sortKeyType: "string",
 };
@@ -255,14 +255,8 @@ For example...
 ```ecmascript 6
 const tableSchema = {
     tableName: "MyTable",
-    primaryKeyField: "id",
-    primaryKeyType: "number",
+    partitionKeyField: "id",
+    partitionKeyType: "number",
     dateSerializationFunction: date => date.toISOString()   // same as default
 };
 ```
-
-## TODO
-
-- document TableSchema.indexName
-- add paging support for [query](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html#DDB-Query-response-LastEvaluatedKey) and [scan](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Scan.html#DDB-Scan-response-LastEvaluatedKey) 
-- rename primary key to partition key

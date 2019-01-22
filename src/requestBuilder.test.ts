@@ -2,7 +2,7 @@ import * as chai from "chai";
 import {
     addCondition,
     addFilter,
-    addProjection, buildDeleteInput,
+    addProjection, buildCreateTableInput, buildDeleteInput,
     buildGetInput,
     buildPutInput,
     buildQueryInput,
@@ -14,8 +14,8 @@ describe("requestBuilder", () => {
     describe("buildRequestPutItem", () => {
         const defaultTableSchema: TableSchema = {
             tableName: "table",
-            primaryKeyField: "primary",
-            primaryKeyType: "string"
+            partitionKeyField: "primary",
+            partitionKeyType: "string"
         };
 
         it("serializes a Buffer", () => {
@@ -114,8 +114,8 @@ describe("requestBuilder", () => {
         it("builds input for a table with a hash key", () => {
             const input = buildGetInput({
                 tableName: "table",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
             }, "prim");
 
             chai.assert.deepEqual(input, {
@@ -129,8 +129,8 @@ describe("requestBuilder", () => {
         it("builds input for a table with a hash and sort key", () => {
             const input = buildGetInput({
                 tableName: "table",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 sortKeyField: "sort",
                 sortKeyType: "string"
             }, "prim", "so");
@@ -147,8 +147,8 @@ describe("requestBuilder", () => {
         it("builds input when the sort key value is 0", () => {
             const input = buildGetInput({
                 tableName: "table",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 sortKeyField: "sort",
                 sortKeyType: "number"
             }, "prim", 0);
@@ -167,8 +167,8 @@ describe("requestBuilder", () => {
         it("serializes Date TTLs", () => {
             const serialized = buildPutInput({
                 tableName: "table",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 ttlField: "ttl"
             }, {
                 primary: "xxx",
@@ -192,8 +192,8 @@ describe("requestBuilder", () => {
         it("builds input for a table with a hash key", () => {
             const input = buildDeleteInput({
                 tableName: "table",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
             }, "prim");
 
             chai.assert.deepEqual(input, {
@@ -207,8 +207,8 @@ describe("requestBuilder", () => {
         it("builds input for a table with a hash and sort key", () => {
             const input = buildDeleteInput({
                 tableName: "table",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 sortKeyField: "sort",
                 sortKeyType: "string"
             }, "prim", "so");
@@ -225,8 +225,8 @@ describe("requestBuilder", () => {
         it("builds input when the sort key value is 0", () => {
             const input = buildDeleteInput({
                 tableName: "table",
-                primaryKeyField: "primary",
-                primaryKeyType: "string",
+                partitionKeyField: "primary",
+                partitionKeyType: "string",
                 sortKeyField: "sort",
                 sortKeyType: "number"
             }, "prim", 0);
@@ -244,16 +244,16 @@ describe("requestBuilder", () => {
     describe("buildQueryInput", () => {
         const stringSortTableSchema: TableSchema = {
             tableName: "table",
-            primaryKeyField: "primary",
-            primaryKeyType: "string",
+            partitionKeyField: "primary",
+            partitionKeyType: "string",
             sortKeyField: "sort",
             sortKeyType: "string"
         };
 
         const numberSortTableSchema: TableSchema = {
             tableName: "table",
-            primaryKeyField: "primary",
-            primaryKeyType: "string",
+            partitionKeyField: "primary",
+            partitionKeyType: "string",
             sortKeyField: "sort",
             sortKeyType: "number"
         };
@@ -262,8 +262,8 @@ describe("requestBuilder", () => {
             chai.assert.throws(() => {
                 buildQueryInput({
                     tableName: "table",
-                    primaryKeyField: "primary",
-                    primaryKeyType: "string"
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
                 }, "mah value");
             });
         });
@@ -368,8 +368,8 @@ describe("requestBuilder", () => {
     describe("buildScanInput", () => {
         const defaultTableSchema: TableSchema = {
             tableName: "table",
-            primaryKeyField: "primary",
-            primaryKeyType: "string"
+            partitionKeyField: "primary",
+            partitionKeyType: "string"
         };
 
         it("creates a basic scan input", () => {
@@ -390,11 +390,24 @@ describe("requestBuilder", () => {
         });
     });
 
+    describe("buildCreateTableInput", () => {
+        it("won't create a table for the schema of a secondary index", () => {
+            chai.assert.throws(() => {
+                buildCreateTableInput({
+                    tableName: "table",
+                    indexName: "secondaryIndex",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
+                });
+            });
+        });
+    });
+
     describe("addProjection", () => {
         const defaultTableSchema: TableSchema = {
             tableName: "table",
-            primaryKeyField: "primary",
-            primaryKeyType: "string",
+            partitionKeyField: "primary",
+            partitionKeyType: "string",
             sortKeyField: "sort",
             sortKeyType: "string"
         };
@@ -502,8 +515,8 @@ describe("requestBuilder", () => {
     describe("addCondition", () => {
         const defaultTableSchema: TableSchema = {
             tableName: "table",
-            primaryKeyField: "primary",
-            primaryKeyType: "string"
+            partitionKeyField: "primary",
+            partitionKeyType: "string"
         };
 
         it("adds a condition to put input", () => {
@@ -696,8 +709,8 @@ describe("requestBuilder", () => {
     describe("addFilter", () => {
         const defaultTableSchema: TableSchema = {
             tableName: "table",
-            primaryKeyField: "primary",
-            primaryKeyType: "string",
+            partitionKeyField: "primary",
+            partitionKeyType: "string",
             sortKeyField: "sort",
             sortKeyType: "number"
         };
