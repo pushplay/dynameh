@@ -47,24 +47,26 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
                 } else {
                     return {S: item.toISOString()};
                 }
-            }
-            else if (item instanceof Set) {
-                if (item.size > 0) {
-                    const items = Array.from(item);
-
-                    if (items.every(x => typeof x === "string")) {
-                        return {SS: items.map(s => s.toString())};
-                    }
-                    if (items.every(x => typeof x === "number")) {
-                        return {NS: items.map(n => n.toString())};
-                    }
-                    if (items.every(x => x instanceof Buffer)) {
-                        return {BS: items.map(b => b.toString("base64"))};
-                    }
-                    if (items.every(x => x instanceof Uint8Array)) {
-                        return {BS: items.map(b => Buffer.from(b).toString("base64"))};
-                    }
+            } else if (item instanceof Set) {
+                const items = Array.from(item);
+                if (item.size == 0) {
+                    throw new Error("Empty Sets are not supported.")
                 }
+
+                if (items.every(x => typeof x === "string")) {
+                    return {SS: items.map(s => s.toString())};
+                }
+                if (items.every(x => typeof x === "number")) {
+                    return {NS: items.map(n => n.toString())};
+                }
+                if (items.every(x => x instanceof Buffer)) {
+                    return {BS: items.map(b => b.toString("base64"))};
+                }
+                if (items.every(x => x instanceof Uint8Array)) {
+                    return {BS: items.map(b => Buffer.from(b).toString("base64"))};
+                }
+
+                throw new Error(`Set [${items.slice(0, 10).map(i => typeof i).join(",")}] cannot be serialized into a request object.`);
             } else if (Array.isArray(item)) {
                 return {L: item.map(i => buildRequestPutItem(tableSchema, i))};
             } else {
@@ -180,7 +182,7 @@ export function buildDeleteInput(tableSchema: TableSchema, partitionKeyValue: Dy
  * an efficient search on one partition key value with an optional condition on the sort
  * key.
  *
- * * If `tableSchema.indexName` is set the query will be performed on the secondary index
+ * If `tableSchema.indexName` is set the query will be performed on the secondary index
  * with that name.
  * @param tableSchema
  * @param partitionKeyValue the hash key of the item to get
@@ -381,13 +383,13 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
  */
 export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: number = 1, writeCapacity: number = 1): aws.DynamoDB.CreateTableInput {
     if (tableSchema.indexName) {
-        throw new Error("tableSchema.indexName is set, implying this is a schema for a secondary index; buildCreateTableInput() is for creating a table and its primary index");
+        throw new Error("tableSchema.indexName is set, implying this is a schema for a secondary index.  buildCreateTableInput() is for creating a table and its primary index.");
     }
     if (!Number.isInteger(readCapacity) || readCapacity < 1) {
-        throw new Error("readCapacity must be a positive integer");
+        throw new Error("readCapacity must be a positive integer.");
     }
     if (!Number.isInteger(writeCapacity) || writeCapacity < 1) {
-        throw new Error("writeCapacity must be a positive integer");
+        throw new Error("writeCapacity must be a positive integer.");
     }
 
     checkSchema(tableSchema);
