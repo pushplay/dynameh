@@ -93,8 +93,8 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#dateserializationfunction" class="tsd-kind-icon">date<wbr>Serialization<wbr>Function</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#indexname" class="tsd-kind-icon">index<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#primarykeyfield" class="tsd-kind-icon">primary<wbr>Key<wbr>Field</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#primarykeytype" class="tsd-kind-icon">primary<wbr>Key<wbr>Type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#partitionkeyfield" class="tsd-kind-icon">partition<wbr>Key<wbr>Field</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#partitionkeytype" class="tsd-kind-icon">partition<wbr>Key<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#sortkeyfield" class="tsd-kind-icon">sort<wbr>Key<wbr>Field</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#sortkeytype" class="tsd-kind-icon">sort<wbr>Key<wbr>Type</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#tablename" class="tsd-kind-icon">table<wbr>Name</a></li>
@@ -113,7 +113,7 @@
 					<div class="tsd-signature tsd-kind-icon">date<wbr>Serialization<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b29cce0/src/TableSchema.ts#L61">TableSchema.ts:61</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/TableSchema.ts#L59">TableSchema.ts:59</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -160,42 +160,42 @@
 					<div class="tsd-signature tsd-kind-icon">index<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b29cce0/src/TableSchema.ts#L14">TableSchema.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/TableSchema.ts#L14">TableSchema.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Global secondary index name to use for query or scan.</p>
+							<p>The name of the secondary index, when this schema represents a secondary index.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="primarykeyfield" class="tsd-anchor"></a>
-					<h3>primary<wbr>Key<wbr>Field</h3>
-					<div class="tsd-signature tsd-kind-icon">primary<wbr>Key<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="partitionkeyfield" class="tsd-anchor"></a>
+					<h3>partition<wbr>Key<wbr>Field</h3>
+					<div class="tsd-signature tsd-kind-icon">partition<wbr>Key<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b29cce0/src/TableSchema.ts#L19">TableSchema.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/TableSchema.ts#L19">TableSchema.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The name of primary key field.</p>
+							<p>The name of the partition key field.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="primarykeytype" class="tsd-anchor"></a>
-					<h3>primary<wbr>Key<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">primary<wbr>Key<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span></div>
+					<a name="partitionkeytype" class="tsd-anchor"></a>
+					<h3>partition<wbr>Key<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">partition<wbr>Key<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b29cce0/src/TableSchema.ts#L24">TableSchema.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/TableSchema.ts#L24">TableSchema.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The type of the primary key field.</p>
+							<p>The type of the partition key field.</p>
 						</div>
 					</div>
 				</section>
@@ -205,7 +205,7 @@
 					<div class="tsd-signature tsd-kind-icon">sort<wbr>Key<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b29cce0/src/TableSchema.ts#L30">TableSchema.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/TableSchema.ts#L30">TableSchema.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -221,7 +221,7 @@
 					<div class="tsd-signature tsd-kind-icon">sort<wbr>Key<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b29cce0/src/TableSchema.ts#L36">TableSchema.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/TableSchema.ts#L36">TableSchema.ts:36</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -237,7 +237,7 @@
 					<div class="tsd-signature tsd-kind-icon">table<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b29cce0/src/TableSchema.ts#L9">TableSchema.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/TableSchema.ts#L9">TableSchema.ts:9</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -252,7 +252,7 @@
 					<div class="tsd-signature tsd-kind-icon">ttl<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b29cce0/src/TableSchema.ts#L54">TableSchema.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/TableSchema.ts#L52">TableSchema.ts:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -261,7 +261,6 @@
 								set will have the value converted to seconds since 12:00:00 AM January 1st, 1970 UTC.
 							DynamoDB will automatically delete items whose <code>ttl</code> has passed (within about 48 hours).</p>
 						</div>
-						<p>Support for this field is currently experimental.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -270,7 +269,7 @@
 					<div class="tsd-signature tsd-kind-icon">version<wbr>Key<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b29cce0/src/TableSchema.ts#L45">TableSchema.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/TableSchema.ts#L45">TableSchema.ts:45</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -278,7 +277,7 @@
 							<p>The name of a field to use as the version key for optimistic
 								locking.  If set on an item, the type of the value must be <code>number</code>.
 								If set and the field is not on an item during a put then
-								there must be an existing item in the table.  If set and the field
+								there must not be an existing item in the table.  If set and the field
 							is present on an item then the existing value in the table must match.</p>
 						</div>
 					</div>
@@ -346,10 +345,10 @@
 								<a href="_tableschema_.tableschema.html#indexname" class="tsd-kind-icon">index<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#primarykeyfield" class="tsd-kind-icon">primary<wbr>Key<wbr>Field</a>
+								<a href="_tableschema_.tableschema.html#partitionkeyfield" class="tsd-kind-icon">partition<wbr>Key<wbr>Field</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#primarykeytype" class="tsd-kind-icon">primary<wbr>Key<wbr>Type</a>
+								<a href="_tableschema_.tableschema.html#partitionkeytype" class="tsd-kind-icon">partition<wbr>Key<wbr>Type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="_tableschema_.tableschema.html#sortkeyfield" class="tsd-kind-icon">sort<wbr>Key<wbr>Field</a>

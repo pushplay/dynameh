@@ -66,13 +66,12 @@
 			<div class="tsd-panel tsd-typography">
 				<h1 id="dynameh">Dynameh</h1>
 				<p>DynamoDB on Node more easier</p>
-				<p>Dynameh works with the existing <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html">DynamoDB JavaScript API</a> and its objects rather than wrapping them and hiding the details.  The goal is to make the existing API easier to work with where naturally possible, without ever limiting its power.  Obscure and rarely used flags are still accessible while common operations are quicker to write.</p>
-				<p>Dynameh makes it easier to:</p>
+				<p>Dynameh makes the official <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html">DynamoDB JavaScript API</a> easier to use.  It makes it easier to:</p>
 				<ul>
 					<li><a href="https://giftbit.github.io/dynameh/modules/_requestbuilder_.html">build request objects</a></li>
+					<li><a href="https://giftbit.github.io/dynameh/modules/_responseunwrapper_.html">unwrap response objects</a></li>
 					<li><a href="https://giftbit.github.io/dynameh/modules/_requestbuilder_.html#addprojection">build a projection expression</a></li>
 					<li><a href="https://giftbit.github.io/dynameh/modules/_requestbuilder_.html#addcondition">build a condition expression</a></li>
-					<li><a href="https://giftbit.github.io/dynameh/modules/_responseunwrapper_.html">unwrap response objects</a></li>
 					<li><a href="https://giftbit.github.io/dynameh/modules/_batchhelper_.html">run oversized batch requests</a></li>
 					<li><a href="https://giftbit.github.io/dynameh/modules/_concurrenthelper_.html">run requests concurrently that can&#39;t be run in batch</a></li>
 					<li><a href="https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield">implement optimistic locking</a></li>
@@ -80,10 +79,9 @@
 				</ul>
 				<h2 id="installation">Installation</h2>
 				<p>Dynameh is your typical NPM package.</p>
-				<pre><code class="lang-bash">npm install --save dynameh
-</code></pre>
+				<pre><code class="language-bash">npm install --save dynameh</code></pre>
 				<h2 id="usage">Usage</h2>
-				<p>```ecmascript 6
+				<p><code>`</code>ecmascript 6
 					import * as dynameh from &quot;dynameh&quot;;
 					// or
 				const dynameh = require(&quot;dynameh&quot;);</p>
@@ -107,11 +105,11 @@ import * <span class="hljs-keyword">as</span> dynameh <span class="hljs-keyword"
 <span class="hljs-comment">// Set up the table schema.</span>
 <span class="hljs-keyword">const</span> tableSchema = {
     tableName: <span class="hljs-string">"motorcycles"</span>,
-    primaryKeyField: <span class="hljs-string">"id"</span>,
-    primaryKeyType: <span class="hljs-string">"string"</span>
+    partitionKeyField: <span class="hljs-string">"id"</span>,
+    partitionKeyType: <span class="hljs-string">"string"</span>
 };
 
-<span class="hljs-function"><span class="hljs-keyword">async</span> function <span class="hljs-title">updateMotorcycleHorsePower</span>(<span class="hljs-params">motorcycleId, bhp</span>) </span>{
+<span class="hljs-function"><span class="hljs-keyword">async</span> function <span class="hljs-title">updateMotorcycleHorsePower</span>(<span class="hljs-params">motorcycleId, bhp</span>)</span> {
     <span class="hljs-comment">// Fetch the item from the database.</span>
     <span class="hljs-keyword">const</span> getRequest = dynameh.requestBuilder.buildGetInput(tableSchema, motorcycleId);
     <span class="hljs-keyword">const</span> getResult = <span class="hljs-keyword">await</span> dynamodb.getItem(getRequest).promise();
@@ -132,32 +130,29 @@ import * <span class="hljs-keyword">as</span> dynameh <span class="hljs-keyword"
     <span class="hljs-keyword">await</span> dynamodb.putItem(putRequest).promise();
 }
 
-updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span class="hljs-number">73.4</span>);
-</code></pre><h3 id="tableschema">TableSchema</h3>
+updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span class="hljs-number">73.4</span>);</code></pre><h3 id="tableschema">TableSchema</h3>
 				<p>The key to easy building of requests in Dynameh is the <a href="https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html">TableSchema</a>.  This simple object defines all the extra information Dynameh needs to build requests.</p>
 				<p>For a table called <code>MyTable</code> with a primary key <code>id</code> that is a number...</p>
-				<pre><code class="lang-json">{
+				<pre><code class="language-json">{
   <span class="hljs-attr">"tableName"</span>: <span class="hljs-string">"MyTable"</span>,
-  <span class="hljs-attr">"primaryKeyField"</span>: <span class="hljs-string">"id"</span>,
-  <span class="hljs-attr">"primaryKeyType"</span>: <span class="hljs-string">"number"</span>
-}
-</code></pre>
+  <span class="hljs-attr">"partitionKeyField"</span>: <span class="hljs-string">"id"</span>,
+  <span class="hljs-attr">"partitionKeyType"</span>: <span class="hljs-string">"number"</span>
+}</code></pre>
 				<p>For a table called <code>MyAdvancedTable</code> with a primary key <code>id</code> that is a string, a range key <code>date</code> that is a number, and a version field <code>version</code>...</p>
-				<pre><code class="lang-json">{
+				<pre><code class="language-json">{
   <span class="hljs-attr">"tableName"</span>: <span class="hljs-string">"MyAdvancedTable"</span>,
-  <span class="hljs-attr">"primaryKeyField"</span>: <span class="hljs-string">"id"</span>,
-  <span class="hljs-attr">"primaryKeyType"</span>: <span class="hljs-string">"string"</span>,
+  <span class="hljs-attr">"partitionKeyField"</span>: <span class="hljs-string">"id"</span>,
+  <span class="hljs-attr">"partitionKeyType"</span>: <span class="hljs-string">"string"</span>,
   <span class="hljs-attr">"sortKeyField"</span>: <span class="hljs-string">"date"</span>,
   <span class="hljs-attr">"sortKeyType"</span>: <span class="hljs-string">"number"</span>,
   <span class="hljs-attr">"versionKeyField"</span>: <span class="hljs-string">"version"</span>
-}
-</code></pre>
+}</code></pre>
 				<h3 id="optimistic-locking">Optimistic Locking</h3>
 				<p>Optimistic locking is a strategy for preventing changes from clobbering each other.  For example two processes read from the database, make unrelated changes, and then both write to the database but the second write overwrites the first (clobbers).</p>
 				<p>Enable optimistic locking by setting the <code>versionKeyField</code> on your TableSchema.  In the second TableSchema example that field is <code>version</code>.  The <code>versionKeyField</code> will be automatically incremented on the server side during a put request.  If the value for <code>versionKeyField</code> sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.</p>
-				<p>```ecmascript 6
-					import <em> as aws from &quot;aws-sdk&quot;;
-				import </em> as dynameh from &quot;dynameh&quot;;</p>
+				<p><code>`</code>ecmascript 6
+					import * as aws from &quot;aws-sdk&quot;;
+				import * as dynameh from &quot;dynameh&quot;;</p>
 				<p>// Initialize the DynamoDB client.
 					const dynamodb = new aws.DynamoDB({
 					apiVersion: &quot;2012-08-10&quot;,
@@ -166,8 +161,8 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 				<p>// Set up the table schema.
 					const tableSchema = {
 					tableName: &quot;motorcycles&quot;,
-					primaryKeyField: &quot;id&quot;,
-					primaryKeyType: &quot;string&quot;,
+					partitionKeyField: &quot;id&quot;,
+					partitionKeyType: &quot;string&quot;,
 					versionKeyField: &quot;version&quot;
 				};</p>
 				<p>async function updateMotorcycleHorsePower(motorcycleId, bhp) {
@@ -187,19 +182,18 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 motorcycle.bhp = bhp;
 
 <span class="hljs-comment">// Put the updated object in the database.</span>
-<span class="hljs-keyword">const</span> putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, motorcycle);
+const putRequest = dynameh.requestBuilder.build<span class="hljs-constructor">PutInput(<span class="hljs-params">tableSchema</span>, <span class="hljs-params">motorcycle</span>)</span>;
 <span class="hljs-keyword">try</span> {
-    <span class="hljs-keyword">await</span> dynamodb.putItem(putRequest).promise();
-} <span class="hljs-keyword">catch</span> (err) {
-    <span class="hljs-keyword">if</span> (err.code === <span class="hljs-string">"ConditionalCheckFailedException"</span>) {
+    await dynamodb.put<span class="hljs-constructor">Item(<span class="hljs-params">putRequest</span>)</span>.promise<span class="hljs-literal">()</span>;
+} catch (err) {
+    <span class="hljs-keyword">if</span> (err.code<span class="hljs-operator"> === </span><span class="hljs-string">"ConditionalCheckFailedException"</span>) {
         <span class="hljs-comment">// If this is the error code then the optimistic locking has failed</span>
         <span class="hljs-comment">// and we should redo the update operation (done here with recursion).</span>
-        updateMotorcycleHorsePower(motorcycleId, bhp);
+        update<span class="hljs-constructor">MotorcycleHorsePower(<span class="hljs-params">motorcycleId</span>, <span class="hljs-params">bhp</span>)</span>;
     } <span class="hljs-keyword">else</span> {
-        <span class="hljs-keyword">throw</span> err;
+        throw err;
     }
-}
-</code></pre><p>}</p>
+}</code></pre><p>}</p>
 				<p>updateMotorcycleHorsePower(&quot;sv-650&quot;, 73.4);</p>
 				<pre><code>
 <span class="hljs-meta">### Conditions</span>
@@ -209,13 +203,13 @@ Conditions can be added to a put or delete request to make the operation conditi
 <span class="hljs-function">One of the most useful conditions <span class="hljs-keyword">is</span> that the item must not already <span class="hljs-title">exist</span> (<span class="hljs-params">create but not update</span>).  This <span class="hljs-keyword">is</span> done <span class="hljs-keyword">by</span> asserting `attribute_not_exists` <span class="hljs-keyword">on</span> the primary key.  For example...
 
 ```ecmascript 6
-<span class="hljs-keyword">const</span> tableSchema </span>= {
+<span class="hljs-keyword">const</span> tableSchema</span> = {
     tableName: <span class="hljs-string">"Boats"</span>,
-    primaryKeyField: <span class="hljs-string">"name"</span>,
-    primaryKeyType: <span class="hljs-string">"string"</span>
+    partitionKeyField: <span class="hljs-string">"name"</span>,
+    partitionKeyType: <span class="hljs-string">"string"</span>
 };
 
-<span class="hljs-function"><span class="hljs-keyword">async</span> function <span class="hljs-title">addNewBoat</span>(<span class="hljs-params">boat</span>) </span>{
+<span class="hljs-function"><span class="hljs-keyword">async</span> function <span class="hljs-title">addNewBoat</span>(<span class="hljs-params">boat</span>)</span> {
     <span class="hljs-keyword">const</span> putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, boat);
     <span class="hljs-keyword">const</span> conditionalPutRequest = dynameh.requestBuilder.addCondition(tableSchema, putRequest, {attribute: <span class="hljs-string">"name"</span>, <span class="hljs-keyword">operator</span>: <span class="hljs-string">"attribute_not_exists"</span>});
     <span class="hljs-comment">// Note that addCondition() does not change the original object.</span>
@@ -236,8 +230,7 @@ addNewBoat({
     name: <span class="hljs-string">"Boaty McBoatface"</span>,
     type: <span class="hljs-string">"submarine"</span>,
     autonomous: <span class="hljs-literal">true</span>
-});
-</code></pre><p>The following conditions are available...</p>
+});</code></pre><p>The following conditions are available...</p>
 				<table>
 					<thead>
 						<tr>
@@ -245,8 +238,7 @@ addNewBoat({
 							<th># of value parameters</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
+					<tbody><tr>
 							<td>=</td>
 							<td>1</td>
 						</tr>
@@ -302,16 +294,15 @@ addNewBoat({
 							<td>size</td>
 							<td>0</td>
 						</tr>
-					</tbody>
-				</table>
+				</tbody></table>
 				<h3 id="projections">Projections</h3>
 				<p>Projections can be added to a get, batch get or query request to control what attributes are returned.  This saves bandwidth on the request.</p>
 				<p>For example...</p>
-				<p>```ecmascript 6
+				<p><code>`</code>ecmascript 6
 					const tableSchema = {
 					tableName: &quot;Transactions&quot;,
-					primaryKeyField: &quot;customerId&quot;,
-					primaryKeyType: &quot;string&quot;,
+					partitionKeyField: &quot;customerId&quot;,
+					partitionKeyType: &quot;string&quot;,
 					sortKeyField: &quot;transactionId&quot;,
 					sortKeyType: &quot;string&quot;,
 				};</p>
@@ -322,8 +313,7 @@ addNewBoat({
 				// queryRequest != projectedQueryRequest</p>
 				<pre><code><span class="hljs-keyword">const</span> queryResponse = <span class="hljs-keyword">await</span> dynamodb.query(projectedQueryRequest).promise();
 <span class="hljs-keyword">const</span> transactions = dynameh.responseUnwrapper.unwrapQueryOutput(queryResponse);
-<span class="hljs-keyword">return</span> transactions.map(<span class="hljs-function"><span class="hljs-params">t</span> =&gt;</span> t.date);
-</code></pre><p>}</p>
+<span class="hljs-keyword">return</span> transactions.map(<span class="hljs-function"><span class="hljs-params">t</span> =&gt;</span> t.date);</code></pre><p>}</p>
 				<p>getTransactionDates(&quot;BusinessFactory&quot;);</p>
 				<pre><code>
 ### Date Serialization
@@ -335,11 +325,10 @@ For example...
 ```ecmascript <span class="hljs-number">6</span>
 const tableSchema = {
 <span class="hljs-symbol">    tableName:</span> <span class="hljs-string">"MyTable"</span>,
-<span class="hljs-symbol">    primaryKeyField:</span> <span class="hljs-string">"id"</span>,
-<span class="hljs-symbol">    primaryKeyType:</span> <span class="hljs-string">"number"</span>,
+<span class="hljs-symbol">    partitionKeyField:</span> <span class="hljs-string">"id"</span>,
+<span class="hljs-symbol">    partitionKeyType:</span> <span class="hljs-string">"number"</span>,
 <span class="hljs-symbol">    dateSerializationFunction:</span> date =&gt; date.toISOString()   // same as default
-}<span class="hljs-comment">;</span>
-</code></pre><h2 id="todo">TODO</h2>
+}<span class="hljs-comment">;</span></code></pre><h2 id="todo">TODO</h2>
 				<ul>
 					<li>document TableSchema.indexName</li>
 					<li>add paging support for <a href="http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Query.html#DDB-Query-response-LastEvaluatedKey">query</a> and <a href="http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Scan.html#DDB-Scan-response-LastEvaluatedKey">scan</a> </li>
