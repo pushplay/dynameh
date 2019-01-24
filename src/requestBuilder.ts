@@ -574,6 +574,9 @@ function addExpression<T extends {ExpressionAttributeNames?: aws.DynamoDB.Expres
     return res;
 }
 
+/**
+ * Get the serialized request key object for the partition and sort key.
+ */
 function getKey(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.Key {
     const key: aws.DynamoDB.Key = {
         [tableSchema.partitionKeyField]: buildRequestPutItem(tableSchema, partitionKeyValue)
@@ -595,7 +598,7 @@ function getExpressionValueName(tableSchema: TableSchema, valueMap: aws.DynamoDB
 }
 
 /**
- * Get a name that is not currently used in the given ExpressionAttributeValueMap.
+ * Get names for values that are not currently used in the ExpressionAttributeValueMap.
  */
 function getExpressionValueNames(tableSchema: TableSchema, valueMap: aws.DynamoDB.ExpressionAttributeValueMap, values: any[] = []): string[] {
     const valueNames: string[] = [];
@@ -607,7 +610,7 @@ function getExpressionValueNames(tableSchema: TableSchema, valueMap: aws.DynamoD
 
 /**
  * Get the attribute name that can be used in expressions.  If it is a reserved word
- * or has a literal `.` (as indicated by an )
+ * or has a literal `.` (as indicated by a backslash)
  */
 function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttributeNameMap, attribute: string): string {
     const attributeParts = attribute.split(/\./);
@@ -644,6 +647,11 @@ function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttribu
     return name;
 }
 
+/**
+ * Turn an index number into an alias for a value or attribute.
+ * @param ix
+ * @param caps whether to use capital letters
+ */
 function indexToAlias(ix: number, caps: boolean): string {
     const asciiOffset = caps ? 65 : 97;
     if (ix < 26) {

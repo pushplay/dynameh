@@ -3,7 +3,7 @@ import {DynamoConditionOperator} from "./validation";
 /**
  * An object representing a condition.  This is used by
  * requestBuilder.addCondition().
- * @see: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html
+ * @see http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html
  */
 export interface Condition {
     /**
@@ -15,8 +15,10 @@ export interface Condition {
     attribute: string;
 
     /**
-     * A comparison operator or function name.
-     * @see: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html
+     * A comparison operator or function name.  All DynamoDB operators and functions
+     * are supported: =, <>, <, <=, >, >=, BETWEEN, IN, attribute_exists, attribute_not_exists,
+     * attribute_type, begins_with, contains, size.
+     * @see http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html
      */
     operator: DynamoConditionOperator;
 
