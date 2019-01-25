@@ -163,4 +163,203 @@ describe("responseUnwrapper", () => {
             });
         });
     });
+
+    describe("unwrapBatchGetOutput", () => {
+        it("unwraps a response from multiple tables", () => {
+            const response = {
+                "Responses": {
+                    "Forum": [
+                        {
+                            "Name":{
+                                "S":"Amazon DynamoDB"
+                            },
+                            "Threads":{
+                                "N":"5"
+                            },
+                            "Messages":{
+                                "N":"19"
+                            },
+                            "Views":{
+                                "N":"35"
+                            }
+                        },
+                        {
+                            "Name":{
+                                "S":"Amazon RDS"
+                            },
+                            "Threads":{
+                                "N":"8"
+                            },
+                            "Messages":{
+                                "N":"32"
+                            },
+                            "Views":{
+                                "N":"38"
+                            }
+                        },
+                        {
+                            "Name":{
+                                "S":"Amazon Redshift"
+                            },
+                            "Threads":{
+                                "N":"12"
+                            },
+                            "Messages":{
+                                "N":"55"
+                            },
+                            "Views":{
+                                "N":"47"
+                            }
+                        }
+                    ],
+                    "Thread": [
+                        {
+                            "Tags":{
+                                "SS":["Reads","MultipleUsers"]
+                            },
+                            "Message":{
+                                "S":"How many users can read a single data item at a time? Are there any limits?"
+                            }
+                        }
+                    ]
+                },
+                "UnprocessedKeys": {
+                },
+                "ConsumedCapacity": [
+                    {
+                        "TableName": "Forum",
+                        "CapacityUnits": 3
+                    },
+                    {
+                        "TableName": "Thread",
+                        "CapacityUnits": 1
+                    }
+                ]
+            };
+
+            const items = responseUnwrapper.unwrapBatchGetOutput(response);
+            chai.assert.deepEqual(items, [
+                {
+                    Name: "Amazon DynamoDB",
+                    Threads: 5,
+                    Messages: 19,
+                    Views: 35
+                },
+                {
+                    Name: "Amazon RDS",
+                    Threads: 8,
+                    Messages: 32,
+                    Views: 38
+                },
+                {
+                    Name: "Amazon Redshift",
+                    Threads: 12,
+                    Messages: 55,
+                    Views: 47
+                },
+                {
+                    Tags: new Set(["Reads", "MultipleUsers"]),
+                    Message: "How many users can read a single data item at a time? Are there any limits?"
+                }
+            ])
+        });
+    });
+
+    describe("unwrapScanOutput", () => {
+        it("unwraps a response", () => {
+            const response = {
+                "ConsumedCapacity": {
+                    "CapacityUnits": 0.5,
+                    "TableName": "Reply"
+                },
+                "Count": 2,
+                "Items": [
+                    {
+                        "PostedBy": {
+                            "S": "joe@example.com"
+                        },
+                        "ReplyDateTime": {
+                            "S": "20130320115336"
+                        },
+                        "Id": {
+                            "S": "Amazon DynamoDB#How do I update multiple items?"
+                        },
+                        "Message": {
+                            "S": "Have you looked at BatchWriteItem?"
+                        }
+                    },
+                    {
+                        "PostedBy": {
+                            "S": "joe@example.com"
+                        },
+                        "ReplyDateTime": {
+                            "S": "20130320115347"
+                        },
+                        "Id": {
+                            "S": "Amazon DynamoDB#How do I update multiple items?"
+                        },
+                        "Message": {
+                            "S": "BatchWriteItem is documented in the Amazon DynamoDB API Reference."
+                        }
+                    }
+                ],
+                "ScannedCount": 4
+            };
+
+            const items = responseUnwrapper.unwrapScanOutput(response);
+            chai.assert.deepEqual(items, [
+                {
+                    PostedBy: "joe@example.com",
+                    ReplyDateTime: "20130320115336",
+                    Id: "Amazon DynamoDB#How do I update multiple items?",
+                    Message: "Have you looked at BatchWriteItem?"
+                },
+                {
+                    PostedBy: "joe@example.com",
+                    ReplyDateTime: "20130320115347",
+                    Id: "Amazon DynamoDB#How do I update multiple items?",
+                    Message: "BatchWriteItem is documented in the Amazon DynamoDB API Reference."
+                }
+            ])
+        });
+    });
+
+    describe("unwrapQueryOutput", () => {
+        it("unwraps a response", () => {
+            const response = {
+                "ConsumedCapacity": {
+                    "CapacityUnits": 1,
+                    "TableName": "Reply"
+                },
+                "Count": 2,
+                "Items": [
+                    {
+                        "ReplyDateTime": {"S": "2015-02-18T20:27:36.165Z"},
+                        "PostedBy": {"S": "User A"},
+                        "Id": {"S": "Amazon DynamoDB#DynamoDB Thread 1"}
+                    },
+                    {
+                        "ReplyDateTime": {"S": "2015-02-25T20:27:36.165Z"},
+                        "PostedBy": {"S": "User B"},
+                        "Id": {"S": "Amazon DynamoDB#DynamoDB Thread 1"}
+                    }
+                ],
+                "ScannedCount": 2
+            };
+
+            const items = responseUnwrapper.unwrapQueryOutput(response);
+            chai.assert.deepEqual(items, [
+                {
+                    ReplyDateTime: "2015-02-18T20:27:36.165Z",
+                    PostedBy: "User A",
+                    Id: "Amazon DynamoDB#DynamoDB Thread 1"
+                },
+                {
+                    ReplyDateTime: "2015-02-25T20:27:36.165Z",
+                    PostedBy: "User B",
+                    Id: "Amazon DynamoDB#DynamoDB Thread 1"
+                }
+            ]);
+        });
+    });
 });

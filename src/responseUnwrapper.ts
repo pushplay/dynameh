@@ -54,18 +54,20 @@ export function unwrapGetOutput(response: aws.DynamoDB.GetItemOutput): any {
 }
 
 /**
- * Extract the JSON objects from a response to `batchGetItem`.
- * @param tableSchemaOrName the TableSchema or the string table name
+ * Extract the JSON objects from a response to `batchGetItem`.  If multiple
+ * tables were fetched from they will all be in the resulting array.
  * @param response result of batchGetItem
  * @returns the objects returned
  */
-export function unwrapBatchGetOutput(tableSchemaOrName: TableSchema | string, response: aws.DynamoDB.BatchGetItemOutput): any[] {
-    const tableName = (tableSchemaOrName as TableSchema).tableName ? (tableSchemaOrName as TableSchema).tableName : tableSchemaOrName as string;
-    const responseTableItems = response.Responses && response.Responses[tableName];
-    if (!responseTableItems) {
+export function unwrapBatchGetOutput(response: aws.DynamoDB.BatchGetItemOutput): any[] {
+    if (!response.Responses) {
         return [];
     }
-    return responseTableItems.map(responseItem => unwrapResponseItem({M: responseItem}));
+
+    return Object.keys(response.Responses)
+        .map(key => response.Responses[key])
+        .map(responseTableItems => responseTableItems.map(responseItem => unwrapResponseItem({M: responseItem})))
+        .reduce((acc, cur) => [...acc, ...cur], []);
 }
 
 /**
