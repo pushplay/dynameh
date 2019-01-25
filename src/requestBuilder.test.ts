@@ -2,11 +2,15 @@ import * as chai from "chai";
 import {
     addCondition,
     addFilter,
-    addProjection, buildCreateTableInput, buildDeleteInput,
+    addProjection,
+    buildCreateTableInput,
+    buildDeleteInput,
     buildGetInput,
     buildPutInput,
     buildQueryInput,
-    buildRequestPutItem, buildScanInput, buildUpdateInputFromActions
+    buildRequestPutItem,
+    buildScanInput,
+    buildUpdateInputFromActions
 } from "./requestBuilder";
 import {TableSchema} from "./TableSchema";
 
@@ -39,7 +43,7 @@ describe("requestBuilder", () => {
         });
 
         it("serializes an array of strings", () => {
-            const serialized = buildRequestPutItem(defaultTableSchema, ["Giraffe", "Hippo" ,"Zebra"]);
+            const serialized = buildRequestPutItem(defaultTableSchema, ["Giraffe", "Hippo", "Zebra"]);
             chai.assert.deepEqual(serialized, {
                 L: [
                     {S: "Giraffe"},
@@ -60,9 +64,9 @@ describe("requestBuilder", () => {
         });
 
         it("serializes a Set of strings", () => {
-            const serialized = buildRequestPutItem(defaultTableSchema, new Set(["Giraffe", "Hippo" ,"Zebra"]));
+            const serialized = buildRequestPutItem(defaultTableSchema, new Set(["Giraffe", "Hippo", "Zebra"]));
             chai.assert.deepEqual(serialized, {
-                SS: ["Giraffe", "Hippo" ,"Zebra"]
+                SS: ["Giraffe", "Hippo", "Zebra"]
             });
         });
 
@@ -218,8 +222,8 @@ describe("requestBuilder", () => {
                 UpdateExpression: "SET ProductCategory = :a, Price = :b",
                 ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
-                    ":a": { "S": "Hardware" },
-                    ":b": { "N": "60" }
+                    ":a": {"S": "Hardware"},
+                    ":b": {"N": "60"}
                 }
             });
         });
@@ -241,14 +245,14 @@ describe("requestBuilder", () => {
                 ExpressionAttributeValues: {
                     ":a": {
                         "L": [
-                            { "S": "Hammer" }
+                            {"S": "Hammer"}
                         ]
                     },
                     ":b": {
                         "M": {
                             "5Star": {
                                 "L": [
-                                    { "S": "Best product ever!" }
+                                    {"S": "Best product ever!"}
                                 ]
                             }
                         }
@@ -280,7 +284,12 @@ describe("requestBuilder", () => {
 
         it("adds nested map attributes", () => {
             const input = buildUpdateInputFromActions(tableSchema, item, [
-                {action: "list_set_at_index", attribute: "ProductReviews.5Star", value: "Very happy with my purchase", index: 1},
+                {
+                    action: "list_set_at_index",
+                    attribute: "ProductReviews.5Star",
+                    value: "Very happy with my purchase",
+                    index: 1
+                },
                 {action: "put", attribute: "ProductReviews.3Star", value: ["Just OK - not that great"]}
             ]);
             chai.assert.deepEqual(input, {
@@ -296,10 +305,10 @@ describe("requestBuilder", () => {
                     "#B": "3Star"
                 },
                 ExpressionAttributeValues: {
-                    ":a": { "S": "Very happy with my purchase" },
+                    ":a": {"S": "Very happy with my purchase"},
                     ":b": {
                         "L": [
-                            { "S": "Just OK - not that great" }
+                            {"S": "Just OK - not that great"}
                         ]
                     }
                 }
@@ -320,7 +329,7 @@ describe("requestBuilder", () => {
                 UpdateExpression: "SET Price = Price + :a",
                 ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
-                    ":a": { "N": "5" },
+                    ":a": {"N": "5"},
                 }
             });
         });
@@ -339,7 +348,7 @@ describe("requestBuilder", () => {
                 UpdateExpression: "SET Price = Price - :a",
                 ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
-                    ":a": { "N": "15" },
+                    ":a": {"N": "15"},
                 }
             });
         });
@@ -360,8 +369,8 @@ describe("requestBuilder", () => {
                 ExpressionAttributeValues: {
                     ":a": {
                         "L": [
-                            { "S": "Screwdriver" },
-                            {"S": "Hacksaw" }
+                            {"S": "Screwdriver"},
+                            {"S": "Hacksaw"}
                         ]
                     }
                 }
@@ -384,7 +393,7 @@ describe("requestBuilder", () => {
                 ExpressionAttributeValues: {
                     ":a": {
                         "L": [
-                            { "S": "Chisel" }
+                            {"S": "Chisel"}
                         ]
                     }
                 }
@@ -490,15 +499,54 @@ describe("requestBuilder", () => {
                 }
             });
         });
+
+        it("will version updates", () => {
+            const input = buildUpdateInputFromActions(
+                {
+                    ...tableSchema,
+                    versionKeyField: "version"
+                },
+                {
+                    ...item,
+                    version: 3
+                },
+                [
+                    {action: "put", attribute: "ProductCategory", value: "Hardware"},
+                    {action: "put", attribute: "Price", value: 60}
+                ])
+            ;
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                ConditionExpression: "version = :a",
+                UpdateExpression: "SET ProductCategory = :b, Price = :c, version = version + :d",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": {"N": "3"},
+                    ":b": {"S": "Hardware"},
+                    ":c": {"N": "60"},
+                    ":d": {"N": "1"},
+                }
+            });
+        });
     });
 
     describe("buildDeleteInput", () => {
         it("builds input for a table with a hash key", () => {
-            const input = buildDeleteInput({
-                tableName: "table",
-                partitionKeyField: "primary",
-                partitionKeyType: "string",
-            }, "prim");
+            const input = buildDeleteInput(
+                {
+                    tableName: "table",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
+                },
+                {
+                    primary: "prim"
+                }
+            );
 
             chai.assert.deepEqual(input, {
                 TableName: "table",
@@ -509,13 +557,19 @@ describe("requestBuilder", () => {
         });
 
         it("builds input for a table with a hash and sort key", () => {
-            const input = buildDeleteInput({
-                tableName: "table",
-                partitionKeyField: "primary",
-                partitionKeyType: "string",
-                sortKeyField: "sort",
-                sortKeyType: "string"
-            }, "prim", "so");
+            const input = buildDeleteInput(
+                {
+                    tableName: "table",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
+                    sortKeyField: "sort",
+                    sortKeyType: "string"
+                },
+                {
+                    primary: "prim",
+                    sort: "so"
+                }
+            );
 
             chai.assert.deepEqual(input, {
                 TableName: "table",
@@ -527,19 +581,52 @@ describe("requestBuilder", () => {
         });
 
         it("builds input when the sort key value is 0", () => {
-            const input = buildDeleteInput({
-                tableName: "table",
-                partitionKeyField: "primary",
-                partitionKeyType: "string",
-                sortKeyField: "sort",
-                sortKeyType: "number"
-            }, "prim", 0);
+            const input = buildDeleteInput(
+                {
+                    tableName: "table",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
+                    sortKeyField: "sort",
+                    sortKeyType: "number"
+                },
+                {
+                    primary: "prim",
+                    sort: 0
+                }
+            );
 
             chai.assert.deepEqual(input, {
                 TableName: "table",
                 Key: {
                     primary: {S: "prim"},
                     sort: {N: "0"}
+                }
+            });
+        });
+
+        it("builds input for a versioned delete", () => {
+            const input = buildDeleteInput(
+                {
+                    tableName: "table",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string",
+                    versionKeyField: "version"
+                },
+                {
+                    primary: "prim",
+                    version: 6
+                }
+            );
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                Key: {
+                    primary: {S: "prim"}
+                },
+                ConditionExpression: "version = :a",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": {N: "6"}
                 }
             });
         });
@@ -958,10 +1045,8 @@ describe("requestBuilder", () => {
                         N: "1"
                     }
                 },
-                ConditionExpression: "attribute_not_exists(#V) AND begins_with(alphabet, :a)",
-                ExpressionAttributeNames: {
-                    "#V": "version"
-                },
+                ConditionExpression: "attribute_not_exists(version) AND begins_with(alphabet, :a)",
+                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         S: "abc"

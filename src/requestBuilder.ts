@@ -101,6 +101,10 @@ export function buildGetInput(tableSchema: TableSchema, partitionKeyValue: Dynam
 
 /**
  * Build a request object that can be passed into `putItem`.
+ *
+ * If `TableSchema.versionKeyField` is set the put will only succeed
+ * if the item in the database has the same value (and then the version
+ * will be incremented).
  * @param tableSchema
  * @param item
  * @returns input for the `putItem` method
@@ -115,31 +119,20 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
     };
 
     if (tableSchema.versionKeyField) {
-        if (item[tableSchema.versionKeyField] !== null && item[tableSchema.versionKeyField] !== undefined) {
+        request.ExpressionAttributeNames = {};
+        request.ExpressionAttributeValues = {};
+        const versionAttributeName = getExpressionAttributeName(request.ExpressionAttributeNames, tableSchema.versionKeyField);
+
+        if (item[tableSchema.versionKeyField] != null) {
             // Require the existing table item to have the same old value, and increment
             // the value we're putting.  This is the crux of the optimistic locking.
-            request.ExpressionAttributeNames = {
-                "#V": tableSchema.versionKeyField
-            };
-            request.ExpressionAttributeValues = {
-                ":v": {
-                    N: request.Item[tableSchema.versionKeyField].N
-                }
-            };
-            request.ConditionExpression = `#V = :v`;
-            request.Item[tableSchema.versionKeyField] = {
-                N: (parseInt(request.Item[tableSchema.versionKeyField].N, 10) + 1).toString()
-            };
+            request.ConditionExpression = `${versionAttributeName} = ${getExpressionValueName(tableSchema, request.ExpressionAttributeValues, item[tableSchema.versionKeyField])}`;
+            request.Item[tableSchema.versionKeyField] = buildRequestPutItem(tableSchema, item[tableSchema.versionKeyField] + 1);
         } else {
             // If the version key isn't set then we must be putting a brand new item,
             // or versioning has just been enabled.
-            request.ExpressionAttributeNames = {
-                "#V": tableSchema.versionKeyField
-            };
-            request.ConditionExpression = "attribute_not_exists(#V)";
-            request.Item[tableSchema.versionKeyField] = {
-                N: "1"
-            };
+            request.ConditionExpression = `attribute_not_exists(${versionAttributeName})`;
+            request.Item[tableSchema.versionKeyField] = buildRequestPutItem(tableSchema, 1);
         }
     }
 
@@ -165,6 +158,10 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
  * Build a request object that can be passed into `updateItem` based upon a
  * set of {@link UpdateExpressionAction}s.  Each {@link UpdateExpressionAction} defines
  * an operation to take as part of updating in the database.
+ *
+ * If `TableSchema.versionKeyField` is set the update will only succeed
+ * if the item in the database has the same value (and then the version
+ * will be incremented).
  * @param tableSchema
  * @param itemToUpdate the item being updated.  This item is only used for its
  *        keys and may already be updated.  This item will not be modified.
@@ -177,6 +174,20 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
 
     const nameMap: aws.DynamoDB.ExpressionAttributeNameMap = {};
     const valueMap: aws.DynamoDB.ExpressionAttributeValueMap = {};
+    let conditionExpression: string = undefined;
+
+    if (tableSchema.versionKeyField) {
+        if (itemToUpdate[tableSchema.versionKeyField] == null) {
+            throw new Error("The tableSchema defines a versionKeyField but itemToUpdate does not have a value for that field.  As an existing item to update it should already have a version.");
+        }
+
+        updateActions = [...updateActions, {
+            action: "number_add",
+            attribute: tableSchema.versionKeyField,
+            value: 1
+        }];
+        conditionExpression = `${getExpressionAttributeName(nameMap, tableSchema.versionKeyField)} = ${getExpressionValueName(tableSchema, valueMap, itemToUpdate[tableSchema.versionKeyField])}`;
+    }
 
     const setActions = updateActions
         .filter(action => getUpdateExpressionActionClauseKey(action) === "SET")
@@ -188,6 +199,8 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
                 case "put_if_not_exists":
                     return `${attributeName} = if_not_exists(${attributeName}, ${getExpressionValueName(tableSchema, valueMap, action.value)})`;
                 case "number_add":
+                    // This could also be handled by the "ADD" clause but I think that's more likely
+                    // to have unexpected side-effects if the item's value is not a number.
                     return `${attributeName} = ${attributeName} + ${getExpressionValueName(tableSchema, valueMap, action.value)}`;
                 case "number_subtract":
                     return `${attributeName} = ${attributeName} - ${getExpressionValueName(tableSchema, valueMap, action.value)}`;
@@ -251,13 +264,19 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
         + (deleteActions ? "DELETE " + deleteActions : "")
     ).trim();
 
-    return {
+    const request: aws.DynamoDB.UpdateItemInput = {
         ExpressionAttributeNames: nameMap,
         ExpressionAttributeValues: valueMap,
         UpdateExpression: updateExpression,
         Key: getKey(tableSchema, itemToUpdate[tableSchema.partitionKeyField], tableSchema.sortKeyField && itemToUpdate[tableSchema.sortKeyField]),
         TableName: tableSchema.tableName
     };
+
+    if (conditionExpression) {
+        request.ConditionExpression = conditionExpression;
+    }
+
+    return request;
 }
 
 function getUpdateExpressionActionClauseKey(action: UpdateExpressionAction): "SET" | "REMOVE" | "ADD" | "DELETE" {
@@ -286,19 +305,30 @@ function getUpdateExpressionActionClauseKey(action: UpdateExpressionAction): "SE
 
 /**
  * Build a request object that can be passed into `deleteItem`
+ *
+ * If `TableSchema.versionKeyField` is set the delete will only succeed
+ * if the item in the database has the same value.
  * @param tableSchema
- * @param partitionKeyValue the key of the item to delete
- * @param sortKeyValue sort key of the item to delete, if set in the schema
+ * @param itemToDelete the item to delete.  Must at least have the partition
+ *        key, the sort key if applicable, and the version field if applicable.
  * @returns input for the `deleteItem` method
  */
-export function buildDeleteInput(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.DeleteItemInput {
+export function buildDeleteInput(tableSchema: TableSchema, itemToDelete: object): aws.DynamoDB.DeleteItemInput {
     checkSchema(tableSchema);
-    checkSchemaKeyAgreement(tableSchema, partitionKeyValue, sortKeyValue);
+    checkSchemaItemAgreement(tableSchema, itemToDelete);
 
-    return {
-        Key: getKey(tableSchema, partitionKeyValue, sortKeyValue),
+    const request: aws.DynamoDB.DeleteItemInput = {
+        Key: getKey(tableSchema, itemToDelete[tableSchema.partitionKeyField], tableSchema.sortKeyField && itemToDelete[tableSchema.sortKeyField]),
         TableName: tableSchema.tableName
     };
+
+    if (tableSchema.versionKeyField) {
+        request.ExpressionAttributeNames = {};
+        request.ExpressionAttributeValues = {};
+        request.ConditionExpression = `${getExpressionAttributeName(request.ExpressionAttributeNames, tableSchema.versionKeyField)} = ${getExpressionValueName(tableSchema, request.ExpressionAttributeValues, itemToDelete[tableSchema.versionKeyField])}`;
+    }
+
+    return request;
 }
 
 /**
