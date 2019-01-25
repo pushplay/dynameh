@@ -279,14 +279,6 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
     return request;
 }
 
-export function buildUpdateInputFromDiff(tableSchema: TableSchema, originalItem: object, updatedItem: object): aws.DynamoDB.UpdateItemInput {
-    const actions: UpdateExpressionAction[] = [];
-
-    // TODO diff the objects and generate a set of changes
-
-    return buildUpdateInputFromActions(tableSchema, originalItem, ...actions);
-}
-
 function getUpdateExpressionActionClauseKey(action: UpdateExpressionAction): "SET" | "REMOVE" | "ADD" | "DELETE" {
     const actions: (UpdateExpressionAction["action"])[] = ["put", "put_if_not_exists", "number_add", "number_subtract", "list_append", "list_prepend", "list_set_at_index", "remove", "list_remove_at_index", "set_add", "set_delete"];
 
