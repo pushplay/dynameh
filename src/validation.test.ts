@@ -396,7 +396,7 @@ describe("validation", () => {
             checkCondition({attribute: "a", operator: "size"}, "default");
         });
 
-        it("doesn't validate conditions with the wrong number of arguments", () => {
+        it("rejects conditions with the wrong number of arguments", () => {
             chai.assert.throws(() => {
                 checkCondition({attribute: "a", operator: "="}, "default");
             });
@@ -414,7 +414,7 @@ describe("validation", () => {
             });
         });
 
-        it("doesn't validate operators that can't be used in a query KeyConditionExpression", () => {
+        it("rejects operators that can't be used in a query KeyConditionExpression", () => {
             chai.assert.throws(() => {
                 // Not to be confused with "=".
                 checkCondition({attribute: "a", operator: "==" as any, values: [1]}, "query");
