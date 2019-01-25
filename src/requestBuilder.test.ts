@@ -208,10 +208,10 @@ describe("requestBuilder", () => {
         };
 
         it("puts strings and numbers", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "put", attribute: "ProductCategory", value: "Hardware"},
                 {action: "put", attribute: "Price", value: 60}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -229,10 +229,10 @@ describe("requestBuilder", () => {
         });
 
         it("puts lists and maps", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "put", attribute: "RelatedItems", value: ["Hammer"]},
                 {action: "put", attribute: "ProductReviews", value: {"5Star": ["Best product ever!"]}}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -262,9 +262,9 @@ describe("requestBuilder", () => {
         });
 
         it("sets at a list index", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "list_set_at_index", attribute: "RelatedItems", value: "Nails", index: 1}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -283,7 +283,7 @@ describe("requestBuilder", () => {
         });
 
         it("adds nested map attributes", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {
                     action: "list_set_at_index",
                     attribute: "ProductReviews.5Star",
@@ -291,7 +291,7 @@ describe("requestBuilder", () => {
                     index: 1
                 },
                 {action: "put", attribute: "ProductReviews.3Star", value: ["Just OK - not that great"]}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -316,9 +316,9 @@ describe("requestBuilder", () => {
         });
 
         it("adds numbers", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "number_add", attribute: "Price", value: 5}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -335,9 +335,9 @@ describe("requestBuilder", () => {
         });
 
         it("subtracts numbers", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "number_subtract", attribute: "Price", value: 15}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -354,9 +354,9 @@ describe("requestBuilder", () => {
         });
 
         it("appends to a list", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "list_append", attribute: "RelatedItems", values: ["Screwdriver", "Hacksaw"]}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -378,9 +378,9 @@ describe("requestBuilder", () => {
         });
 
         it("prepends to a list", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "list_prepend", attribute: "RelatedItems", values: ["Chisel"]}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -401,9 +401,9 @@ describe("requestBuilder", () => {
         });
 
         it("sets if not exists", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "put_if_not_exists", attribute: "Price", value: 100}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -422,11 +422,11 @@ describe("requestBuilder", () => {
         });
 
         it("removes an attribute from an item", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "remove", attribute: "Brand"},
                 {action: "remove", attribute: "InStock"},
                 {action: "remove", attribute: "QuantityOnHand"}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -441,10 +441,10 @@ describe("requestBuilder", () => {
         });
 
         it("removes an element from a list", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "list_remove_at_index", attribute: "RelatedItems", index: 1},
                 {action: "list_remove_at_index", attribute: "RelatedItems", index: 2}
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -459,9 +459,9 @@ describe("requestBuilder", () => {
         });
 
         it("adds an element to a Set", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "set_add", attribute: "Color", values: new Set(["Orange", "Purple"])},
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -480,9 +480,9 @@ describe("requestBuilder", () => {
         });
 
         it("removes elements from a Set", () => {
-            const input = buildUpdateInputFromActions(tableSchema, item, [
+            const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "set_delete", attribute: "Color", values: new Set(["Yellow", "Purple"])},
-            ]);
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -510,11 +510,9 @@ describe("requestBuilder", () => {
                     ...item,
                     version: 3
                 },
-                [
-                    {action: "put", attribute: "ProductCategory", value: "Hardware"},
-                    {action: "put", attribute: "Price", value: 60}
-                ])
-            ;
+                {action: "put", attribute: "ProductCategory", value: "Hardware"},
+                {action: "put", attribute: "Price", value: 60}
+            );
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
                 Key: {
@@ -777,6 +775,24 @@ describe("requestBuilder", () => {
             chai.assert.deepEqual(input, {
                 TableName: "table",
                 IndexName: "globalIndex"
+            });
+        });
+
+        it("applies filters", () => {
+            const input = buildScanInput(defaultTableSchema, {
+                attribute: "nonprimary",
+                operator: "=",
+                values: [11]
+            });
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                ExpressionAttributeValues: {
+                    ":a": {
+                        N: "11"
+                    }
+                },
+                FilterExpression: "nonprimary = :a"
             });
         });
     });

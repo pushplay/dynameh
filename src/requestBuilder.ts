@@ -1,19 +1,19 @@
 import * as aws from "aws-sdk";
 import {TableSchema} from "./TableSchema";
 import {
+    checkCondition,
+    checkConditions,
     checkSchema,
     checkSchemaItemAgreement,
     checkSchemaItemsAgreement,
     checkSchemaKeyAgreement,
     checkSchemaKeysAgreement,
-    checkSchemaSortKeyAgreement,
     checkSchemaPartitionKeyAgreement,
-    checkCondition,
-    checkConditions,
-    operatorIsFunction,
+    checkSchemaSortKeyAgreement,
     DynamoKey,
     DynamoKeyPair,
-    DynamoQueryConditionOperator
+    DynamoQueryConditionOperator,
+    operatorIsFunction
 } from "./validation";
 import {dynamoDbReservedWords} from "./dynamoDbReservedWords";
 import {Condition} from "./Condition";
@@ -168,7 +168,7 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
  * @param updateActions an array of actions to turn into an UpdateExpression
  * @returns input for the `updateItem` method
  */
-export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpdate: object, updateActions: UpdateExpressionAction[]): aws.DynamoDB.UpdateItemInput {
+export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpdate: object, ...updateActions: UpdateExpressionAction[]): aws.DynamoDB.UpdateItemInput {
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, itemToUpdate);
 
@@ -277,6 +277,14 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
     }
 
     return request;
+}
+
+export function buildUpdateInputFromDiff(tableSchema: TableSchema, originalItem: object, updatedItem: object): aws.DynamoDB.UpdateItemInput {
+    const actions: UpdateExpressionAction[] = [];
+
+    // TODO diff the objects and generate a set of changes
+
+    return buildUpdateInputFromActions(tableSchema, originalItem, ...actions);
 }
 
 function getUpdateExpressionActionClauseKey(action: UpdateExpressionAction): "SET" | "REMOVE" | "ADD" | "DELETE" {
@@ -410,17 +418,22 @@ export function buildQueryInput(tableSchema: TableSchema, partitionKeyValue: Dyn
  * with that name.
  * @see addFilter
  * @param tableSchema
+ * @param filters one or more filters to turn into a filter expression
  * @returns input for the `scan` method
  */
-export function buildScanInput(tableSchema: TableSchema): aws.DynamoDB.ScanInput {
+export function buildScanInput(tableSchema: TableSchema, ...filters: Condition[]): aws.DynamoDB.ScanInput {
     checkSchema(tableSchema);
 
-    const scanInput: aws.DynamoDB.ScanInput = {
+    let scanInput: aws.DynamoDB.ScanInput = {
         TableName: tableSchema.tableName
     };
 
     if (tableSchema.indexName) {
         scanInput.IndexName = tableSchema.indexName;
+    }
+
+    if (filters.length) {
+        scanInput = addFilter(tableSchema, scanInput, ...filters);
     }
 
     return scanInput;
@@ -622,7 +635,7 @@ export function buildUpdateTimeToLiveInput(tableSchema: TableSchema): aws.Dynamo
  * @param attributes an array of attribute names to fetch
  * @returns a copy of projectableRequest with the projection expression set
  */
-export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.ProjectionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap}>(tableSchema: TableSchema, projectableRequest: T, attributes: string[]): T {
+export function addProjection<T extends { ProjectionExpression?: aws.DynamoDB.ProjectionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap }>(tableSchema: TableSchema, projectableRequest: T, attributes: string[]): T {
     checkSchema(tableSchema);
 
     const projection: string[] = projectableRequest.ProjectionExpression ? projectableRequest.ProjectionExpression.split(",").map(p => p.trim()) : [];
@@ -658,8 +671,9 @@ export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.Pro
 
 /**
  * Adds a condition expression to a input object.  A condition expression
- * defines under what conditions the item can be put/deleted.  Any existing
- * condition expression will be amended.
+ * defines under what conditions the item can be put/deleted.
+ *
+ * Any existing condition expression will be amended.
  *
  * @param tableSchema
  * @param conditionableRequest the input to add a condition expression to
@@ -667,7 +681,7 @@ export function addProjection<T extends {ProjectionExpression?: aws.DynamoDB.Pro
  * @returns a copy of conditionableRequest with the condition expression set
  */
 export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(tableSchema: TableSchema, conditionableRequest: T, ...conditions: Condition[]): T {
-    return addExpression("ConditionExpression", tableSchema, conditionableRequest, conditions);
+    return addExpression("ConditionExpression", tableSchema, conditionableRequest, ...conditions);
 }
 
 /**
@@ -676,16 +690,18 @@ export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.Cond
  * after the search and you will be billed for the bandwidth of all results
  * before the filter is applied.
  *
+ * Any existing filter expression will be amended.
+ *
  * @param tableSchema
  * @param filterableRequest the input to add a filter expression to
  * @param filters one or more filters to turn into a filter expression
  * @returns a copy of filterableRequest with the condition expression set
  */
 export function addFilter<T extends { FilterExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(tableSchema: TableSchema, filterableRequest: T, ...filters: Condition[]): T {
-    return addExpression("FilterExpression", tableSchema, filterableRequest, filters);
+    return addExpression("FilterExpression", tableSchema, filterableRequest, ...filters);
 }
 
-function addExpression<T extends {ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap}, K extends keyof T>(expressionKey: string, tableSchema: TableSchema, conditionableRequest: T, conditions: Condition[]): T {
+function addExpression<T extends { ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }, K extends keyof T>(expressionKey: string, tableSchema: TableSchema, conditionableRequest: T, ...conditions: Condition[]): T {
     checkSchema(tableSchema);
     checkConditions(conditions, "default");
     let exp: aws.DynamoDB.ConditionExpression = conditionableRequest[expressionKey] || undefined;
@@ -747,7 +763,8 @@ function getKey(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyV
  */
 function getExpressionValueName(tableSchema: TableSchema, valueMap: aws.DynamoDB.ExpressionAttributeValueMap, value: any): string {
     let name: string;
-    for (let i = 0; valueMap[name = `:${indexToAlias(i, false)}`]; i++) {}
+    for (let i = 0; valueMap[name = `:${indexToAlias(i, false)}`]; i++) {
+    }
     valueMap[name] = buildRequestPutItem(tableSchema, value);
     return name;
 }
@@ -794,7 +811,8 @@ function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttribu
             }
 
             let newName: string = null;
-            for (let i = 0; attributeMap[newName = `#${indexToAlias(i, true)}`]; i++) {}
+            for (let i = 0; attributeMap[newName = `#${indexToAlias(i, true)}`]; i++) {
+            }
             attributeMap[newName] = attributePart;
             return newName;
 

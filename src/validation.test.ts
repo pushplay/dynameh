@@ -420,7 +420,7 @@ describe("validation", () => {
                 checkCondition({attribute: "a", operator: "==" as any, values: [1]}, "query");
             });
             chai.assert.throws(() => {
-                // This is a valid comparison operator.
+                // This is a valid comparison operator, not a query operator.
                 checkCondition({attribute: "a", operator: "<>", values: [1]}, "query");
             });
         });
