@@ -6,7 +6,7 @@ import {
     buildGetInput,
     buildPutInput,
     buildQueryInput,
-    buildRequestPutItem, buildScanInput
+    buildRequestPutItem, buildScanInput, buildUpdateInputFromActions
 } from "./requestBuilder";
 import {TableSchema} from "./TableSchema";
 
@@ -182,6 +182,310 @@ describe("requestBuilder", () => {
                     },
                     ttl: {
                         N: "1503090689"
+                    }
+                }
+            });
+        });
+    });
+
+    describe("buildUpdateInputFromActions", () => {
+        const tableSchema: TableSchema = {
+            tableName: "ProductCatalog",
+            partitionKeyField: "Id",
+            partitionKeyType: "number"
+        };
+
+        const item = {
+            Id: 789,
+            ProductCategory: "Home Improvement",
+            Price: 52,
+            InStock: true,
+            Brand: "Acme"
+        };
+
+        it("puts strings and numbers", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "put", attribute: "ProductCategory", value: "Hardware"},
+                {action: "put", attribute: "Price", value: 60}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "SET ProductCategory = :a, Price = :b",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": { "S": "Hardware" },
+                    ":b": { "N": "60" }
+                }
+            });
+        });
+
+        it("puts lists and maps", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "put", attribute: "RelatedItems", value: ["Hammer"]},
+                {action: "put", attribute: "ProductReviews", value: {"5Star": ["Best product ever!"]}}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "SET RelatedItems = :a, ProductReviews = :b",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": {
+                        "L": [
+                            { "S": "Hammer" }
+                        ]
+                    },
+                    ":b": {
+                        "M": {
+                            "5Star": {
+                                "L": [
+                                    { "S": "Best product ever!" }
+                                ]
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        it("sets at a list index", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "list_set_at_index", attribute: "RelatedItems", value: "Nails", index: 1}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "SET RelatedItems[1] = :a",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": {
+                        "S": "Nails"
+                    }
+                }
+            });
+        });
+
+        it("adds nested map attributes", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "list_set_at_index", attribute: "ProductReviews.5Star", value: "Very happy with my purchase", index: 1},
+                {action: "put", attribute: "ProductReviews.3Star", value: ["Just OK - not that great"]}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "SET ProductReviews.#A[1] = :a, ProductReviews.#B = :b",
+                ExpressionAttributeNames: {
+                    "#A": "5Star",
+                    "#B": "3Star"
+                },
+                ExpressionAttributeValues: {
+                    ":a": { "S": "Very happy with my purchase" },
+                    ":b": {
+                        "L": [
+                            { "S": "Just OK - not that great" }
+                        ]
+                    }
+                }
+            });
+        });
+
+        it("adds numbers", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "number_add", attribute: "Price", value: 5}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "SET Price = Price + :a",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": { "N": "5" },
+                }
+            });
+        });
+
+        it("subtracts numbers", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "number_subtract", attribute: "Price", value: 15}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "SET Price = Price - :a",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": { "N": "15" },
+                }
+            });
+        });
+
+        it("appends to a list", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "list_append", attribute: "RelatedItems", values: ["Screwdriver", "Hacksaw"]}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "SET RelatedItems = list_append(RelatedItems, :a)",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": {
+                        "L": [
+                            { "S": "Screwdriver" },
+                            {"S": "Hacksaw" }
+                        ]
+                    }
+                }
+            });
+        });
+
+        it("prepends to a list", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "list_prepend", attribute: "RelatedItems", values: ["Chisel"]}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "SET RelatedItems = list_append(:a, RelatedItems)",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": {
+                        "L": [
+                            { "S": "Chisel" }
+                        ]
+                    }
+                }
+            });
+        });
+
+        it("sets if not exists", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "put_if_not_exists", attribute: "Price", value: 100}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "SET Price = if_not_exists(Price, :a)",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": {
+                        "N": "100"
+                    }
+                }
+            });
+        });
+
+        it("deletes an attribute from an item", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "delete", attribute: "Brand"},
+                {action: "delete", attribute: "InStock"},
+                {action: "delete", attribute: "QuantityOnHand"}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "REMOVE Brand, InStock, QuantityOnHand",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {}
+            });
+        });
+
+        it("removes an element from a list", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "list_delete_at_index", attribute: "RelatedItems", index: 1},
+                {action: "list_delete_at_index", attribute: "RelatedItems", index: 2}
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "REMOVE RelatedItems[1], RelatedItems[2]",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {}
+            });
+        });
+
+        it("adds an element to a Set", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "set_add", attribute: "Color", values: new Set(["Orange", "Purple"])},
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "ADD Color :a",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": {
+                        "SS": ["Orange", "Purple"]
+                    }
+                }
+            });
+        });
+
+        it("removes elements from a Set", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item, [
+                {action: "set_delete", attribute: "Color", values: new Set(["Yellow", "Purple"])},
+            ]);
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "DELETE Color :a",
+                ExpressionAttributeNames: {},
+                ExpressionAttributeValues: {
+                    ":a": {
+                        "SS": ["Yellow", "Purple"]
                     }
                 }
             });

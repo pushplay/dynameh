@@ -17,6 +17,7 @@ import {
 } from "./validation";
 import {dynamoDbReservedWords} from "./dynamoDbReservedWords";
 import {Condition} from "./Condition";
+import {UpdateExpressionAction} from "./UpdateExpressionAction";
 
 /**
  * Build a serialized item that can be put in DynamoDB.  This syntax is also used for
@@ -158,6 +159,95 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
     }
 
     return request;
+}
+
+export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpdate: object, updateActions: UpdateExpressionAction[]): aws.DynamoDB.UpdateItemInput {
+    checkSchema(tableSchema);
+    checkSchemaItemAgreement(tableSchema, itemToUpdate);
+
+    const nameMap: aws.DynamoDB.ExpressionAttributeNameMap = {};
+    const valueMap: aws.DynamoDB.ExpressionAttributeValueMap = {};
+
+    const setActions = updateActions
+        .filter(action => UpdateExpressionAction.getUpdateExpressionClauseKey(action) === "SET")
+        .map(action => {
+            const attributeName = getExpressionAttributeName(nameMap, action.attribute);
+            switch (action.action) {
+                case "put":
+                    return `${attributeName} = ${getExpressionValueName(tableSchema, valueMap, action.value)}`;
+                case "put_if_not_exists":
+                    return `${attributeName} = if_not_exists(${attributeName}, ${getExpressionValueName(tableSchema, valueMap, action.value)})`;
+                case "number_add":
+                    return `${attributeName} = ${attributeName} + ${getExpressionValueName(tableSchema, valueMap, action.value)}`;
+                case "number_subtract":
+                    return `${attributeName} = ${attributeName} - ${getExpressionValueName(tableSchema, valueMap, action.value)}`;
+                case "list_append":
+                    return `${attributeName} = list_append(${attributeName}, ${getExpressionValueName(tableSchema, valueMap, action.values)})`;
+                case "list_prepend":
+                    return `${attributeName} = list_append(${getExpressionValueName(tableSchema, valueMap, action.values)}, ${attributeName})`;
+                case "list_set_at_index":
+                    return `${attributeName}[${action.index}] = ${getExpressionValueName(tableSchema, valueMap, action.value)}`;
+                default:
+                    throw new Error(`Unhandled SET update '${action.action}'.`);
+            }
+        })
+        .join(", ");
+
+    const removeActions = updateActions
+        .filter(action => UpdateExpressionAction.getUpdateExpressionClauseKey(action) === "REMOVE")
+        .map(action => {
+            const attributeName = getExpressionAttributeName(nameMap, action.attribute);
+            switch (action.action) {
+                case "delete":
+                    return attributeName;
+                case "list_delete_at_index":
+                    return `${attributeName}[${action.index}]`;
+                default:
+                    throw new Error(`Unhandled REMOVE update '${action.action}'.`);
+            }
+        })
+        .join(", ");
+
+    const addActions = updateActions
+        .filter(action => UpdateExpressionAction.getUpdateExpressionClauseKey(action) === "ADD")
+        .map(action => {
+            const attributeName = getExpressionAttributeName(nameMap, action.attribute);
+            switch (action.action) {
+                case "set_add":
+                    return `${attributeName} ${getExpressionValueName(tableSchema, valueMap, action.values)}`;
+                default:
+                    throw new Error(`Unhandled ADD update '${action.action}'.`);
+            }
+        })
+        .join(", ");
+
+    const deleteActions = updateActions
+        .filter(action => UpdateExpressionAction.getUpdateExpressionClauseKey(action) === "DELETE")
+        .map(action => {
+            const attributeName = getExpressionAttributeName(nameMap, action.attribute);
+            switch (action.action) {
+                case "set_delete":
+                    return `${attributeName} ${getExpressionValueName(tableSchema, valueMap, action.values)}`;
+                default:
+                    throw new Error(`Unhandled DELETE update '${action.action}'.`);
+            }
+        })
+        .join(", ");
+
+    const updateExpression = (
+        (setActions ? "SET " + setActions : "")
+        + (removeActions ? "REMOVE " + removeActions : "")
+        + (addActions ? "ADD " + addActions : "")
+        + (deleteActions ? "DELETE " + deleteActions : "")
+    ).trim();
+
+    return {
+        ExpressionAttributeNames: nameMap,
+        ExpressionAttributeValues: valueMap,
+        UpdateExpression: updateExpression,
+        Key: getKey(tableSchema, itemToUpdate[tableSchema.partitionKeyField], tableSchema.sortKeyField && itemToUpdate[tableSchema.sortKeyField]),
+        TableName: tableSchema.tableName
+    };
 }
 
 /**
@@ -394,11 +484,11 @@ export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: nu
 
     checkSchema(tableSchema);
 
-    const request = {
+    const request: aws.DynamoDB.CreateTableInput = {
         AttributeDefinitions: [
             {
                 AttributeName: tableSchema.partitionKeyField,
-                AttributeType: jsTypeToDdbType(tableSchema.partitionKeyType)
+                AttributeType: jsTypeToDynamoKeyType(tableSchema.partitionKeyType)
             }
         ],
         KeySchema: [
@@ -417,7 +507,7 @@ export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: nu
     if (tableSchema.sortKeyField) {
         request.AttributeDefinitions.push({
             AttributeName: tableSchema.sortKeyField,
-            AttributeType: jsTypeToDdbType(tableSchema.sortKeyType)
+            AttributeType: jsTypeToDynamoKeyType(tableSchema.sortKeyType)
         });
         request.KeySchema.push({
             AttributeName: tableSchema.sortKeyField,
@@ -588,7 +678,8 @@ function getKey(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyV
 }
 
 /**
- * Get a name that is not currently used in the given ExpressionAttributeValueMap.
+ * Get a name that is not currently used in the given ExpressionAttributeValueMap
+ * and add it.
  */
 function getExpressionValueName(tableSchema: TableSchema, valueMap: aws.DynamoDB.ExpressionAttributeValueMap, value: any): string {
     let name: string;
@@ -598,7 +689,8 @@ function getExpressionValueName(tableSchema: TableSchema, valueMap: aws.DynamoDB
 }
 
 /**
- * Get names for values that are not currently used in the ExpressionAttributeValueMap.
+ * Get names for values that are not currently used in the ExpressionAttributeValueMap
+ * and add them.
  */
 function getExpressionValueNames(tableSchema: TableSchema, valueMap: aws.DynamoDB.ExpressionAttributeValueMap, values: any[] = []): string[] {
     const valueNames: string[] = [];
@@ -611,6 +703,8 @@ function getExpressionValueNames(tableSchema: TableSchema, valueMap: aws.DynamoD
 /**
  * Get the attribute name that can be used in expressions.  If it is a reserved word
  * or has a literal `.` (as indicated by a backslash)
+ *
+ * If a new name is required it is added to attributeMap as a side effect.
  */
 function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttributeNameMap, attribute: string): string {
     const attributeParts = attribute.split(/\./);
@@ -623,28 +717,25 @@ function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttribu
         }
     }
 
-    if (!attributeParts.find(attributePart => !/^[a-z][^ #:.]*$/.test(attributePart) || dynamoDbReservedWords.indexOf(attributePart) !== -1)) {
-        // This name is clean for user as is.
-        return attribute;
-    }
+    return attributeParts
+        .map(attributePart => {
+            if (/^[a-zA-Z][^\s#:.]*$/.test(attributePart) && dynamoDbReservedWords.indexOf(attributePart) === -1) {
+                // This name is clean for use as is.
+                return attributePart;
+            }
 
-    let name: string = null;
-    for (const attributePart of attributeParts) {
-        let namePart = Object.keys(attributeMap).find(namePart => attributeMap[namePart] === attribute);
+            const existingName = Object.keys(attributeMap).find(existingKey => attributeMap[existingKey] === attributePart);
+            if (existingName) {
+                return existingName;
+            }
 
-        if (!namePart) {
-            for (let i = 0; attributeMap[namePart = `#${indexToAlias(i, true)}`]; i++) {}
-            attributeMap[namePart] = attributePart;
-        }
+            let newName: string = null;
+            for (let i = 0; attributeMap[newName = `#${indexToAlias(i, true)}`]; i++) {}
+            attributeMap[newName] = attributePart;
+            return newName;
 
-        if (name == null) {
-            name = namePart;
-        } else {
-            name = name + "." + namePart;
-        }
-    }
-
-    return name;
+        })
+        .join(".");
 }
 
 /**
@@ -663,7 +754,7 @@ function indexToAlias(ix: number, caps: boolean): string {
     }
 }
 
-function jsTypeToDdbType(t: string): string {
+function jsTypeToDynamoKeyType(t: "string" | "number"): "S" | "N" {
     switch (t) {
         case "string":
             return "S";
