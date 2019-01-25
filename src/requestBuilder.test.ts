@@ -412,11 +412,11 @@ describe("requestBuilder", () => {
             });
         });
 
-        it("deletes an attribute from an item", () => {
+        it("removes an attribute from an item", () => {
             const input = buildUpdateInputFromActions(tableSchema, item, [
-                {action: "delete", attribute: "Brand"},
-                {action: "delete", attribute: "InStock"},
-                {action: "delete", attribute: "QuantityOnHand"}
+                {action: "remove", attribute: "Brand"},
+                {action: "remove", attribute: "InStock"},
+                {action: "remove", attribute: "QuantityOnHand"}
             ]);
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
@@ -433,8 +433,8 @@ describe("requestBuilder", () => {
 
         it("removes an element from a list", () => {
             const input = buildUpdateInputFromActions(tableSchema, item, [
-                {action: "list_delete_at_index", attribute: "RelatedItems", index: 1},
-                {action: "list_delete_at_index", attribute: "RelatedItems", index: 2}
+                {action: "list_remove_at_index", attribute: "RelatedItems", index: 1},
+                {action: "list_remove_at_index", attribute: "RelatedItems", index: 2}
             ]);
             chai.assert.deepEqual(input, {
                 TableName: "ProductCatalog",
@@ -988,12 +988,11 @@ describe("requestBuilder", () => {
                         S: "foo"
                     }
                 },
-                ConditionExpression: "begins_with(#A, :a) AND #B > :b AND #C.#D < :c",
+                ConditionExpression: "begins_with(#A, :a) AND #B > :b AND a.#C < :c",
                 ExpressionAttributeNames: {
                     "#A": "ASCII",
                     "#B": "GOTO",
-                    "#C": "a",
-                    "#D": "b.c"
+                    "#C": "b.c"
                 },
                 ExpressionAttributeValues: {
                     ":a": {
@@ -1141,8 +1140,7 @@ describe("requestBuilder", () => {
                     "#P": "primary",
                     "#A": "ASCII",
                     "#B": "GOTO",
-                    "#C": "a",
-                    "#D": "b.c"
+                    "#C": "b.c"
                 },
                 ExpressionAttributeValues: {
                     ":a": {
@@ -1159,7 +1157,7 @@ describe("requestBuilder", () => {
                     }
                 },
                 KeyConditionExpression: "#P = :p",
-                FilterExpression: "begins_with(#A, :a) AND #B > :b AND #C.#D < :c"
+                FilterExpression: "begins_with(#A, :a) AND #B > :b AND a.#C < :c"
             });
         });
     });

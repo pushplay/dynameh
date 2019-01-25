@@ -161,6 +161,16 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
     return request;
 }
 
+/**
+ * Build a request object that can be passed into `updateItem` based upon a
+ * set of {@link UpdateExpressionAction}s.  Each {@link UpdateExpressionAction} defines
+ * an operation to take as part of updating in the database.
+ * @param tableSchema
+ * @param itemToUpdate the item being updated.  This item is only used for its
+ *        keys and may already be updated.  This item will not be modified.
+ * @param updateActions an array of actions to turn into an UpdateExpression
+ * @returns input for the `updateItem` method
+ */
 export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpdate: object, updateActions: UpdateExpressionAction[]): aws.DynamoDB.UpdateItemInput {
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, itemToUpdate);
@@ -169,7 +179,7 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
     const valueMap: aws.DynamoDB.ExpressionAttributeValueMap = {};
 
     const setActions = updateActions
-        .filter(action => UpdateExpressionAction.getUpdateExpressionClauseKey(action) === "SET")
+        .filter(action => getUpdateExpressionActionClauseKey(action) === "SET")
         .map(action => {
             const attributeName = getExpressionAttributeName(nameMap, action.attribute);
             switch (action.action) {
@@ -194,13 +204,13 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
         .join(", ");
 
     const removeActions = updateActions
-        .filter(action => UpdateExpressionAction.getUpdateExpressionClauseKey(action) === "REMOVE")
+        .filter(action => getUpdateExpressionActionClauseKey(action) === "REMOVE")
         .map(action => {
             const attributeName = getExpressionAttributeName(nameMap, action.attribute);
             switch (action.action) {
-                case "delete":
+                case "remove":
                     return attributeName;
-                case "list_delete_at_index":
+                case "list_remove_at_index":
                     return `${attributeName}[${action.index}]`;
                 default:
                     throw new Error(`Unhandled REMOVE update '${action.action}'.`);
@@ -209,7 +219,7 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
         .join(", ");
 
     const addActions = updateActions
-        .filter(action => UpdateExpressionAction.getUpdateExpressionClauseKey(action) === "ADD")
+        .filter(action => getUpdateExpressionActionClauseKey(action) === "ADD")
         .map(action => {
             const attributeName = getExpressionAttributeName(nameMap, action.attribute);
             switch (action.action) {
@@ -222,7 +232,7 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
         .join(", ");
 
     const deleteActions = updateActions
-        .filter(action => UpdateExpressionAction.getUpdateExpressionClauseKey(action) === "DELETE")
+        .filter(action => getUpdateExpressionActionClauseKey(action) === "DELETE")
         .map(action => {
             const attributeName = getExpressionAttributeName(nameMap, action.attribute);
             switch (action.action) {
@@ -248,6 +258,30 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
         Key: getKey(tableSchema, itemToUpdate[tableSchema.partitionKeyField], tableSchema.sortKeyField && itemToUpdate[tableSchema.sortKeyField]),
         TableName: tableSchema.tableName
     };
+}
+
+function getUpdateExpressionActionClauseKey(action: UpdateExpressionAction): "SET" | "REMOVE" | "ADD" | "DELETE" {
+    const actions: (UpdateExpressionAction["action"])[] = ["put", "put_if_not_exists", "number_add", "number_subtract", "list_append", "list_prepend", "list_set_at_index", "remove", "list_remove_at_index", "set_add", "set_delete"];
+
+    switch (action.action) {
+        case "put":
+        case "put_if_not_exists":
+        case "number_add":
+        case "number_subtract":
+        case "list_append":
+        case "list_prepend":
+        case "list_set_at_index":
+            return "SET";
+        case "remove":
+        case "list_remove_at_index":
+            return "REMOVE";
+        case "set_add":
+            return "ADD";
+        case "set_delete":
+            return "DELETE";
+        default:
+            throw new Error(`UpdateExpression action must be one of: ${actions.join(", ")}.`);
+    }
 }
 
 /**
