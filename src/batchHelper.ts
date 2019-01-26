@@ -80,7 +80,7 @@ export async function batchGetAll(dynamodb: aws.DynamoDB, batchGetInput: aws.Dyn
         };
 
         const response = await dynamodb.batchGetItem(request).promise();
-        const responseObjects = unwrapBatchGetOutput(requestItemsTable, response);
+        const responseObjects = unwrapBatchGetOutput(response);
         results = [...results, ...responseObjects];
         if (response.UnprocessedKeys && response.UnprocessedKeys[requestItemsTable] && response.UnprocessedKeys[requestItemsTable].Keys.length) {
             unprocessedKeys.unshift(...response.UnprocessedKeys[requestItemsTable].Keys);

@@ -1,5 +1,5 @@
 /**
- * Describes the DynamoDB table structure and configures some settings.
+ * Describes the DynamoDB table structure and configures settings.
  */
 export interface TableSchema {
 
@@ -40,7 +40,8 @@ export interface TableSchema {
      * locking.  If set on an item, the type of the value must be `number`.
      * If set and the field is not on an item during a put then
      * there must not be an existing item in the table.  If set and the field
-     * is present on an item then the existing value in the table must match.
+     * is present on an item during put/update/delete then the existing value in
+     * the table must match.
      */
     versionKeyField?: string;
 

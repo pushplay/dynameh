@@ -22,7 +22,7 @@ npm install --save dynameh
 
 ## Usage
 
-```ecmascript 6
+```javascript
 import * as dynameh from "dynameh";
 // or
 const dynameh = require("dynameh");
@@ -32,9 +32,9 @@ See the [documentation](https://giftbit.github.io/dynameh/) for details on each 
 
 ### A Simple Example
 
-This example is written using async/await which is available in TypeScript and Babel.
+This example is written using async/await which is available in TypeScript and ES2017.
 
-```ecmascript 6
+```javascript
 import * as aws from "aws-sdk";
 import * as dynameh from "dynameh";
 
@@ -108,7 +108,7 @@ Optimistic locking is a strategy for preventing changes from clobbering each oth
 
 Enable optimistic locking by setting the `versionKeyField` on your TableSchema.  In the second TableSchema example that field is `version`.  The `versionKeyField` will be automatically incremented on the server side during a put request.  If the value for `versionKeyField` sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.
 
-```ecmascript 6
+```javascript
 import * as aws from "aws-sdk";
 import * as dynameh from "dynameh";
 
@@ -167,7 +167,7 @@ Conditions can be added to a put or delete request to make the operation conditi
 
 One of the most useful conditions is that the item must not already exist (create but not update).  This is done by asserting `attribute_not_exists` on the primary key.  For example...
 
-```ecmascript 6
+```javascript
 const tableSchema = {
     tableName: "Boats",
     partitionKeyField: "name",
@@ -223,7 +223,7 @@ Projections can be added to a get, batch get or query request to control what at
 
 For example...
 
-```ecmascript 6
+```javascript
 const tableSchema = {
     tableName: "Transactions",
     partitionKeyField: "customerId",
@@ -252,7 +252,7 @@ Date serialization can be configured by setting `dateSerializationFunction` on y
 
 For example...
 
-```ecmascript 6
+```javascript
 const tableSchema = {
     tableName: "MyTable",
     partitionKeyField: "id",
