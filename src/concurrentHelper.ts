@@ -26,10 +26,10 @@ export let backoffFactor = 2.0;
  * them concurrently is the next best thing.
  * @param dynamodb
  * @param putInputs
- * @returns a Promise of an array of objects of errors with the corresponding input
+ * @returns A Promise of an array of objects of errors with the corresponding input.
  */
-export async function concurrentPutAll(dynamodb: aws.DynamoDB, putInputs: aws.DynamoDB.PutItemInput[]): Promise<{input: aws.DynamoDB.PutItemInput, error: Error}[]> {
-    const putThunks = putInputs.map(putInput => async() => dynamodb.putItem(putInput).promise());
+export async function concurrentPutAll(dynamodb: aws.DynamoDB, putInputs: aws.DynamoDB.PutItemInput[]): Promise<{ input: aws.DynamoDB.PutItemInput, error: Error }[]> {
+    const putThunks = putInputs.map(putInput => async () => dynamodb.putItem(putInput).promise());
     const results = await runConcurrentThunks(putThunks);
     return results
         .map((maybeError, ix) => {

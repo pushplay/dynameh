@@ -1,10 +1,9 @@
 import * as aws from "aws-sdk";
-import {TableSchema} from "./TableSchema";
 
 /**
  * Extract a single property from a get response.
  * @param item
- * @returns the extracted value
+ * @returns The deserialized value.
  */
 export function unwrapResponseItem(item: aws.DynamoDB.AttributeValue): any {
     if (item.hasOwnProperty("B")) {
@@ -43,8 +42,8 @@ export function unwrapResponseItem(item: aws.DynamoDB.AttributeValue): any {
 
 /**
  * Extract the JSON objects from a response to `getItem`.
- * @param response result of getItem
- * @returns the object returned
+ * @param response Result of getItem.
+ * @returns Rhe object returned by get.
  */
 export function unwrapGetOutput(response: aws.DynamoDB.GetItemOutput): any {
     if (!response.Item) {
@@ -56,8 +55,8 @@ export function unwrapGetOutput(response: aws.DynamoDB.GetItemOutput): any {
 /**
  * Extract the JSON objects from a response to `batchGetItem`.  If multiple
  * tables were fetched from they will all be in the resulting array.
- * @param response result of batchGetItem
- * @returns the objects returned
+ * @param response Result of batchGetItem.
+ * @returns The objects returned by the batch get.
  */
 export function unwrapBatchGetOutput(response: aws.DynamoDB.BatchGetItemOutput): any[] {
     if (!response.Responses) {
@@ -72,8 +71,8 @@ export function unwrapBatchGetOutput(response: aws.DynamoDB.BatchGetItemOutput):
 
 /**
  * Extract the JSON objects from a response to `scan`.
- * @param response result of scan
- * @returns the objects returned
+ * @param response Result of scan.
+ * @returns The objects returned by the scan.
  */
 export function unwrapScanOutput(response: aws.DynamoDB.ScanOutput): any[] {
     const responseTableItems = response.Items;
@@ -85,8 +84,8 @@ export function unwrapScanOutput(response: aws.DynamoDB.ScanOutput): any[] {
 
 /**
  * Extract the JSON objects from a response to `query`.
- * @param response result of query
- * @returns the objects returned
+ * @param response Result of query.
+ * @returns The objects returned by the query.
  */
 export function unwrapQueryOutput(response: aws.DynamoDB.QueryOutput): any[] {
     const responseTableItems = response.Items;

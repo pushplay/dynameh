@@ -54,7 +54,7 @@ export function configure(options: {
  * multiple requests.  Reattempts UnprocessedKeys.
  * @param dynamodb
  * @param batchGetInput
- * @returns the stored objects
+ * @returns The stored objects.
  */
 export async function batchGetAll(dynamodb: aws.DynamoDB, batchGetInput: aws.DynamoDB.BatchGetItemInput): Promise<any[]> {
     const requestItemsTables = Object.keys(batchGetInput.RequestItems);

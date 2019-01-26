@@ -24,7 +24,7 @@ import {UpdateExpressionAction} from "./UpdateExpressionAction";
  * expression and key values.
  * @param tableSchema
  * @param item
- * @returns a put item
+ * @returns A put item.
  */
 export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.DynamoDB.AttributeValue {
     switch (typeof item) {
@@ -85,9 +85,9 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
 /**
  * Build a request object that can be passed into `getItem`.
  * @param tableSchema
- * @param partitionKeyValue the key of the item to get
- * @param sortKeyValue sort key of the item to get, if set in the schema
- * @returns input for the `getItem` method
+ * @param partitionKeyValue The key of the item to get.
+ * @param sortKeyValue Sort key of the item to get, if set in the schema.
+ * @returns Input for the `getItem` method.
  */
 export function buildGetInput(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.GetItemInput {
     checkSchema(tableSchema);
@@ -107,7 +107,7 @@ export function buildGetInput(tableSchema: TableSchema, partitionKeyValue: Dynam
  * will be incremented).
  * @param tableSchema
  * @param item
- * @returns input for the `putItem` method
+ * @returns Input for the `putItem` method.
  */
 export function buildPutInput(tableSchema: TableSchema, item: object): aws.DynamoDB.PutItemInput {
     checkSchema(tableSchema);
@@ -163,10 +163,10 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
  * if the item in the database has the same value (and then the version
  * will be incremented).
  * @param tableSchema
- * @param itemToUpdate the item being updated.  This item is only used for its
+ * @param itemToUpdate The item being updated.  This item is only used for its
  *        keys and may already be updated.  This item will not be modified.
- * @param updateActions an array of actions to turn into an UpdateExpression
- * @returns input for the `updateItem` method
+ * @param updateActions An array of actions to turn into an UpdateExpression.
+ * @returns Input for the `updateItem` method.
  */
 export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpdate: object, ...updateActions: UpdateExpressionAction[]): aws.DynamoDB.UpdateItemInput {
     checkSchema(tableSchema);
@@ -309,9 +309,9 @@ function getUpdateExpressionActionClauseKey(action: UpdateExpressionAction): "SE
  * If `TableSchema.versionKeyField` is set the delete will only succeed
  * if the item in the database has the same value.
  * @param tableSchema
- * @param itemToDelete the item to delete.  Must at least have the partition
+ * @param itemToDelete The item to delete.  Must at least have the partition
  *        key, the sort key if applicable, and the version field if applicable.
- * @returns input for the `deleteItem` method
+ * @returns Input for the `deleteItem` method.
  */
 export function buildDeleteInput(tableSchema: TableSchema, itemToDelete: object): aws.DynamoDB.DeleteItemInput {
     checkSchema(tableSchema);
@@ -339,13 +339,13 @@ export function buildDeleteInput(tableSchema: TableSchema, itemToDelete: object)
  * If `tableSchema.indexName` is set the query will be performed on the secondary index
  * with that name.
  * @param tableSchema
- * @param partitionKeyValue the hash key of the item to get
- * @param sortKeyOp the operator that can be used to constrain results.  Must be one of:
+ * @param partitionKeyValue The hash key of the item to get.
+ * @param sortKeyOp The operator that can be used to constrain results.  Must be one of:
  *                  `"=", "<", "<=", ">", ">=", "BETWEEN", "begins_with"`.  If not defined
  *                  all sort key values will be returned.
- * @param sortKeyValues values the sortKeyOp works on.  This must be 2 values for
+ * @param sortKeyValues Values the sortKeyOp works on.  This must be 2 values for
  *                      `BETWEEN` and 1 for all other operators.
- * @returns input for the `query` method
+ * @returns Input for the `query` method.
  */
 export function buildQueryInput(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyOp?: DynamoQueryConditionOperator, ...sortKeyValues: DynamoKey[]): aws.DynamoDB.QueryInput {
     checkSchema(tableSchema);
@@ -410,8 +410,8 @@ export function buildQueryInput(tableSchema: TableSchema, partitionKeyValue: Dyn
  * with that name.
  * @see addFilter
  * @param tableSchema
- * @param filters one or more filters to turn into a filter expression
- * @returns input for the `scan` method
+ * @param filters One or more filters to turn into a filter expression.
+ * @returns Input for the `scan` method.
  */
 export function buildScanInput(tableSchema: TableSchema, ...filters: Condition[]): aws.DynamoDB.ScanInput {
     checkSchema(tableSchema);
@@ -434,8 +434,8 @@ export function buildScanInput(tableSchema: TableSchema, ...filters: Condition[]
 /**
  * Build a request object that can be passed into `batchWriteItem`.
  * @param tableSchema
- * @param items the items to put
- * @returns input for the `batchWriteItem` method
+ * @param items The items to put.
+ * @returns Input for the `batchWriteItem` method.
  */
 export function buildBatchPutInput(tableSchema: TableSchema, items: object[]): aws.DynamoDB.BatchWriteItemInput {
     checkSchema(tableSchema);
@@ -459,8 +459,8 @@ export function buildBatchPutInput(tableSchema: TableSchema, items: object[]): a
 /**
  * Build a request object that can be passed into `batchWriteItem`.
  * @param tableSchema
- * @param keyValues an array of the key values for each item to delete
- * @returns input for the `batchWriteItem` method
+ * @param keyValues An array of the key values for each item to delete.
+ * @returns Input for the `batchWriteItem` method.
  */
 export function buildBatchDeleteInput(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.BatchWriteItemInput {
     checkSchema(tableSchema);
@@ -499,8 +499,8 @@ export function buildBatchDeleteInput(tableSchema: TableSchema, keyValues: Dynam
 /**
  * Build a request object that can be passed into `batchGetItem`.
  * @param tableSchema
- * @param keyValues an array of the key values for each item to request
- * @returns input for the `batchGetItem` method
+ * @param keyValues An array of the key values for each item to request.
+ * @returns Input for the `batchGetItem` method.
  */
 export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKey[] | DynamoKeyPair[]): aws.DynamoDB.BatchGetItemInput {
     checkSchema(tableSchema);
@@ -535,10 +535,10 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
 /**
  * Build a request object that can be passed into `createTable`.
  * @param tableSchema
- * @param readCapacity represents one strongly consistent read per second, or two
+ * @param readCapacity Represents one strongly consistent read per second, or two
  *                     eventually consistent reads per second, for an item up to 4 KB in size.
- * @param writeCapacity represents one write per second for an item up to 1 KB in size.
- * @returns input for the `createTable` method
+ * @param writeCapacity Represents one write per second for an item up to 1 KB in size.
+ * @returns Input for the `createTable` method.
  */
 export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: number = 1, writeCapacity: number = 1): aws.DynamoDB.CreateTableInput {
     if (tableSchema.indexName) {
@@ -591,8 +591,8 @@ export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: nu
  * Build a request object that can be passed into `updateTimeToLive`.
  * Time to live settings will be enabled if `tableSchema.ttlField`
  * is defined and disabled otherwise.
- * @param {TableSchema} tableSchema
- * @returns input for the `updateTimeToLive` method
+ * @param tableSchema
+ * @returns Input for the `updateTimeToLive` method.
  */
 export function buildUpdateTimeToLiveInput(tableSchema: TableSchema): aws.DynamoDB.UpdateTimeToLiveInput {
     checkSchema(tableSchema);
@@ -623,9 +623,9 @@ export function buildUpdateTimeToLiveInput(tableSchema: TableSchema): aws.Dynamo
  *
  * For documentation on attribute names see: http://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.Attributes.html
  * @param tableSchema
- * @param projectableRequest the input to add a projection expression to
- * @param attributes an array of attribute names to fetch
- * @returns a copy of projectableRequest with the projection expression set
+ * @param projectableRequest The input to add a projection expression to.
+ * @param attributes An array of attribute names to fetch.
+ * @returns A copy of projectableRequest with the projection expression set.
  */
 export function addProjection<T extends { ProjectionExpression?: aws.DynamoDB.ProjectionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap }>(tableSchema: TableSchema, projectableRequest: T, attributes: string[]): T {
     checkSchema(tableSchema);
@@ -668,9 +668,9 @@ export function addProjection<T extends { ProjectionExpression?: aws.DynamoDB.Pr
  * Any existing condition expression will be amended.
  *
  * @param tableSchema
- * @param conditionableRequest the input to add a condition expression to
- * @param conditions one or more conditions to turn into a condition expression
- * @returns a copy of conditionableRequest with the condition expression set
+ * @param conditionableRequest The input to add a condition expression to.
+ * @param conditions One or more conditions to turn into a condition expression.
+ * @returns A copy of conditionableRequest with the condition expression set.
  */
 export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(tableSchema: TableSchema, conditionableRequest: T, ...conditions: Condition[]): T {
     return addExpression("ConditionExpression", tableSchema, conditionableRequest, ...conditions);
@@ -685,9 +685,9 @@ export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.Cond
  * Any existing filter expression will be amended.
  *
  * @param tableSchema
- * @param filterableRequest the input to add a filter expression to
- * @param filters one or more filters to turn into a filter expression
- * @returns a copy of filterableRequest with the condition expression set
+ * @param filterableRequest The input to add a filter expression to.
+ * @param filters One or more filters to turn into a filter expression.
+ * @returns A copy of filterableRequest with the condition expression set.
  */
 export function addFilter<T extends { FilterExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(tableSchema: TableSchema, filterableRequest: T, ...filters: Condition[]): T {
     return addExpression("FilterExpression", tableSchema, filterableRequest, ...filters);
@@ -815,7 +815,7 @@ function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttribu
 /**
  * Turn an index number into an alias for a value or attribute.
  * @param ix
- * @param caps whether to use capital letters
+ * @param caps Whether to use capital letters.
  */
 function indexToAlias(ix: number, caps: boolean): string {
     const asciiOffset = caps ? 65 : 97;

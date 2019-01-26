@@ -193,7 +193,7 @@ export interface UpdateExpressionListSetAtIndex {
     value: any;
 
     /**
-     * The index of the list.  A number.
+     * The index of the item in the list.  A number.
      */
     index: number;
 }
@@ -215,7 +215,7 @@ export interface UpdateExpressionListRemoveAtIndex {
     attribute: string;
 
     /**
-     * The index of the list.  A number.
+     * The index of the item in the list.  A number.
      */
     index: number;
 }
