@@ -50,8 +50,8 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
                 }
             } else if (item instanceof Set) {
                 const items = Array.from(item);
-                if (item.size == 0) {
-                    throw new Error("Empty Sets are not supported.")
+                if (item.size === 0) {
+                    throw new Error("Empty Sets are not supported.");
                 }
 
                 if (items.every(x => typeof x === "string")) {
