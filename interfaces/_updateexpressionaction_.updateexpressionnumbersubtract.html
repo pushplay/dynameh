@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;requestUnwrapper&quot; | Dynameh</title>
+	<title>UpdateExpressionNumberSubtract | Dynameh</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,62 +54,98 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_requestunwrapper_.html">&quot;requestUnwrapper&quot;</a>
+					<a href="../modules/_updateexpressionaction_.html">&quot;UpdateExpressionAction&quot;</a>
+				</li>
+				<li>
+					<a href="_updateexpressionaction_.updateexpressionnumbersubtract.html">UpdateExpressionNumberSubtract</a>
 				</li>
 			</ul>
-			<h1>External module &quot;requestUnwrapper&quot;</h1>
+			<h1>Interface UpdateExpressionNumberSubtract</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Subtract from an existing numeric attribute.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">UpdateExpressionNumberSubtract</span>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Functions</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestunwrapper_.html#unwrapputinput" class="tsd-kind-icon">unwrap<wbr>Put<wbr>Input</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_updateexpressionaction_.updateexpressionnumbersubtract.html#action" class="tsd-kind-icon">action</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_updateexpressionaction_.updateexpressionnumbersubtract.html#attribute" class="tsd-kind-icon">attribute</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_updateexpressionaction_.updateexpressionnumbersubtract.html#value" class="tsd-kind-icon">value</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
-					<a name="unwrapputinput" class="tsd-anchor"></a>
-					<h3>unwrap<wbr>Put<wbr>Input</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">unwrap<wbr>Put<wbr>Input<span class="tsd-signature-symbol">(</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PutItemInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestUnwrapper.ts#L9">requestUnwrapper.ts:9</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Extract the item being put from the input.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>input: <span class="tsd-signature-type">PutItemInput</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The <code>putItem</code> request object.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-							<p>The item to be put to the database.</p>
-						</li>
-					</ul>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="action" class="tsd-anchor"></a>
+					<h3>action</h3>
+					<div class="tsd-signature tsd-kind-icon">action<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"number_subtract"</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/UpdateExpressionAction.ts#L115">UpdateExpressionAction.ts:115</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="attribute" class="tsd-anchor"></a>
+					<h3>attribute</h3>
+					<div class="tsd-signature tsd-kind-icon">attribute<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/UpdateExpressionAction.ts#L124">UpdateExpressionAction.ts:124</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The attribute name to update.  Nested attributes
+								can be accessed using dot notation; for example <code>a.b.c</code>.  Attribute
+								names with literal dots should escape them with a backslash; for
+							example <code>a\.b\.c</code>.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>see</dt>
+							<dd><p><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.Attributes.html">https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.Attributes.html</a></p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="value" class="tsd-anchor"></a>
+					<h3>value</h3>
+					<div class="tsd-signature tsd-kind-icon">value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/UpdateExpressionAction.ts#L129">UpdateExpressionAction.ts:129</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The number to subtract.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -120,44 +156,92 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_condition_.html">"<wbr>Condition"</a>
+						<a href="../modules/_condition_.html">"<wbr>Condition"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_tableschema_.html">"<wbr>Table<wbr>Schema"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_updateexpressionaction_.html">"<wbr>Update<wbr>Expression<wbr>Action"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_batchhelper_.html">"batch<wbr>Helper"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_concurrenthelper_.html">"concurrent<wbr>Helper"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_dynamodbreservedwords_.html">"dynamo<wbr>DbReserved<wbr>Words"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_index_.html">"index"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_requestbuilder_.html">"request<wbr>Builder"</a>
+						<a href="../modules/_tableschema_.html">"<wbr>Table<wbr>Schema"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
-						<a href="_requestunwrapper_.html">"request<wbr>Unwrapper"</a>
+						<a href="../modules/_updateexpressionaction_.html">"<wbr>Update<wbr>Expression<wbr>Action"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_responseunwrapper_.html">"response<wbr>Unwrapper"</a>
+						<a href="../modules/_batchhelper_.html">"batch<wbr>Helper"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_validation_.html">"validation"</a>
+						<a href="../modules/_concurrenthelper_.html">"concurrent<wbr>Helper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_dynamodbreservedwords_.html">"dynamo<wbr>DbReserved<wbr>Words"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_index_.html">"index"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_requestbuilder_.html">"request<wbr>Builder"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_requestunwrapper_.html">"request<wbr>Unwrapper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_responseunwrapper_.html">"response<wbr>Unwrapper"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="../modules/_validation_.html">"validation"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-external-module">
-						<a href="_requestunwrapper_.html#unwrapputinput" class="tsd-kind-icon">unwrap<wbr>Put<wbr>Input</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionlistappend.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>List<wbr>Append</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionlistprepend.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>List<wbr>Prepend</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionlistremoveatindex.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>List<wbr>Remove<wbr>AtIndex</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionlistsetatindex.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>List<wbr>Set<wbr>AtIndex</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionnumberadd.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>Number<wbr>Add</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionnumbersubtract.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>Number<wbr>Subtract</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_updateexpressionaction_.updateexpressionnumbersubtract.html#action" class="tsd-kind-icon">action</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_updateexpressionaction_.updateexpressionnumbersubtract.html#attribute" class="tsd-kind-icon">attribute</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_updateexpressionaction_.updateexpressionnumbersubtract.html#value" class="tsd-kind-icon">value</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionput.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>Put</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionputifnotexists.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>Put<wbr>IfNot<wbr>Exists</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionremove.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>Remove</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionsetadd.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>Set<wbr>Add</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-external-module">
+						<a href="_updateexpressionaction_.updateexpressionsetdelete.html" class="tsd-kind-icon">Update<wbr>Expression<wbr>Set<wbr>Delete</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-external-module">
+						<a href="../modules/_updateexpressionaction_.html#updateexpressionaction" class="tsd-kind-icon">Update<wbr>Expression<wbr>Action</a>
 					</li>
 				</ul>
 			</nav>

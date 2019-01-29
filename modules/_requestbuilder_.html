@@ -40,8 +40,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -74,7 +72,6 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_requestbuilder_.html#addcondition" class="tsd-kind-icon">add<wbr>Condition</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported"><a href="_requestbuilder_.html#addexpression" class="tsd-kind-icon">add<wbr>Expression</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_requestbuilder_.html#addfilter" class="tsd-kind-icon">add<wbr>Filter</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_requestbuilder_.html#addprojection" class="tsd-kind-icon">add<wbr>Projection</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildbatchdeleteinput" class="tsd-kind-icon">build<wbr>Batch<wbr>Delete<wbr>Input</a></li>
@@ -87,13 +84,8 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildqueryinput" class="tsd-kind-icon">build<wbr>Query<wbr>Input</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildrequestputitem" class="tsd-kind-icon">build<wbr>Request<wbr>Put<wbr>Item</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildscaninput" class="tsd-kind-icon">build<wbr>Scan<wbr>Input</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildupdateinputfromactions" class="tsd-kind-icon">build<wbr>Update<wbr>Input<wbr>From<wbr>Actions</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildupdatetimetoliveinput" class="tsd-kind-icon">build<wbr>Update<wbr>Time<wbr>ToLive<wbr>Input</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_requestbuilder_.html#getexpressionattributename" class="tsd-kind-icon">get<wbr>Expression<wbr>Attribute<wbr>Name</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_requestbuilder_.html#getexpressionvaluename" class="tsd-kind-icon">get<wbr>Expression<wbr>Value<wbr>Name</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_requestbuilder_.html#getexpressionvaluenames" class="tsd-kind-icon">get<wbr>Expression<wbr>Value<wbr>Names</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_requestbuilder_.html#getkey" class="tsd-kind-icon">get<wbr>Key</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_requestbuilder_.html#indextoalias" class="tsd-kind-icon">index<wbr>ToAlias</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported"><a href="_requestbuilder_.html#jstypetoddbtype" class="tsd-kind-icon">js<wbr>Type<wbr>ToDdb<wbr>Type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -111,15 +103,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L504">requestBuilder.ts:504</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L675">requestBuilder.ts:675</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Adds a condition expression to a input object.  A condition expression
-										defines under what conditions the item can be put/deleted.  Any existing
-									condition expression will be amended.</p>
+									defines under what conditions the item can be put/deleted.</p>
 								</div>
+								<p>Any existing condition expression will be amended.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -135,59 +127,18 @@
 								<li>
 									<h5>conditionableRequest: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the input to add a condition expression to</p>
+										<p>The input to add a condition expression to.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>conditions: <a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>one or more conditions to turn into a condition expression</p>
+										<p>One or more conditions to turn into a condition expression.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
-							<p>a copy of conditionableRequest with the condition expression set</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-					<a name="addexpression" class="tsd-anchor"></a>
-					<h3>add<wbr>Expression</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Expression&lt;T, K&gt;<span class="tsd-signature-symbol">(</span>expressionKey<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, conditionableRequest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, conditions<span class="tsd-signature-symbol">: </span><a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L523">requestBuilder.ts:523</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
-								</li>
-								<li>
-									<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">keyof T</span></h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>expressionKey: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
-								</li>
-								<li>
-									<h5>conditionableRequest: <span class="tsd-signature-type">T</span></h5>
-								</li>
-								<li>
-									<h5>conditions: <a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+							<p>A copy of conditionableRequest with the condition expression set.</p>
 						</li>
 					</ul>
 				</section>
@@ -201,7 +152,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L519">requestBuilder.ts:519</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L692">requestBuilder.ts:692</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -211,6 +162,7 @@
 										after the search and you will be billed for the bandwidth of all results
 									before the filter is applied.</p>
 								</div>
+								<p>Any existing filter expression will be amended.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -226,18 +178,18 @@
 								<li>
 									<h5>filterableRequest: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the input to add a filter expression to</p>
+										<p>The input to add a filter expression to.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>filters: <a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>one or more filters to turn into a filter expression</p>
+										<p>One or more filters to turn into a filter expression.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
-							<p>a copy of filterableRequest with the condition expression set</p>
+							<p>A copy of filterableRequest with the condition expression set.</p>
 						</li>
 					</ul>
 				</section>
@@ -251,7 +203,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L460">requestBuilder.ts:460</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L630">requestBuilder.ts:630</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -276,18 +228,18 @@
 								<li>
 									<h5>projectableRequest: <span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the input to add a projection expression to</p>
+										<p>The input to add a projection expression to.</p>
 									</div>
 								</li>
 								<li>
 									<h5>attributes: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>an array of attribute names to fetch</p>
+										<p>An array of attribute names to fetch.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
-							<p>a copy of projectableRequest with the projection expression set</p>
+							<p>A copy of projectableRequest with the projection expression set.</p>
 						</li>
 					</ul>
 				</section>
@@ -301,7 +253,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L298">requestBuilder.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L465">requestBuilder.ts:465</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -317,12 +269,12 @@
 								<li>
 									<h5>keyValues: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="_validation_.html#dynamokeypair" class="tsd-signature-type">DynamoKeyPair</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>an array of the key values for each item to delete</p>
+										<p>An array of the key values for each item to delete.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">BatchWriteItemInput</span></h4>
-							<p>input for the <code>batchWriteItem</code> method</p>
+							<p>Input for the <code>batchWriteItem</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -336,7 +288,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L338">requestBuilder.ts:338</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L505">requestBuilder.ts:505</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -352,12 +304,12 @@
 								<li>
 									<h5>keyValues: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><a href="_validation_.html#dynamokeypair" class="tsd-signature-type">DynamoKeyPair</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>an array of the key values for each item to request</p>
+										<p>An array of the key values for each item to request.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">BatchGetItemInput</span></h4>
-							<p>input for the <code>batchGetItem</code> method</p>
+							<p>Input for the <code>batchGetItem</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -371,7 +323,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L273">requestBuilder.ts:273</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L440">requestBuilder.ts:440</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -387,12 +339,12 @@
 								<li>
 									<h5>items: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the items to put</p>
+										<p>The items to put.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">BatchWriteItemInput</span></h4>
-							<p>input for the <code>batchWriteItem</code> method</p>
+							<p>Input for the <code>batchWriteItem</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -406,7 +358,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L376">requestBuilder.ts:376</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L543">requestBuilder.ts:543</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -422,19 +374,19 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> readCapacity: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>represents one strongly consistent read per second, or two
+										<p>Represents one strongly consistent read per second, or two
 										eventually consistent reads per second, for an item up to 4 KB in size.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> writeCapacity: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>represents one write per second for an item up to 1 KB in size.</p>
+										<p>Represents one write per second for an item up to 1 KB in size.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">CreateTableInput</span></h4>
-							<p>input for the <code>createTable</code> method</p>
+							<p>Input for the <code>createTable</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -442,19 +394,21 @@
 					<a name="builddeleteinput" class="tsd-anchor"></a>
 					<h3>build<wbr>Delete<wbr>Input</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Delete<wbr>Input<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, primaryKeyValue<span class="tsd-signature-symbol">: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a>, sortKeyValue<span class="tsd-signature-symbol">?: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DeleteItemInput</span></li>
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Delete<wbr>Input<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, itemToDelete<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DeleteItemInput</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L168">requestBuilder.ts:168</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L316">requestBuilder.ts:316</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Build a request object that can be passed into <code>deleteItem</code></p>
 								</div>
+								<p>If <code>TableSchema.versionKeyField</code> is set the delete will only succeed
+								if the item in the database has the same value.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -462,20 +416,15 @@
 									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
 								</li>
 								<li>
-									<h5>primaryKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
+									<h5>itemToDelete: <span class="tsd-signature-type">object</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the key of the item to delete</p>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> sortKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>sort key of the item to delete, if set in the schema</p>
+										<p>The item to delete.  Must at least have the partition
+										key, the sort key if applicable, and the version field if applicable.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">DeleteItemInput</span></h4>
-							<p>input for the <code>deleteItem</code> method</p>
+							<p>Input for the <code>deleteItem</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -483,13 +432,13 @@
 					<a name="buildgetinput" class="tsd-anchor"></a>
 					<h3>build<wbr>Get<wbr>Input</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Get<wbr>Input<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, primaryKeyValue<span class="tsd-signature-symbol">: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a>, sortKeyValue<span class="tsd-signature-symbol">?: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">GetItemInput</span></li>
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Get<wbr>Input<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, partitionKeyValue<span class="tsd-signature-symbol">: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a>, sortKeyValue<span class="tsd-signature-symbol">?: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">GetItemInput</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L89">requestBuilder.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L92">requestBuilder.ts:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -503,20 +452,20 @@
 									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
 								</li>
 								<li>
-									<h5>primaryKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
+									<h5>partitionKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the key of the item to get</p>
+										<p>The key of the item to get.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> sortKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>sort key of the item to get, if set in the schema</p>
+										<p>Sort key of the item to get, if set in the schema.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">GetItemInput</span></h4>
-							<p>input for the <code>getItem</code> method</p>
+							<p>Input for the <code>getItem</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -530,13 +479,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L105">requestBuilder.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L112">requestBuilder.ts:112</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Build a request object that can be passed into <code>putItem</code>.</p>
 								</div>
+								<p>If <code>TableSchema.versionKeyField</code> is set the put will only succeed
+									if the item in the database has the same value (and then the version
+								will be incremented).</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -548,7 +500,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">PutItemInput</span></h4>
-							<p>input for the <code>putItem</code> method</p>
+							<p>Input for the <code>putItem</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -556,13 +508,13 @@
 					<a name="buildqueryinput" class="tsd-anchor"></a>
 					<h3>build<wbr>Query<wbr>Input</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Query<wbr>Input<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, primaryKeyValue<span class="tsd-signature-symbol">: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a>, sortKeyOp<span class="tsd-signature-symbol">?: </span><a href="_validation_.html#dynamoqueryconditionoperator" class="tsd-signature-type">DynamoQueryConditionOperator</a>, <span class="tsd-signature-symbol">...</span>sortKeyValues<span class="tsd-signature-symbol">: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">QueryInput</span></li>
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Query<wbr>Input<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, partitionKeyValue<span class="tsd-signature-symbol">: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a>, sortKeyOp<span class="tsd-signature-symbol">?: </span><a href="_validation_.html#dynamoqueryconditionoperator" class="tsd-signature-type">DynamoQueryConditionOperator</a>, <span class="tsd-signature-symbol">...</span>sortKeyValues<span class="tsd-signature-symbol">: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">QueryInput</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L191">requestBuilder.ts:191</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L350">requestBuilder.ts:350</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -571,6 +523,8 @@
 										an efficient search on one partition key value with an optional condition on the sort
 									key.</p>
 								</div>
+								<p>If <code>tableSchema.indexName</code> is set the query will be performed on the secondary index
+								with that name.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -578,15 +532,15 @@
 									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
 								</li>
 								<li>
-									<h5>primaryKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
+									<h5>partitionKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the hash key of the item to get</p>
+										<p>The hash key of the item to get.</p>
 									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> sortKeyOp: <a href="_validation_.html#dynamoqueryconditionoperator" class="tsd-signature-type">DynamoQueryConditionOperator</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the operator that can be used to constrain results.  Must be one of:
+										<p>The operator that can be used to constrain results.  Must be one of:
 											<code>&quot;=&quot;, &quot;&lt;&quot;, &quot;&lt;=&quot;, &quot;&gt;&quot;, &quot;&gt;=&quot;, &quot;BETWEEN&quot;, &quot;begins_with&quot;</code>.  If not defined
 										all sort key values will be returned.</p>
 									</div>
@@ -594,13 +548,13 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>sortKeyValues: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>values the sortKeyOp works on.  This must be 2 values for
+										<p>Values the sortKeyOp works on.  This must be 2 values for
 										<code>BETWEEN</code> and 1 for all other operators.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">QueryInput</span></h4>
-							<p>input for the <code>query</code> method</p>
+							<p>Input for the <code>query</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -614,7 +568,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L28">requestBuilder.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L29">requestBuilder.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -633,7 +587,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">AttributeValue</span></h4>
-							<p>a put item</p>
+							<p>A put item.</p>
 						</li>
 					</ul>
 				</section>
@@ -641,13 +595,13 @@
 					<a name="buildscaninput" class="tsd-anchor"></a>
 					<h3>build<wbr>Scan<wbr>Input</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">build<wbr>Scan<wbr>Input<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ScanInput</span></li>
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Scan<wbr>Input<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, <span class="tsd-signature-symbol">...</span>filters<span class="tsd-signature-symbol">: </span><a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ScanInput</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L253">requestBuilder.ts:253</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L416">requestBuilder.ts:416</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -657,6 +611,8 @@
 										some values, though all objects in the database will still be read and your account
 									billed accordingly.</p>
 								</div>
+								<p>If <code>tableSchema.indexName</code> is set the scan will be performed on the secondary index
+								with that name.</p>
 								<dl class="tsd-comment-tags">
 									<dt>see</dt>
 									<dd><p>addFilter</p>
@@ -668,9 +624,62 @@
 								<li>
 									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
 								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>filters: <a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>One or more filters to turn into a filter expression.</p>
+									</div>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ScanInput</span></h4>
-							<p>input for the <code>scan</code> method</p>
+							<p>Input for the <code>scan</code> method.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="buildupdateinputfromactions" class="tsd-anchor"></a>
+					<h3>build<wbr>Update<wbr>Input<wbr>From<wbr>Actions</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Update<wbr>Input<wbr>From<wbr>Actions<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, itemToUpdate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span>, <span class="tsd-signature-symbol">...</span>updateActions<span class="tsd-signature-symbol">: </span><a href="_updateexpressionaction_.html#updateexpressionaction" class="tsd-signature-type">UpdateExpressionAction</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">UpdateItemInput</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L171">requestBuilder.ts:171</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Build a request object that can be passed into <code>updateItem</code> based upon a
+										set of <a href="_updateexpressionaction_.html#updateexpressionaction">UpdateExpressionAction</a>s.  Each <a href="_updateexpressionaction_.html#updateexpressionaction">UpdateExpressionAction</a> defines
+									an operation to take as part of updating in the database.</p>
+								</div>
+								<p>If <code>TableSchema.versionKeyField</code> is set the update will only succeed
+									if the item in the database has the same value (and then the version
+								will be incremented).</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
+								</li>
+								<li>
+									<h5>itemToUpdate: <span class="tsd-signature-type">object</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The item being updated.  This item is only used for its
+										keys and may already be updated.  This item will not be modified.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>updateActions: <a href="_updateexpressionaction_.html#updateexpressionaction" class="tsd-signature-type">UpdateExpressionAction</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An array of actions to turn into an UpdateExpression.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">UpdateItemInput</span></h4>
+							<p>Input for the <code>updateItem</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -684,7 +693,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L427">requestBuilder.ts:427</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L597">requestBuilder.ts:597</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -701,185 +710,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">UpdateTimeToLiveInput</span></h4>
-							<p>input for the <code>updateTimeToLive</code> method</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="getexpressionattributename" class="tsd-anchor"></a>
-					<h3>get<wbr>Expression<wbr>Attribute<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Expression<wbr>Attribute<wbr>Name<span class="tsd-signature-symbol">(</span>attributeMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB.ExpressionAttributeNameMap</span>, attribute<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L601">requestBuilder.ts:601</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the attribute name that can be used in expressions.  If it is a reserved word
-									or has a literal <code>.</code> (as indicated by an )</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>attributeMap: <span class="tsd-signature-type">aws.DynamoDB.ExpressionAttributeNameMap</span></h5>
-								</li>
-								<li>
-									<h5>attribute: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="getexpressionvaluename" class="tsd-anchor"></a>
-					<h3>get<wbr>Expression<wbr>Value<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Expression<wbr>Value<wbr>Name<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, valueMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB.ExpressionAttributeValueMap</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L579">requestBuilder.ts:579</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get a name that is not currently used in the given ExpressionAttributeValueMap.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
-								</li>
-								<li>
-									<h5>valueMap: <span class="tsd-signature-type">aws.DynamoDB.ExpressionAttributeValueMap</span></h5>
-								</li>
-								<li>
-									<h5>value: <span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="getexpressionvaluenames" class="tsd-anchor"></a>
-					<h3>get<wbr>Expression<wbr>Value<wbr>Names</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Expression<wbr>Value<wbr>Names<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, valueMap<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB.ExpressionAttributeValueMap</span>, values<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L589">requestBuilder.ts:589</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get a name that is not currently used in the given ExpressionAttributeValueMap.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
-								</li>
-								<li>
-									<h5>valueMap: <span class="tsd-signature-type">aws.DynamoDB.ExpressionAttributeValueMap</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> values: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="getkey" class="tsd-anchor"></a>
-					<h3>get<wbr>Key</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Key<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, primaryKeyValue<span class="tsd-signature-symbol">: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a>, sortKeyValue<span class="tsd-signature-symbol">?: </span><a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB.Key</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L566">requestBuilder.ts:566</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
-								</li>
-								<li>
-									<h5>primaryKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> sortKeyValue: <a href="_validation_.html#dynamokey" class="tsd-signature-type">DynamoKey</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">aws.DynamoDB.Key</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="indextoalias" class="tsd-anchor"></a>
-					<h3>index<wbr>ToAlias</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">index<wbr>ToAlias<span class="tsd-signature-symbol">(</span>ix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, caps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L636">requestBuilder.ts:636</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>ix: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>caps: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-					<a name="jstypetoddbtype" class="tsd-anchor"></a>
-					<h3>js<wbr>Type<wbr>ToDdb<wbr>Type</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">js<wbr>Type<wbr>ToDdb<wbr>Type<span class="tsd-signature-symbol">(</span>t<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/requestBuilder.ts#L647">requestBuilder.ts:647</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>t: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>Input for the <code>updateTimeToLive</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -898,6 +729,9 @@
 						<a href="_tableschema_.html">"<wbr>Table<wbr>Schema"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="_updateexpressionaction_.html">"<wbr>Update<wbr>Expression<wbr>Action"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="_batchhelper_.html">"batch<wbr>Helper"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -913,22 +747,13 @@
 						<a href="_requestbuilder_.html">"request<wbr>Builder"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_requestbuilder_test_.html">"request<wbr>Builder.test"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="_requestunwrapper_.html">"request<wbr>Unwrapper"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="_responseunwrapper_.html">"response<wbr>Unwrapper"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_responseunwrapper_test_.html">"response<wbr>Unwrapper.test"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="_validation_.html">"validation"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_validation_test_.html">"validation.test"</a>
 					</li>
 				</ul>
 			</nav>
@@ -936,9 +761,6 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_requestbuilder_.html#addcondition" class="tsd-kind-icon">add<wbr>Condition</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter tsd-is-not-exported">
-						<a href="_requestbuilder_.html#addexpression" class="tsd-kind-icon">add<wbr>Expression</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_requestbuilder_.html#addfilter" class="tsd-kind-icon">add<wbr>Filter</a>
@@ -977,25 +799,10 @@
 						<a href="_requestbuilder_.html#buildscaninput" class="tsd-kind-icon">build<wbr>Scan<wbr>Input</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_requestbuilder_.html#buildupdateinputfromactions" class="tsd-kind-icon">build<wbr>Update<wbr>Input<wbr>From<wbr>Actions</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_requestbuilder_.html#buildupdatetimetoliveinput" class="tsd-kind-icon">build<wbr>Update<wbr>Time<wbr>ToLive<wbr>Input</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_requestbuilder_.html#getexpressionattributename" class="tsd-kind-icon">get<wbr>Expression<wbr>Attribute<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_requestbuilder_.html#getexpressionvaluename" class="tsd-kind-icon">get<wbr>Expression<wbr>Value<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_requestbuilder_.html#getexpressionvaluenames" class="tsd-kind-icon">get<wbr>Expression<wbr>Value<wbr>Names</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_requestbuilder_.html#getkey" class="tsd-kind-icon">get<wbr>Key</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_requestbuilder_.html#indextoalias" class="tsd-kind-icon">index<wbr>ToAlias</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-not-exported">
-						<a href="_requestbuilder_.html#jstypetoddbtype" class="tsd-kind-icon">js<wbr>Type<wbr>ToDdb<wbr>Type</a>
 					</li>
 				</ul>
 			</nav>

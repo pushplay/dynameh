@@ -40,8 +40,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -89,37 +87,32 @@
 					<a name="unwrapbatchgetoutput" class="tsd-anchor"></a>
 					<h3>unwrap<wbr>Batch<wbr>Get<wbr>Output</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
-						<li class="tsd-signature tsd-kind-icon">unwrap<wbr>Batch<wbr>Get<wbr>Output<span class="tsd-signature-symbol">(</span>tableSchemaOrName<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BatchGetItemOutput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">unwrap<wbr>Batch<wbr>Get<wbr>Output<span class="tsd-signature-symbol">(</span>response<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BatchGetItemOutput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/responseUnwrapper.ts#L62">responseUnwrapper.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/responseUnwrapper.ts#L61">responseUnwrapper.ts:61</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Extract the JSON objects from a response to <code>batchGetItem</code>.</p>
+									<p>Extract the JSON objects from a response to <code>batchGetItem</code>.  If multiple
+									tables were fetched from they will all be in the resulting array.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>tableSchemaOrName: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the TableSchema or the string table name</p>
-									</div>
-								</li>
-								<li>
 									<h5>response: <span class="tsd-signature-type">BatchGetItemOutput</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>result of batchGetItem</p>
+										<p>Result of batchGetItem.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
-							<p>the objects returned</p>
+							<p>The objects returned by the batch get.</p>
 						</li>
 					</ul>
 				</section>
@@ -133,7 +126,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/responseUnwrapper.ts#L49">responseUnwrapper.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/responseUnwrapper.ts#L48">responseUnwrapper.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -146,12 +139,12 @@
 								<li>
 									<h5>response: <span class="tsd-signature-type">GetItemOutput</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>result of getItem</p>
+										<p>Result of getItem.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-							<p>the object returned</p>
+							<p>Rhe object returned by get.</p>
 						</li>
 					</ul>
 				</section>
@@ -165,7 +158,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/responseUnwrapper.ts#L89">responseUnwrapper.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/responseUnwrapper.ts#L90">responseUnwrapper.ts:90</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -178,12 +171,12 @@
 								<li>
 									<h5>response: <span class="tsd-signature-type">QueryOutput</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>result of query</p>
+										<p>Result of query.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
-							<p>the objects returned</p>
+							<p>The objects returned by the query.</p>
 						</li>
 					</ul>
 				</section>
@@ -197,7 +190,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/responseUnwrapper.ts#L9">responseUnwrapper.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/responseUnwrapper.ts#L8">responseUnwrapper.ts:8</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -212,7 +205,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-							<p>the extracted value</p>
+							<p>The deserialized value.</p>
 						</li>
 					</ul>
 				</section>
@@ -226,7 +219,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3cd323c/src/responseUnwrapper.ts#L76">responseUnwrapper.ts:76</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/responseUnwrapper.ts#L77">responseUnwrapper.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -239,12 +232,12 @@
 								<li>
 									<h5>response: <span class="tsd-signature-type">ScanOutput</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>result of scan</p>
+										<p>Result of scan.</p>
 									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
-							<p>the objects returned</p>
+							<p>The objects returned by the scan.</p>
 						</li>
 					</ul>
 				</section>
@@ -263,6 +256,9 @@
 						<a href="_tableschema_.html">"<wbr>Table<wbr>Schema"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="_updateexpressionaction_.html">"<wbr>Update<wbr>Expression<wbr>Action"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="_batchhelper_.html">"batch<wbr>Helper"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -278,22 +274,13 @@
 						<a href="_requestbuilder_.html">"request<wbr>Builder"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_requestbuilder_test_.html">"request<wbr>Builder.test"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="_requestunwrapper_.html">"request<wbr>Unwrapper"</a>
 					</li>
 					<li class="current tsd-kind-external-module">
 						<a href="_responseunwrapper_.html">"response<wbr>Unwrapper"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="_responseunwrapper_test_.html">"response<wbr>Unwrapper.test"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="_validation_.html">"validation"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="_validation_test_.html">"validation.test"</a>
 					</li>
 				</ul>
 			</nav>
