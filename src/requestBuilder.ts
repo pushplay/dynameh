@@ -534,6 +534,7 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
 
 /**
  * Build a request object that can be passed into `createTable`.
+ * This is most useful for setting up testing.
  * @param tableSchema
  * @param readCapacity Represents one strongly consistent read per second, or two
  *                     eventually consistent reads per second, for an item up to 4 KB in size.
@@ -585,6 +586,24 @@ export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: nu
     }
 
     return request;
+}
+
+/**
+ * Build a request object that can be passed into `deleteTable`.
+ * This is most useful for setting up testing.
+ * @param tableSchema
+ * @returns Input for the `deleteTable` method.
+ */
+export function buildDeleteTableInput(tableSchema: TableSchema): aws.DynamoDB.DeleteTableInput {
+    if (tableSchema.indexName) {
+        throw new Error("tableSchema.indexName is set, implying this is a schema for a secondary index.  buildDeleteTableInput() is for deleting a table and its primary index.");
+    }
+
+    checkSchema(tableSchema);
+
+    return {
+        TableName: tableSchema.tableName,
+    };
 }
 
 /**

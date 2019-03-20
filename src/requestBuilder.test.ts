@@ -5,6 +5,7 @@ import {
     addProjection,
     buildCreateTableInput,
     buildDeleteInput,
+    buildDeleteTableInput,
     buildGetInput,
     buildPutInput,
     buildQueryInput,
@@ -798,9 +799,46 @@ describe("requestBuilder", () => {
     });
 
     describe("buildCreateTableInput", () => {
+        it("builds a create table input", () => {
+            chai.assert.throws(() => {
+                const req = buildCreateTableInput({
+                    tableName: "table",
+                    indexName: "secondaryIndex",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
+                });
+                chai.assert.equal(req.TableName, "table");
+            });
+        });
+
         it("won't create a table for the schema of a secondary index", () => {
             chai.assert.throws(() => {
                 buildCreateTableInput({
+                    tableName: "table",
+                    indexName: "secondaryIndex",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
+                });
+            });
+        });
+    });
+
+    describe("buildDeleteTableInput", () => {
+        it("builds a delete table input", () => {
+            chai.assert.throws(() => {
+                const req = buildDeleteTableInput({
+                    tableName: "table",
+                    indexName: "secondaryIndex",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
+                });
+                chai.assert.equal(req.TableName, "table");
+            });
+        });
+
+        it("won't delete a table for the schema of a secondary index", () => {
+            chai.assert.throws(() => {
+                buildDeleteTableInput({
                     tableName: "table",
                     indexName: "secondaryIndex",
                     partitionKeyField: "primary",
