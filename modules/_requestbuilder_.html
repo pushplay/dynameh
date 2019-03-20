@@ -79,6 +79,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildbatchputinput" class="tsd-kind-icon">build<wbr>Batch<wbr>Put<wbr>Input</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildcreatetableinput" class="tsd-kind-icon">build<wbr>Create<wbr>Table<wbr>Input</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#builddeleteinput" class="tsd-kind-icon">build<wbr>Delete<wbr>Input</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#builddeletetableinput" class="tsd-kind-icon">build<wbr>Delete<wbr>Table<wbr>Input</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildgetinput" class="tsd-kind-icon">build<wbr>Get<wbr>Input</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildputinput" class="tsd-kind-icon">build<wbr>Put<wbr>Input</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildqueryinput" class="tsd-kind-icon">build<wbr>Query<wbr>Input</a></li>
@@ -103,7 +104,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L675">requestBuilder.ts:675</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L694">requestBuilder.ts:694</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -152,7 +153,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L692">requestBuilder.ts:692</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L711">requestBuilder.ts:711</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -203,7 +204,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L630">requestBuilder.ts:630</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L649">requestBuilder.ts:649</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -358,12 +359,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L543">requestBuilder.ts:543</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L544">requestBuilder.ts:544</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Build a request object that can be passed into <code>createTable</code>.</p>
+									<p>Build a request object that can be passed into <code>createTable</code>.
+									This is most useful for setting up testing.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -425,6 +427,36 @@
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">DeleteItemInput</span></h4>
 							<p>Input for the <code>deleteItem</code> method.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="builddeletetableinput" class="tsd-anchor"></a>
+					<h3>build<wbr>Delete<wbr>Table<wbr>Input</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">build<wbr>Delete<wbr>Table<wbr>Input<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DeleteTableInput</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L597">requestBuilder.ts:597</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Build a request object that can be passed into <code>deleteTable</code>.
+									This is most useful for setting up testing.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">DeleteTableInput</span></h4>
+							<p>Input for the <code>deleteTable</code> method.</p>
 						</li>
 					</ul>
 				</section>
@@ -693,7 +725,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L597">requestBuilder.ts:597</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/3c62a43/src/requestBuilder.ts#L616">requestBuilder.ts:616</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -782,6 +814,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_requestbuilder_.html#builddeleteinput" class="tsd-kind-icon">build<wbr>Delete<wbr>Input</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_requestbuilder_.html#builddeletetableinput" class="tsd-kind-icon">build<wbr>Delete<wbr>Table<wbr>Input</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_requestbuilder_.html#buildgetinput" class="tsd-kind-icon">build<wbr>Get<wbr>Input</a>
