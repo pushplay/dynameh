@@ -221,7 +221,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 UpdateExpression: "SET ProductCategory = :a, Price = :b",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {"S": "Hardware"},
                     ":b": {"N": "60"}
@@ -242,7 +241,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 UpdateExpression: "SET RelatedItems = :a, ProductReviews = :b",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         "L": [
@@ -274,7 +272,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 UpdateExpression: "SET RelatedItems[1] = :a",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         "S": "Nails"
@@ -328,7 +325,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 UpdateExpression: "SET Price = Price + :a",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {"N": "5"},
                 }
@@ -347,7 +343,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 UpdateExpression: "SET Price = Price - :a",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {"N": "15"},
                 }
@@ -366,7 +361,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 UpdateExpression: "SET RelatedItems = list_append(RelatedItems, :a)",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         "L": [
@@ -390,7 +384,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 UpdateExpression: "SET RelatedItems = list_append(:a, RelatedItems)",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         "L": [
@@ -413,7 +406,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 UpdateExpression: "SET Price = if_not_exists(Price, :a)",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         "N": "100"
@@ -435,9 +427,7 @@ describe("requestBuilder", () => {
                         N: "789"
                     }
                 },
-                UpdateExpression: "REMOVE Brand, InStock, QuantityOnHand",
-                ExpressionAttributeNames: {},
-                ExpressionAttributeValues: {}
+                UpdateExpression: "REMOVE Brand, InStock, QuantityOnHand"
             });
         });
 
@@ -453,9 +443,7 @@ describe("requestBuilder", () => {
                         N: "789"
                     }
                 },
-                UpdateExpression: "REMOVE RelatedItems[1], RelatedItems[2]",
-                ExpressionAttributeNames: {},
-                ExpressionAttributeValues: {}
+                UpdateExpression: "REMOVE RelatedItems[1], RelatedItems[2]"
             });
         });
 
@@ -471,7 +459,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 UpdateExpression: "ADD Color :a",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         "SS": ["Orange", "Purple"]
@@ -492,11 +479,33 @@ describe("requestBuilder", () => {
                     }
                 },
                 UpdateExpression: "DELETE Color :a",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         "SS": ["Yellow", "Purple"]
                     }
+                }
+            });
+        });
+
+        it("combines multiple actions", () => {
+            const input = buildUpdateInputFromActions(tableSchema, item,
+                {action: "put", attribute: "ProductCategory", value: "Hardware"},
+                {action: "put", attribute: "Price", value: 60},
+                {action: "remove", attribute: "Brand"},
+                {action: "remove", attribute: "InStock"},
+                {action: "remove", attribute: "QuantityOnHand"}
+            );
+            chai.assert.deepEqual(input, {
+                TableName: "ProductCatalog",
+                Key: {
+                    Id: {
+                        N: "789"
+                    }
+                },
+                UpdateExpression: "SET ProductCategory = :a, Price = :b REMOVE Brand, InStock, QuantityOnHand",
+                ExpressionAttributeValues: {
+                    ":a": {"S": "Hardware"},
+                    ":b": {"N": "60"}
                 }
             });
         });
@@ -523,7 +532,6 @@ describe("requestBuilder", () => {
                 },
                 ConditionExpression: "version = :a",
                 UpdateExpression: "SET ProductCategory = :b, Price = :c, version = version + :d",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {"N": "3"},
                     ":b": {"S": "Hardware"},
@@ -623,7 +631,6 @@ describe("requestBuilder", () => {
                     primary: {S: "prim"}
                 },
                 ConditionExpression: "version = :a",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {N: "6"}
                 }
@@ -1100,7 +1107,6 @@ describe("requestBuilder", () => {
                     }
                 },
                 ConditionExpression: "attribute_not_exists(version) AND begins_with(alphabet, :a)",
-                ExpressionAttributeNames: {},
                 ExpressionAttributeValues: {
                     ":a": {
                         S: "abc"

@@ -119,20 +119,27 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
     };
 
     if (tableSchema.versionKeyField) {
-        request.ExpressionAttributeNames = {};
-        request.ExpressionAttributeValues = {};
-        const versionAttributeName = getExpressionAttributeName(request.ExpressionAttributeNames, tableSchema.versionKeyField);
+        const expressionAttributeNames = {};
+        const expressionAttributeValues = {};
+        const versionAttributeName = getExpressionAttributeName(expressionAttributeNames, tableSchema.versionKeyField);
 
         if (item[tableSchema.versionKeyField] != null) {
             // Require the existing table item to have the same old value, and increment
             // the value we're putting.  This is the crux of the optimistic locking.
-            request.ConditionExpression = `${versionAttributeName} = ${getExpressionValueName(tableSchema, request.ExpressionAttributeValues, item[tableSchema.versionKeyField])}`;
+            request.ConditionExpression = `${versionAttributeName} = ${getExpressionValueName(tableSchema, expressionAttributeValues, item[tableSchema.versionKeyField])}`;
             request.Item[tableSchema.versionKeyField] = buildRequestPutItem(tableSchema, item[tableSchema.versionKeyField] + 1);
         } else {
             // If the version key isn't set then we must be putting a brand new item,
             // or versioning has just been enabled.
             request.ConditionExpression = `attribute_not_exists(${versionAttributeName})`;
             request.Item[tableSchema.versionKeyField] = buildRequestPutItem(tableSchema, 1);
+        }
+
+        if (Object.keys(expressionAttributeNames).length) {
+            request.ExpressionAttributeNames = expressionAttributeNames;
+        }
+        if (Object.keys(expressionAttributeValues).length) {
+            request.ExpressionAttributeValues = expressionAttributeValues;
         }
     }
 
@@ -172,8 +179,8 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, itemToUpdate);
 
-    const nameMap: aws.DynamoDB.ExpressionAttributeNameMap = {};
-    const valueMap: aws.DynamoDB.ExpressionAttributeValueMap = {};
+    const expressionAttributeNames: aws.DynamoDB.ExpressionAttributeNameMap = {};
+    const expressionAttributeValues: aws.DynamoDB.ExpressionAttributeValueMap = {};
     let conditionExpression: string = undefined;
 
     if (tableSchema.versionKeyField) {
@@ -186,30 +193,30 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
             attribute: tableSchema.versionKeyField,
             value: 1
         }];
-        conditionExpression = `${getExpressionAttributeName(nameMap, tableSchema.versionKeyField)} = ${getExpressionValueName(tableSchema, valueMap, itemToUpdate[tableSchema.versionKeyField])}`;
+        conditionExpression = `${getExpressionAttributeName(expressionAttributeNames, tableSchema.versionKeyField)} = ${getExpressionValueName(tableSchema, expressionAttributeValues, itemToUpdate[tableSchema.versionKeyField])}`;
     }
 
     const setActions = updateActions
         .filter(action => getUpdateExpressionActionClauseKey(action) === "SET")
         .map(action => {
-            const attributeName = getExpressionAttributeName(nameMap, action.attribute);
+            const attributeName = getExpressionAttributeName(expressionAttributeNames, action.attribute);
             switch (action.action) {
                 case "put":
-                    return `${attributeName} = ${getExpressionValueName(tableSchema, valueMap, action.value)}`;
+                    return `${attributeName} = ${getExpressionValueName(tableSchema, expressionAttributeValues, action.value)}`;
                 case "put_if_not_exists":
-                    return `${attributeName} = if_not_exists(${attributeName}, ${getExpressionValueName(tableSchema, valueMap, action.value)})`;
+                    return `${attributeName} = if_not_exists(${attributeName}, ${getExpressionValueName(tableSchema, expressionAttributeValues, action.value)})`;
                 case "number_add":
                     // This could also be handled by the "ADD" clause but I think that's more likely
                     // to have unexpected side-effects if the item's value is not a number.
-                    return `${attributeName} = ${attributeName} + ${getExpressionValueName(tableSchema, valueMap, action.value)}`;
+                    return `${attributeName} = ${attributeName} + ${getExpressionValueName(tableSchema, expressionAttributeValues, action.value)}`;
                 case "number_subtract":
-                    return `${attributeName} = ${attributeName} - ${getExpressionValueName(tableSchema, valueMap, action.value)}`;
+                    return `${attributeName} = ${attributeName} - ${getExpressionValueName(tableSchema, expressionAttributeValues, action.value)}`;
                 case "list_append":
-                    return `${attributeName} = list_append(${attributeName}, ${getExpressionValueName(tableSchema, valueMap, action.values)})`;
+                    return `${attributeName} = list_append(${attributeName}, ${getExpressionValueName(tableSchema, expressionAttributeValues, action.values)})`;
                 case "list_prepend":
-                    return `${attributeName} = list_append(${getExpressionValueName(tableSchema, valueMap, action.values)}, ${attributeName})`;
+                    return `${attributeName} = list_append(${getExpressionValueName(tableSchema, expressionAttributeValues, action.values)}, ${attributeName})`;
                 case "list_set_at_index":
-                    return `${attributeName}[${action.index}] = ${getExpressionValueName(tableSchema, valueMap, action.value)}`;
+                    return `${attributeName}[${action.index}] = ${getExpressionValueName(tableSchema, expressionAttributeValues, action.value)}`;
                 default:
                     throw new Error(`Unhandled SET update '${action.action}'.`);
             }
@@ -219,7 +226,7 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
     const removeActions = updateActions
         .filter(action => getUpdateExpressionActionClauseKey(action) === "REMOVE")
         .map(action => {
-            const attributeName = getExpressionAttributeName(nameMap, action.attribute);
+            const attributeName = getExpressionAttributeName(expressionAttributeNames, action.attribute);
             switch (action.action) {
                 case "remove":
                     return attributeName;
@@ -234,10 +241,10 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
     const addActions = updateActions
         .filter(action => getUpdateExpressionActionClauseKey(action) === "ADD")
         .map(action => {
-            const attributeName = getExpressionAttributeName(nameMap, action.attribute);
+            const attributeName = getExpressionAttributeName(expressionAttributeNames, action.attribute);
             switch (action.action) {
                 case "set_add":
-                    return `${attributeName} ${getExpressionValueName(tableSchema, valueMap, action.values)}`;
+                    return `${attributeName} ${getExpressionValueName(tableSchema, expressionAttributeValues, action.values)}`;
                 default:
                     throw new Error(`Unhandled ADD update '${action.action}'.`);
             }
@@ -247,31 +254,34 @@ export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpda
     const deleteActions = updateActions
         .filter(action => getUpdateExpressionActionClauseKey(action) === "DELETE")
         .map(action => {
-            const attributeName = getExpressionAttributeName(nameMap, action.attribute);
+            const attributeName = getExpressionAttributeName(expressionAttributeNames, action.attribute);
             switch (action.action) {
                 case "set_delete":
-                    return `${attributeName} ${getExpressionValueName(tableSchema, valueMap, action.values)}`;
+                    return `${attributeName} ${getExpressionValueName(tableSchema, expressionAttributeValues, action.values)}`;
                 default:
                     throw new Error(`Unhandled DELETE update '${action.action}'.`);
             }
         })
         .join(", ");
 
-    const updateExpression = (
-        (setActions ? "SET " + setActions : "")
-        + (removeActions ? "REMOVE " + removeActions : "")
-        + (addActions ? "ADD " + addActions : "")
-        + (deleteActions ? "DELETE " + deleteActions : "")
-    ).trim();
+    const updateExpression = [
+        setActions && "SET " + setActions,
+        removeActions && "REMOVE " + removeActions,
+        addActions && "ADD " + addActions,
+        deleteActions && "DELETE " + deleteActions
+    ].filter(e => !!e).join(" ");
 
     const request: aws.DynamoDB.UpdateItemInput = {
-        ExpressionAttributeNames: nameMap,
-        ExpressionAttributeValues: valueMap,
         UpdateExpression: updateExpression,
         Key: getKey(tableSchema, itemToUpdate[tableSchema.partitionKeyField], tableSchema.sortKeyField && itemToUpdate[tableSchema.sortKeyField]),
         TableName: tableSchema.tableName
     };
-
+    if (Object.keys(expressionAttributeNames).length) {
+        request.ExpressionAttributeNames = expressionAttributeNames;
+    }
+    if (Object.keys(expressionAttributeValues).length) {
+        request.ExpressionAttributeValues = expressionAttributeValues;
+    }
     if (conditionExpression) {
         request.ConditionExpression = conditionExpression;
     }
@@ -323,9 +333,15 @@ export function buildDeleteInput(tableSchema: TableSchema, itemToDelete: object)
     };
 
     if (tableSchema.versionKeyField) {
-        request.ExpressionAttributeNames = {};
-        request.ExpressionAttributeValues = {};
-        request.ConditionExpression = `${getExpressionAttributeName(request.ExpressionAttributeNames, tableSchema.versionKeyField)} = ${getExpressionValueName(tableSchema, request.ExpressionAttributeValues, itemToDelete[tableSchema.versionKeyField])}`;
+        const expressionAttributeNames = {};
+        const expressionAttributeValues = {};
+        request.ConditionExpression = `${getExpressionAttributeName(expressionAttributeNames, tableSchema.versionKeyField)} = ${getExpressionValueName(tableSchema, expressionAttributeValues, itemToDelete[tableSchema.versionKeyField])}`;
+        if (Object.keys(expressionAttributeNames).length) {
+            request.ExpressionAttributeNames = expressionAttributeNames;
+        }
+        if (Object.keys(expressionAttributeValues).length) {
+            request.ExpressionAttributeValues = expressionAttributeValues;
+        }
     }
 
     return request;
@@ -716,12 +732,12 @@ function addExpression<T extends { ExpressionAttributeNames?: aws.DynamoDB.Expre
     checkSchema(tableSchema);
     checkConditions(conditions, "default");
     let exp: aws.DynamoDB.ConditionExpression = conditionableRequest[expressionKey] || undefined;
-    const nameMap: aws.DynamoDB.ExpressionAttributeNameMap = {...(conditionableRequest.ExpressionAttributeNames || {})};
-    const valueMap: aws.DynamoDB.ExpressionAttributeValueMap = {...(conditionableRequest.ExpressionAttributeValues || {})};
+    const expressionAttributeNames: aws.DynamoDB.ExpressionAttributeNameMap = {...(conditionableRequest.ExpressionAttributeNames || {})};
+    const expressionAttributeValues: aws.DynamoDB.ExpressionAttributeValueMap = {...(conditionableRequest.ExpressionAttributeValues || {})};
 
     for (const condition of conditions) {
-        const attributeName = getExpressionAttributeName(nameMap, condition.attribute);
-        const valueNames = getExpressionValueNames(tableSchema, valueMap, condition.values);
+        const attributeName = getExpressionAttributeName(expressionAttributeNames, condition.attribute);
+        const valueNames = getExpressionValueNames(tableSchema, expressionAttributeValues, condition.values);
 
         if (exp) {
             exp += " AND ";
@@ -746,11 +762,11 @@ function addExpression<T extends { ExpressionAttributeNames?: aws.DynamoDB.Expre
     if (exp) {
         res[expressionKey] = exp;
     }
-    if (Object.keys(nameMap).length) {
-        res.ExpressionAttributeNames = nameMap;
+    if (Object.keys(expressionAttributeNames).length) {
+        res.ExpressionAttributeNames = expressionAttributeNames;
     }
-    if (Object.keys(valueMap).length) {
-        res.ExpressionAttributeValues = valueMap;
+    if (Object.keys(expressionAttributeValues).length) {
+        res.ExpressionAttributeValues = expressionAttributeValues;
     }
     return res;
 }
