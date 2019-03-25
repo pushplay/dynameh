@@ -14,6 +14,30 @@ export interface TableSchema {
     indexName?: string;
 
     /**
+     * Additional information about the secondary index.  This is only used to fill
+     * in the createTable call.
+     */
+    indexProperties?: {
+        /**
+         * "GLOBAL" for a global secondary index or "LOCAL" for a local secondary index.
+         */
+        type: "GLOBAL" | "LOCAL";
+
+        /**
+         * "ALL" to include all table attributes,
+         * "KEYS_ONLY" to include only the primary keys or
+         * "INCLUDE" to specify included attributes using 'projectedAttributes'.
+         */
+        projectionType: "ALL" | "KEYS_ONLY" | "INCLUDE";
+
+        /**
+         * A list of attributes to include in the secondary index.  Only specify
+         * if using `projectionType="INCLUDE"`.
+         */
+        projectedAttributes?: string[];
+    };
+
+    /**
      * The name of the partition key field.
      */
     partitionKeyField: string;

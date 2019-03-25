@@ -92,6 +92,9 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
 export function buildGetInput(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey): aws.DynamoDB.GetItemInput {
     checkSchema(tableSchema);
     checkSchemaKeyAgreement(tableSchema, partitionKeyValue, sortKeyValue);
+    if (tableSchema.indexName) {
+        throw new Error("DynamoDB does not support secondary indexes for 'get'.  Use 'query' instead.");
+    }
 
     return {
         Key: getKey(tableSchema, partitionKeyValue, sortKeyValue),
@@ -366,10 +369,10 @@ export function buildDeleteInput(tableSchema: TableSchema, itemToDelete: object)
 export function buildQueryInput(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyOp?: DynamoQueryConditionOperator, ...sortKeyValues: DynamoKey[]): aws.DynamoDB.QueryInput {
     checkSchema(tableSchema);
     checkSchemaPartitionKeyAgreement(tableSchema, partitionKeyValue);
-    if (!tableSchema.sortKeyField) {
-        throw new Error("TableSchema doesn't define a sortKeyField and the query operation is only possible when one is defined.");
-    }
     if (sortKeyOp) {
+        if (!tableSchema.sortKeyField) {
+            throw new Error("TableSchema doesn't define a sortKeyField but the query defines a sort key operator.");
+        }
         checkCondition({
             attribute: tableSchema.sortKeyField,
             operator: sortKeyOp,
@@ -551,35 +554,57 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
 /**
  * Build a request object that can be passed into `createTable`.
  * This is most useful for setting up testing.
- * @param tableSchema
+ * @param tableSchema A single TableSchema or an array of TableSchemas when including secondary indexes.
  * @param readCapacity Represents one strongly consistent read per second, or two
  *                     eventually consistent reads per second, for an item up to 4 KB in size.
  * @param writeCapacity Represents one write per second for an item up to 1 KB in size.
  * @returns Input for the `createTable` method.
  */
-export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: number = 1, writeCapacity: number = 1): aws.DynamoDB.CreateTableInput {
-    if (tableSchema.indexName) {
-        throw new Error("tableSchema.indexName is set, implying this is a schema for a secondary index.  buildCreateTableInput() is for creating a table and its primary index.");
-    }
+export function buildCreateTableInput(tableSchema: TableSchema | TableSchema[], readCapacity: number = 1, writeCapacity: number = 1): aws.DynamoDB.CreateTableInput {
     if (!Number.isInteger(readCapacity) || readCapacity < 1) {
-        throw new Error("readCapacity must be a positive integer.");
+        throw new Error("'readCapacity' must be a positive integer.");
     }
     if (!Number.isInteger(writeCapacity) || writeCapacity < 1) {
-        throw new Error("writeCapacity must be a positive integer.");
+        throw new Error("'writeCapacity' must be a positive integer.");
     }
 
-    checkSchema(tableSchema);
+    let primarySchema: TableSchema;
+    let secondarySchemas: TableSchema[];
+    if (Array.isArray(tableSchema)) {
+        const primarySchemaIndex = tableSchema.findIndex(t => !t.indexName);
+        if (primarySchemaIndex === -1) {
+            throw new Error("When passing an array of TableSchemas exactly one must be a primary schema (no 'indexName') and the other TableSchemas must be secondary indexes (with 'indexName').");
+        }
+        primarySchema = tableSchema[primarySchemaIndex];
+        secondarySchemas = tableSchema.filter((v, i) => i !== primarySchemaIndex);
+        if (secondarySchemas.find(t => !t.indexName)) {
+            throw new Error("When passing an array of TableSchemas exactly one must be a primary schema (no 'indexName') and the other TableSchemas must be secondary indexes (with 'indexName').");
+        }
+        if (secondarySchemas.find(t => !t.indexProperties)) {
+            throw new Error("One or more secondary TableSchemas are missing 'indexProperties'.");
+        }
+    } else {
+        if (tableSchema.indexName) {
+            if (tableSchema.indexName) {
+                throw new Error("tableSchema.indexName is set, implying this is a schema for a secondary index.  To create a table with a secondary index pass in an array of TableSchemas and include the primary schema.");
+            }
+        }
+        primarySchema = tableSchema;
+        secondarySchemas = [];
+    }
+
+    checkSchema(primarySchema);
 
     const request: aws.DynamoDB.CreateTableInput = {
         AttributeDefinitions: [
             {
-                AttributeName: tableSchema.partitionKeyField,
-                AttributeType: jsTypeToDynamoKeyType(tableSchema.partitionKeyType)
+                AttributeName: primarySchema.partitionKeyField,
+                AttributeType: jsTypeToDynamoKeyType(primarySchema.partitionKeyType)
             }
         ],
         KeySchema: [
             {
-                AttributeName: tableSchema.partitionKeyField,
+                AttributeName: primarySchema.partitionKeyField,
                 KeyType: "HASH"
             }
         ],
@@ -587,18 +612,74 @@ export function buildCreateTableInput(tableSchema: TableSchema, readCapacity: nu
             ReadCapacityUnits: readCapacity,
             WriteCapacityUnits: writeCapacity
         },
-        TableName: tableSchema.tableName,
+        TableName: primarySchema.tableName,
     };
 
-    if (tableSchema.sortKeyField) {
+    if (primarySchema.sortKeyField) {
         request.AttributeDefinitions.push({
-            AttributeName: tableSchema.sortKeyField,
-            AttributeType: jsTypeToDynamoKeyType(tableSchema.sortKeyType)
+            AttributeName: primarySchema.sortKeyField,
+            AttributeType: jsTypeToDynamoKeyType(primarySchema.sortKeyType)
         });
         request.KeySchema.push({
-            AttributeName: tableSchema.sortKeyField,
+            AttributeName: primarySchema.sortKeyField,
             KeyType: "RANGE"
         });
+    }
+
+    for (const secondarySchema of secondarySchemas) {
+        if (secondarySchema.tableName !== primarySchema.tableName) {
+            throw new Error("Not all TableSchemas have the same TableName.");
+        }
+
+        request.AttributeDefinitions.push({
+            AttributeName: secondarySchema.partitionKeyField,
+            AttributeType: jsTypeToDynamoKeyType(secondarySchema.partitionKeyType)
+        });
+
+        const requestSecondaryIndex: aws.DynamoDB.GlobalSecondaryIndex | aws.DynamoDB.LocalSecondaryIndex = {
+            IndexName: secondarySchema.indexName,
+            KeySchema: [
+                {
+                    AttributeName: secondarySchema.partitionKeyField,
+                    KeyType: "HASH"
+                }
+            ],
+            Projection: {
+                ProjectionType: secondarySchema.indexProperties.projectionType
+            },
+            ProvisionedThroughput: {
+                ReadCapacityUnits: 1,
+                WriteCapacityUnits: 1
+            }
+        };
+        if (secondarySchema.indexProperties.projectedAttributes && secondarySchema.indexProperties.projectedAttributes.length > 0) {
+            requestSecondaryIndex.Projection.NonKeyAttributes = secondarySchema.indexProperties.projectedAttributes;
+        }
+        if (secondarySchema.sortKeyField) {
+            request.AttributeDefinitions.push({
+                AttributeName: secondarySchema.sortKeyField,
+                AttributeType: jsTypeToDynamoKeyType(secondarySchema.sortKeyType)
+            });
+            requestSecondaryIndex.KeySchema.push({
+                AttributeName: secondarySchema.sortKeyField,
+                KeyType: "RANGE"
+            });
+        }
+
+        if (secondarySchema.indexProperties.type === "GLOBAL") {
+            if (request.GlobalSecondaryIndexes) {
+                request.GlobalSecondaryIndexes.push(requestSecondaryIndex);
+            } else {
+                request.GlobalSecondaryIndexes = [requestSecondaryIndex];
+            }
+        } else if (secondarySchema.indexProperties.type === "LOCAL") {
+            if (request.LocalSecondaryIndexes) {
+                request.LocalSecondaryIndexes.push(requestSecondaryIndex);
+            } else {
+                request.LocalSecondaryIndexes = [requestSecondaryIndex];
+            }
+        }
+
     }
 
     return request;

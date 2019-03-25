@@ -20,7 +20,7 @@ export type DynamoConditionOperator =
     | "begins_with"
     | "contains"
     | "size";
-const conditionOperators: DynamoConditionOperator[] = ["=", "<>",  "<",  "<=",  ">",  ">=",  "BETWEEN", "IN",  "attribute_exists",  "attribute_not_exists",  "attribute_type",  "begins_with",  "contains",  "size"];
+const conditionOperators: DynamoConditionOperator[] = ["=", "<>", "<", "<=", ">", ">=", "BETWEEN", "IN", "attribute_exists", "attribute_not_exists", "attribute_type", "begins_with", "contains", "size"];
 const attributeTypes: string[] = ["S", "SS", "N", "NS", "B", "BS", "BOOL", "NULL", "L", "M"];
 
 export function checkSchema(tableSchema: TableSchema): void {

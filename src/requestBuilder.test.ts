@@ -166,6 +166,17 @@ describe("requestBuilder", () => {
                 }
             });
         });
+
+        it("throws an error when given a secondary schema", () => {
+            chai.assert.throws(() => {
+                buildGetInput({
+                    tableName: "table",
+                    indexName: "secondaryIndex",
+                    partitionKeyField: "secondary",
+                    partitionKeyType: "string"
+                }, "prim");
+            });
+        });
     });
 
     describe("buildPutInput", () => {
@@ -655,13 +666,23 @@ describe("requestBuilder", () => {
             sortKeyType: "number"
         };
 
-        it("throws an error when no sort key is defined", () => {
-            chai.assert.throws(() => {
-                buildQueryInput({
-                    tableName: "table",
-                    partitionKeyField: "primary",
-                    partitionKeyType: "string"
-                }, "mah value");
+        it("serializes a basic query without sort key and without sort operator", () => {
+            const input = buildQueryInput({
+                tableName: "table",
+                partitionKeyField: "primary",
+                partitionKeyType: "string"
+            }, "mah value");
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary"
+                },
+                ExpressionAttributeValues: {
+                    ":p": {
+                        "S": "mah value"
+                    }
+                },
+                KeyConditionExpression: "#P = :p"
             });
         });
 
@@ -678,6 +699,16 @@ describe("requestBuilder", () => {
                     }
                 },
                 KeyConditionExpression: "#P = :p"
+            });
+        });
+
+        it("throws an error without sort key but with sort operator", () => {
+            chai.assert.throws(() => {
+                buildQueryInput({
+                    tableName: "table",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
+                }, "mah value", "begins_with", "foo");
             });
         });
 
@@ -807,25 +838,141 @@ describe("requestBuilder", () => {
 
     describe("buildCreateTableInput", () => {
         it("builds a create table input", () => {
-            chai.assert.throws(() => {
-                const req = buildCreateTableInput({
-                    tableName: "table",
-                    indexName: "secondaryIndex",
-                    partitionKeyField: "primary",
-                    partitionKeyType: "string"
-                });
-                chai.assert.equal(req.TableName, "table");
+            const req = buildCreateTableInput({
+                tableName: "table",
+                partitionKeyField: "primary",
+                partitionKeyType: "string"
+            });
+
+            chai.assert.deepEqual(req, {
+                TableName: "table",
+                AttributeDefinitions: [
+                    {
+                        AttributeName: "primary",
+                        AttributeType: "S"
+                    }
+                ],
+                KeySchema: [
+                    {
+                        AttributeName: "primary",
+                        KeyType: "HASH"
+                    }
+                ],
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 1,
+                    WriteCapacityUnits: 1
+                }
             });
         });
 
-        it("won't create a table for the schema of a secondary index", () => {
+        it("can create a table with a primary index and secondary index", () => {
+            const req = buildCreateTableInput([
+                {
+                    tableName: "table",
+                    partitionKeyField: "primary",
+                    partitionKeyType: "string"
+                },
+                {
+                    tableName: "table",
+                    indexName: "secondaryIndex",
+                    indexProperties: {
+                        type: "GLOBAL",
+                        projectionType: "KEYS_ONLY"
+                    },
+                    partitionKeyField: "secondary",
+                    partitionKeyType: "string",
+                    sortKeyField: "secondarySort",
+                    sortKeyType: "number"
+                }
+            ]);
+
+            chai.assert.deepEqual(req, {
+                TableName: "table",
+                AttributeDefinitions: [
+                    {
+                        AttributeName: "primary",
+                        AttributeType: "S"
+                    },
+                    {
+                        AttributeName: "secondary",
+                        AttributeType: "S"
+                    },
+                    {
+                        AttributeName: "secondarySort",
+                        AttributeType: "N"
+                    }
+                ],
+                KeySchema: [
+                    {
+                        AttributeName: "primary",
+                        KeyType: "HASH"
+                    }
+                ],
+                GlobalSecondaryIndexes: [
+                    {
+                        IndexName: "secondaryIndex",
+                        KeySchema: [
+                            {
+                                AttributeName: "secondary",
+                                KeyType: "HASH"
+                            },
+                            {
+                                AttributeName: "secondarySort",
+                                KeyType: "RANGE"
+                            }
+                        ],
+                        Projection: {
+                            ProjectionType: "KEYS_ONLY"
+                        },
+                        ProvisionedThroughput: {
+                            ReadCapacityUnits: 1,
+                            WriteCapacityUnits: 1
+                        }
+                    }
+                ],
+                ProvisionedThroughput: {
+                    ReadCapacityUnits: 1,
+                    WriteCapacityUnits: 1
+                }
+            });
+        });
+
+        it("won't create a table when given no primary schema", () => {
             chai.assert.throws(() => {
                 buildCreateTableInput({
                     tableName: "table",
                     indexName: "secondaryIndex",
-                    partitionKeyField: "primary",
+                    partitionKeyField: "secondary",
                     partitionKeyType: "string"
                 });
+            });
+
+            chai.assert.throws(() => {
+                buildCreateTableInput([
+                    {
+                        tableName: "table",
+                        indexName: "secondaryIndex",
+                        partitionKeyField: "secondary",
+                        partitionKeyType: "string"
+                    }
+                ]);
+            });
+        });
+
+        it("won't create a table when given multiple primary schemas", () => {
+            chai.assert.throws(() => {
+                buildCreateTableInput([
+                    {
+                        tableName: "table",
+                        partitionKeyField: "primary",
+                        partitionKeyType: "string"
+                    },
+                    {
+                        tableName: "table",
+                        partitionKeyField: "primary2",
+                        partitionKeyType: "string"
+                    }
+                ]);
             });
         });
     });
