@@ -23,7 +23,7 @@ import {UpdateExpressionAction} from "./UpdateExpressionAction";
  * Build a serialized item that can be put in DynamoDB.  This syntax is also used for
  * expression and key values.
  * @param tableSchema
- * @param item
+ * @param item The item to serialize.
  * @returns A put item.
  */
 export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.DynamoDB.AttributeValue {
@@ -181,6 +181,9 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
 export function buildUpdateInputFromActions(tableSchema: TableSchema, itemToUpdate: object, ...updateActions: UpdateExpressionAction[]): aws.DynamoDB.UpdateItemInput {
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, itemToUpdate);
+    if (updateActions.length === 0) {
+        throw new Error("No UpdateExpressionActions specified.");
+    }
 
     const expressionAttributeNames: aws.DynamoDB.ExpressionAttributeNameMap = {};
     const expressionAttributeValues: aws.DynamoDB.ExpressionAttributeValueMap = {};
@@ -552,6 +555,33 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
 }
 
 /**
+ * Build a request object that can be passed into `transactWriteItems`.
+ * @param input Any combination of inputs into `putItem`, `deleteItem` and `updateItem`.
+ */
+export function buildTransactWriteItemsInput(...input: (aws.DynamoDB.PutItemInput | aws.DynamoDB.DeleteItemInput | aws.DynamoDB.UpdateItemInput)[]): aws.DynamoDB.TransactWriteItemsInput {
+    return {
+        TransactItems: input.map(i => {
+            if ((i as aws.DynamoDB.PutItemInput).Item) {
+                return {
+                    Put: i as aws.DynamoDB.PutItemInput
+                };
+            }
+            if ((i as aws.DynamoDB.UpdateItemInput).UpdateExpression) {
+                return {
+                    Update: i as (aws.DynamoDB.UpdateItemInput & { UpdateExpression: string })
+                };
+            }
+            if ((i as aws.DynamoDB.DeleteItemInput).Key) {
+                return {
+                    Delete: i as aws.DynamoDB.DeleteItemInput
+                };
+            }
+            throw new Error("Invalid input to buildTransactWriteItemsInput.  Each item must be a PutItemInput, DeleteItemInput or UpdateItemInput (with UpdateExpression set).");
+        })
+    };
+}
+
+/**
  * Build a request object that can be passed into `createTable`.
  * This is most useful for setting up testing.
  * @param tableSchema A single TableSchema or an array of TableSchemas when including secondary indexes.
@@ -693,7 +723,7 @@ export function buildCreateTableInput(tableSchema: TableSchema | TableSchema[], 
  */
 export function buildDeleteTableInput(tableSchema: TableSchema): aws.DynamoDB.DeleteTableInput {
     if (tableSchema.indexName) {
-        throw new Error("tableSchema.indexName is set, implying this is a schema for a secondary index.  buildDeleteTableInput() is for deleting a table and its primary index.");
+        throw new Error("tableSchema.indexName is set, implying this is a schema for a secondary index.  Pass in the schema for the primary index to delete the table and all secondary indexes will be deleted with it.");
     }
 
     checkSchema(tableSchema);

@@ -11,6 +11,7 @@ import {
     buildQueryInput,
     buildRequestPutItem,
     buildScanInput,
+    buildTransactWriteItemsInput,
     buildUpdateInputFromActions
 } from "./requestBuilder";
 import {TableSchema} from "./TableSchema";
@@ -498,6 +499,12 @@ describe("requestBuilder", () => {
             });
         });
 
+        it("requires at least one action", () => {
+            chai.assert.throws(() => {
+                buildUpdateInputFromActions(tableSchema, item);
+            });
+        });
+
         it("combines multiple actions", () => {
             const input = buildUpdateInputFromActions(tableSchema, item,
                 {action: "put", attribute: "ProductCategory", value: "Hardware"},
@@ -836,6 +843,68 @@ describe("requestBuilder", () => {
         });
     });
 
+    describe("buildTransactWriteItemsInput", () => {
+        it("builds transact write items input from put, delete and update", () => {
+            const defaultTableSchema: TableSchema = {
+                tableName: "table",
+                partitionKeyField: "primary",
+                partitionKeyType: "string"
+            };
+
+            const putItem = buildPutInput(defaultTableSchema, {
+                primary: "foo",
+                other: "bar"
+            });
+            const deleteItem = buildDeleteInput(defaultTableSchema, {primary: "baz"});
+            const updateItem = buildUpdateInputFromActions(
+                defaultTableSchema,
+                {
+                    primary: "qux"
+                },
+                {
+                    action: "put",
+                    attribute: "other",
+                    value: 123
+                }
+            );
+
+            const input = buildTransactWriteItemsInput(putItem, deleteItem, updateItem);
+            chai.assert.deepEqual(input, {
+                TransactItems: [
+                    {
+                        Put: {
+                            TableName: "table",
+                            Item: {
+                                primary: {S: "foo"},
+                                other: {S: "bar"}
+                            }
+                        }
+                    },
+                    {
+                        Delete: {
+                            TableName: "table",
+                            Key: {
+                                primary: {S: "baz"}
+                            }
+                        }
+                    },
+                    {
+                        Update: {
+                            TableName: "table",
+                            Key: {
+                                primary: {S: "qux"}
+                            },
+                            UpdateExpression: "SET other = :a",
+                            ExpressionAttributeValues: {
+                                ":a": {N: "123"}
+                            }
+                        }
+                    }
+                ]
+            })
+        });
+    });
+
     describe("buildCreateTableInput", () => {
         it("builds a create table input", () => {
             const req = buildCreateTableInput({
@@ -979,15 +1048,12 @@ describe("requestBuilder", () => {
 
     describe("buildDeleteTableInput", () => {
         it("builds a delete table input", () => {
-            chai.assert.throws(() => {
-                const req = buildDeleteTableInput({
-                    tableName: "table",
-                    indexName: "secondaryIndex",
-                    partitionKeyField: "primary",
-                    partitionKeyType: "string"
-                });
-                chai.assert.equal(req.TableName, "table");
+            const req = buildDeleteTableInput({
+                tableName: "table",
+                partitionKeyField: "primary",
+                partitionKeyType: "string"
             });
+            chai.assert.equal(req.TableName, "table");
         });
 
         it("won't delete a table for the schema of a secondary index", () => {
