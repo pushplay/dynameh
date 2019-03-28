@@ -109,14 +109,14 @@ export function buildGetInput(tableSchema: TableSchema, partitionKeyValue: Dynam
  * if the item in the database has the same value (and then the version
  * will be incremented).
  * @param tableSchema
- * @param item
+ * @param item The item to put to the database.
  * @returns Input for the `putItem` method.
  */
 export function buildPutInput(tableSchema: TableSchema, item: object): aws.DynamoDB.PutItemInput {
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, item);
 
-    const request: aws.DynamoDB.PutItemInput = {
+    let request: aws.DynamoDB.PutItemInput = {
         Item: buildRequestPutItem(tableSchema, item).M,
         TableName: tableSchema.tableName
     };
@@ -162,6 +162,21 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
     }
 
     return request;
+}
+
+/**
+ * Build a request object that can be passed into `putItem`.
+ *
+ * If `TableSchema.versionKeyField` is set the put will only succeed
+ * if the item in the database has the same value (and then the version
+ * will be incremented).
+ * @param tableSchema
+ * @param item The item to put to the database.
+ * @param conditions Conditions under which to put the item.
+ * @returns Input for the `putItem` method.
+ */
+export function buildConditionalPutInput(tableSchema: TableSchema, item: object, ...conditions: Condition[]): aws.DynamoDB.PutItemInput {
+    return addCondition(tableSchema, buildPutInput(tableSchema, item), ...conditions);
 }
 
 /**
@@ -333,7 +348,7 @@ export function buildDeleteInput(tableSchema: TableSchema, itemToDelete: object)
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, itemToDelete);
 
-    const request: aws.DynamoDB.DeleteItemInput = {
+    let request: aws.DynamoDB.DeleteItemInput = {
         Key: getKey(tableSchema, itemToDelete[tableSchema.partitionKeyField], tableSchema.sortKeyField && itemToDelete[tableSchema.sortKeyField]),
         TableName: tableSchema.tableName
     };
@@ -351,6 +366,21 @@ export function buildDeleteInput(tableSchema: TableSchema, itemToDelete: object)
     }
 
     return request;
+}
+
+/**
+ * Build a request object that can be passed into `deleteItem`
+ *
+ * If `TableSchema.versionKeyField` is set the delete will only succeed
+ * if the item in the database has the same value.
+ * @param tableSchema
+ * @param itemToDelete The item to delete.  Must at least have the partition
+ *        key, the sort key if applicable, and the version field if applicable.
+ * @param conditions Conditions under which to delete the item.
+ * @returns Input for the `deleteItem` method.
+ */
+export function buildConditionalDeleteInput(tableSchema: TableSchema, itemToDelete: object, ...conditions: Condition[]): aws.DynamoDB.DeleteItemInput {
+    return addCondition(tableSchema, buildDeleteInput(tableSchema, itemToDelete), ...conditions);
 }
 
 /**
@@ -661,10 +691,12 @@ export function buildCreateTableInput(tableSchema: TableSchema | TableSchema[], 
             throw new Error("Not all TableSchemas have the same TableName.");
         }
 
-        request.AttributeDefinitions.push({
-            AttributeName: secondarySchema.partitionKeyField,
-            AttributeType: jsTypeToDynamoKeyType(secondarySchema.partitionKeyType)
-        });
+        if (!request.AttributeDefinitions.find(ad => ad.AttributeName === secondarySchema.partitionKeyField)) {
+            request.AttributeDefinitions.push({
+                AttributeName: secondarySchema.partitionKeyField,
+                AttributeType: jsTypeToDynamoKeyType(secondarySchema.partitionKeyType)
+            });
+        }
 
         const requestSecondaryIndex: aws.DynamoDB.GlobalSecondaryIndex | aws.DynamoDB.LocalSecondaryIndex = {
             IndexName: secondarySchema.indexName,
@@ -686,10 +718,12 @@ export function buildCreateTableInput(tableSchema: TableSchema | TableSchema[], 
             requestSecondaryIndex.Projection.NonKeyAttributes = secondarySchema.indexProperties.projectedAttributes;
         }
         if (secondarySchema.sortKeyField) {
-            request.AttributeDefinitions.push({
-                AttributeName: secondarySchema.sortKeyField,
-                AttributeType: jsTypeToDynamoKeyType(secondarySchema.sortKeyType)
-            });
+            if (!request.AttributeDefinitions.find(ad => ad.AttributeName === secondarySchema.sortKeyField)) {
+                request.AttributeDefinitions.push({
+                    AttributeName: secondarySchema.sortKeyField,
+                    AttributeType: jsTypeToDynamoKeyType(secondarySchema.sortKeyType)
+                });
+            }
             requestSecondaryIndex.KeySchema.push({
                 AttributeName: secondarySchema.sortKeyField,
                 KeyType: "RANGE"
