@@ -165,21 +165,6 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
 }
 
 /**
- * Build a request object that can be passed into `putItem`.
- *
- * If `TableSchema.versionKeyField` is set the put will only succeed
- * if the item in the database has the same value (and then the version
- * will be incremented).
- * @param tableSchema
- * @param item The item to put to the database.
- * @param conditions Conditions under which to put the item.
- * @returns Input for the `putItem` method.
- */
-export function buildConditionalPutInput(tableSchema: TableSchema, item: object, ...conditions: Condition[]): aws.DynamoDB.PutItemInput {
-    return addCondition(tableSchema, buildPutInput(tableSchema, item), ...conditions);
-}
-
-/**
  * Build a request object that can be passed into `updateItem` based upon a
  * set of {@link UpdateExpressionAction}s.  Each {@link UpdateExpressionAction} defines
  * an operation to take as part of updating in the database.
@@ -366,21 +351,6 @@ export function buildDeleteInput(tableSchema: TableSchema, itemToDelete: object)
     }
 
     return request;
-}
-
-/**
- * Build a request object that can be passed into `deleteItem`
- *
- * If `TableSchema.versionKeyField` is set the delete will only succeed
- * if the item in the database has the same value.
- * @param tableSchema
- * @param itemToDelete The item to delete.  Must at least have the partition
- *        key, the sort key if applicable, and the version field if applicable.
- * @param conditions Conditions under which to delete the item.
- * @returns Input for the `deleteItem` method.
- */
-export function buildConditionalDeleteInput(tableSchema: TableSchema, itemToDelete: object, ...conditions: Condition[]): aws.DynamoDB.DeleteItemInput {
-    return addCondition(tableSchema, buildDeleteInput(tableSchema, itemToDelete), ...conditions);
 }
 
 /**
