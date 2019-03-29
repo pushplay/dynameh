@@ -28,7 +28,7 @@ export class FluentRequestBuilder<TRequest, TResponse, TResult> {
         return this.resultGetter(await this.execute());
     }
 
-    addProjection(attributes: string[]): FluentRequestBuilder<TRequest, TResponse, TResult> {
+    addProjection(attributes: string[]): FluentRequestBuilder<TRequest, TResponse, Partial<TResult>> {
         const req = requestBuilder.addProjection(this.tableSchema, this.request, attributes);
         return new FluentRequestBuilder(this.tableSchema, req, this.executor, this.resultGetter);
     }
@@ -48,18 +48,18 @@ function emptyResultGetter(): {} {
     return {};
 }
 
-export class FluentDynameh {
+export class FluentDynameh<T extends object> {
 
     constructor(public tableSchema: TableSchema, public client: aws.DynamoDB) {
         checkSchema(tableSchema);
     }
 
-    getItem<T>(partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey): FluentRequestBuilder<aws.DynamoDB.GetItemInput, aws.DynamoDB.GetItemOutput, T> {
+    getItem(partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey): FluentRequestBuilder<aws.DynamoDB.GetItemInput, aws.DynamoDB.GetItemOutput, T> {
         const req = requestBuilder.buildGetInput(this.tableSchema, partitionKeyValue, sortKeyValue);
         return new FluentRequestBuilder(this.tableSchema, req, this.client.getItem, responseUnwrapper.unwrapGetOutput);
     }
 
-    putItem(item: object): FluentRequestBuilder<aws.DynamoDB.PutItemInput, aws.DynamoDB.PutItemOutput, {}> {
+    putItem(item: T): FluentRequestBuilder<aws.DynamoDB.PutItemInput, aws.DynamoDB.PutItemOutput, {}> {
         const req = requestBuilder.buildPutInput(this.tableSchema, item);
         return new FluentRequestBuilder(this.tableSchema, req, this.client.putItem, emptyResultGetter);
     }
@@ -69,19 +69,21 @@ export class FluentDynameh {
         return new FluentRequestBuilder(this.tableSchema, req, this.client.updateItem, emptyResultGetter);
     }
 
-    deleteItem(itemToDelete: object): FluentRequestBuilder<aws.DynamoDB.DeleteItemInput, aws.DynamoDB.DeleteItemOutput, {}> {
+    deleteItem(itemToDelete: Partial<T>): FluentRequestBuilder<aws.DynamoDB.DeleteItemInput, aws.DynamoDB.DeleteItemOutput, {}> {
         const req = requestBuilder.buildDeleteInput(this.tableSchema, itemToDelete);
         return new FluentRequestBuilder(this.tableSchema, req, this.client.deleteItem, emptyResultGetter);
     }
 
-    query<T>(partitionKeyValue: DynamoKey, sortKeyOp?: DynamoQueryConditionOperator, ...sortKeyValues: DynamoKey[]): FluentRequestBuilder<aws.DynamoDB.QueryInput, aws.DynamoDB.QueryOutput, T[]> {
+    query(partitionKeyValue: DynamoKey, sortKeyOp?: DynamoQueryConditionOperator, ...sortKeyValues: DynamoKey[]): FluentRequestBuilder<aws.DynamoDB.QueryInput, aws.DynamoDB.QueryOutput, T[]> {
         const req = requestBuilder.buildQueryInput(this.tableSchema, partitionKeyValue, sortKeyOp, ...sortKeyValues);
         return new FluentRequestBuilder(this.tableSchema, req, this.client.query, responseUnwrapper.unwrapQueryOutput);
+        // TODO executor should get ALL query results with paging
     }
 
-    scan<T>(...filter: Condition[]): FluentRequestBuilder<aws.DynamoDB.ScanInput, aws.DynamoDB.ScanOutput, T[]> {
+    scan(...filter: Condition[]): FluentRequestBuilder<aws.DynamoDB.ScanInput, aws.DynamoDB.ScanOutput, T[]> {
         const req = requestBuilder.buildScanInput(this.tableSchema, ...filter);
         return new FluentRequestBuilder(this.tableSchema, req, this.client.scan, responseUnwrapper.unwrapScanOutput);
+        // TODO executor should get ALL scan results with paging
     }
 
     transactWriteItems(...input: FluentRequestBuilder<aws.DynamoDB.PutItemInput | aws.DynamoDB.DeleteItemInput | aws.DynamoDB.UpdateItemInput, any, {}>[]): FluentRequestBuilder<aws.DynamoDB.TransactWriteItemsInput, aws.DynamoDB.TransactWriteItemsOutput, {}> {
