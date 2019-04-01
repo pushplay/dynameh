@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>FluentRequestBuilder | Dynameh</title>
+	<title>FluentTransactWriteItemsBuilder | Dynameh</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,10 @@
 					<a href="../modules/_fluentdynameh_.html">&quot;FluentDynameh&quot;</a>
 				</li>
 				<li>
-					<a href="_fluentdynameh_.fluentrequestbuilder.html">FluentRequestBuilder</a>
+					<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html">FluentTransactWriteItemsBuilder</a>
 				</li>
 			</ul>
-			<h1>Class FluentRequestBuilder&lt;TRequest, TResponse, TResult&gt;</h1>
+			<h1>Class FluentTransactWriteItemsBuilder&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -71,13 +71,7 @@
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>TRequest</h4>
-					</li>
-					<li>
-						<h4>TResponse</h4>
-					</li>
-					<li>
-						<h4>TResult</h4>
+						<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -85,7 +79,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">FluentRequestBuilder</span>
+						<span class="target">FluentTransactWriteItemsBuilder</span>
 					</li>
 				</ul>
 			</section>
@@ -96,24 +90,24 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_fluentdynameh_.fluentrequestbuilder.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_fluentdynameh_.fluentrequestbuilder.html#request" class="tsd-kind-icon">request</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_fluentdynameh_.fluentrequestbuilder.html#tableschema" class="tsd-kind-icon">table<wbr>Schema</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#client" class="tsd-kind-icon">client</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#request" class="tsd-kind-icon">request</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#tableschema" class="tsd-kind-icon">table<wbr>Schema</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_fluentdynameh_.fluentrequestbuilder.html#addcondition" class="tsd-kind-icon">add<wbr>Condition</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_fluentdynameh_.fluentrequestbuilder.html#addfilter" class="tsd-kind-icon">add<wbr>Filter</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_fluentdynameh_.fluentrequestbuilder.html#addprojection" class="tsd-kind-icon">add<wbr>Projection</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_fluentdynameh_.fluentrequestbuilder.html#execute" class="tsd-kind-icon">execute</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_fluentdynameh_.fluentrequestbuilder.html#getresult" class="tsd-kind-icon">get<wbr>Result</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#deleteitem" class="tsd-kind-icon">delete<wbr>Item</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#execute" class="tsd-kind-icon">execute</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#putitem" class="tsd-kind-icon">put<wbr>Item</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#updateitemfromactions" class="tsd-kind-icon">update<wbr>Item<wbr>From<wbr>Actions</a></li>
 							</ul>
 						</section>
 					</div>
@@ -125,13 +119,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Fluent<wbr>Request<wbr>Builder<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, request<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TRequest</span>, executor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span>, resultGetter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_fluentdynameh_.fluentrequestbuilder.html" class="tsd-signature-type">FluentRequestBuilder</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Fluent<wbr>Transact<wbr>Write<wbr>Items<wbr>Builder<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, client<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DynamoDB</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html" class="tsd-signature-type">FluentTransactWriteItemsBuilder</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L11">FluentDynameh.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L55">FluentDynameh.ts:55</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -140,52 +134,10 @@
 									<h5>tableSchema: <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></h5>
 								</li>
 								<li>
-									<h5>request: <span class="tsd-signature-type">TRequest</span></h5>
-								</li>
-								<li>
-									<h5>executor: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>param<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TRequest</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Request</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">AWSError</span><span class="tsd-signature-symbol">&gt;</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>param: <span class="tsd-signature-type">TRequest</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Request</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">AWSError</span><span class="tsd-signature-symbol">&gt;</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-								<li>
-									<h5>resultGetter: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>resp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResult</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>resp: <span class="tsd-signature-type">TResponse</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">TResult</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
+									<h5>client: <span class="tsd-signature-type">DynamoDB</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_fluentdynameh_.fluentrequestbuilder.html" class="tsd-signature-type">FluentRequestBuilder</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html" class="tsd-signature-type">FluentTransactWriteItemsBuilder</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -193,12 +145,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="request" class="tsd-anchor"></a>
-					<h3>request</h3>
-					<div class="tsd-signature tsd-kind-icon">request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TRequest</span></div>
+					<a name="client" class="tsd-anchor"></a>
+					<h3>client</h3>
+					<div class="tsd-signature tsd-kind-icon">client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DynamoDB</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L15">FluentDynameh.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L57">FluentDynameh.ts:57</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="request" class="tsd-anchor"></a>
+					<h3>request</h3>
+					<div class="tsd-signature tsd-kind-icon">request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TransactWriteItemsInput</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L54">FluentDynameh.ts:54</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -208,7 +170,7 @@
 					<div class="tsd-signature tsd-kind-icon">table<wbr>Schema<span class="tsd-signature-symbol">:</span> <a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L14">FluentDynameh.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L57">FluentDynameh.ts:57</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -216,71 +178,25 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addcondition" class="tsd-anchor"></a>
-					<h3>add<wbr>Condition</h3>
+					<a name="deleteitem" class="tsd-anchor"></a>
+					<h3>delete<wbr>Item</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Condition<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>conditions<span class="tsd-signature-symbol">: </span><a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">delete<wbr>Item<span class="tsd-signature-symbol">(</span>itemToDelete<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_fluentdynameh_.fluentrequestbuilder.html" class="tsd-signature-type">FluentRequestBuilder</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DeleteItemInput</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L41">FluentDynameh.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L79">FluentDynameh.ts:79</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>conditions: <a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>itemToDelete: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addfilter" class="tsd-anchor"></a>
-					<h3>add<wbr>Filter</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Filter<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>filter<span class="tsd-signature-symbol">: </span><a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L46">FluentDynameh.ts:46</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>filter: <a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="addprojection" class="tsd-anchor"></a>
-					<h3>add<wbr>Projection</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Projection<span class="tsd-signature-symbol">(</span>attributes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L36">FluentDynameh.ts:36</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>attributes: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_fluentdynameh_.fluentrequestbuilder.html" class="tsd-signature-type">FluentRequestBuilder</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DeleteItemInput</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -288,33 +204,65 @@
 					<a name="execute" class="tsd-anchor"></a>
 					<h3>execute</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">execute<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">execute<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TransactWriteItemsOutput</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L21">FluentDynameh.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L60">FluentDynameh.ts:60</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TResponse</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TransactWriteItemsOutput</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="getresult" class="tsd-anchor"></a>
-					<h3>get<wbr>Result</h3>
+					<a name="putitem" class="tsd-anchor"></a>
+					<h3>put<wbr>Item</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Result<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TResult</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">put<wbr>Item<span class="tsd-signature-symbol">(</span>item<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_fluentdynameh_.fluentrequestbuilder.html" class="tsd-signature-type">FluentRequestBuilder</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PutItemInput</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L32">FluentDynameh.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L67">FluentDynameh.ts:67</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TResult</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>item: <span class="tsd-signature-type">T</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_fluentdynameh_.fluentrequestbuilder.html" class="tsd-signature-type">FluentRequestBuilder</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">PutItemInput</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="updateitemfromactions" class="tsd-anchor"></a>
+					<h3>update<wbr>Item<wbr>From<wbr>Actions</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Item<wbr>From<wbr>Actions<span class="tsd-signature-symbol">(</span>itemToUpdate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span>, <span class="tsd-signature-symbol">...</span>updateActions<span class="tsd-signature-symbol">: </span><a href="../modules/_updateexpressionaction_.html#updateexpressionaction" class="tsd-signature-type">UpdateExpressionAction</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_fluentdynameh_.fluentrequestbuilder.html" class="tsd-signature-type">FluentRequestBuilder</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">UpdateItemInput</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/FluentDynameh.ts#L73">FluentDynameh.ts:73</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>itemToUpdate: <span class="tsd-signature-type">object</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>updateActions: <a href="../modules/_updateexpressionaction_.html#updateexpressionaction" class="tsd-signature-type">UpdateExpressionAction</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="_fluentdynameh_.fluentrequestbuilder.html" class="tsd-signature-type">FluentRequestBuilder</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">UpdateItemInput</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">__type</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -369,42 +317,42 @@
 					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_fluentdynameh_.fluentdynameh.html" class="tsd-kind-icon">Fluent<wbr>Dynameh</a>
 					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
+						<a href="_fluentdynameh_.fluentrequestbuilder.html" class="tsd-kind-icon">Fluent<wbr>Request<wbr>Builder</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_fluentdynameh_.fluentrequestbuilder.html" class="tsd-kind-icon">Fluent<wbr>Request<wbr>Builder</a>
+						<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html" class="tsd-kind-icon">Fluent<wbr>Transact<wbr>Write<wbr>Items<wbr>Builder</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_fluentdynameh_.fluentrequestbuilder.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_fluentdynameh_.fluentrequestbuilder.html#request" class="tsd-kind-icon">request</a>
+								<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#client" class="tsd-kind-icon">client</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_fluentdynameh_.fluentrequestbuilder.html#tableschema" class="tsd-kind-icon">table<wbr>Schema</a>
+								<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#request" class="tsd-kind-icon">request</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#tableschema" class="tsd-kind-icon">table<wbr>Schema</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_fluentdynameh_.fluentrequestbuilder.html#addcondition" class="tsd-kind-icon">add<wbr>Condition</a>
+								<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#deleteitem" class="tsd-kind-icon">delete<wbr>Item</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_fluentdynameh_.fluentrequestbuilder.html#addfilter" class="tsd-kind-icon">add<wbr>Filter</a>
+								<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#execute" class="tsd-kind-icon">execute</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_fluentdynameh_.fluentrequestbuilder.html#addprojection" class="tsd-kind-icon">add<wbr>Projection</a>
+								<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#putitem" class="tsd-kind-icon">put<wbr>Item</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_fluentdynameh_.fluentrequestbuilder.html#execute" class="tsd-kind-icon">execute</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="_fluentdynameh_.fluentrequestbuilder.html#getresult" class="tsd-kind-icon">get<wbr>Result</a>
+								<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html#updateitemfromactions" class="tsd-kind-icon">update<wbr>Item<wbr>From<wbr>Actions</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-parent-kind-external-module tsd-has-type-parameter">
-						<a href="_fluentdynameh_.fluenttransactwriteitemsbuilder.html" class="tsd-kind-icon">Fluent<wbr>Transact<wbr>Write<wbr>Items<wbr>Builder</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

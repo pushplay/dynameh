@@ -74,6 +74,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_requestbuilder_.html#addcondition" class="tsd-kind-icon">add<wbr>Condition</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_requestbuilder_.html#addfilter" class="tsd-kind-icon">add<wbr>Filter</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter"><a href="_requestbuilder_.html#addprojection" class="tsd-kind-icon">add<wbr>Projection</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#addtransactwriteitemsinput" class="tsd-kind-icon">add<wbr>Transact<wbr>Write<wbr>Items<wbr>Input</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildbatchdeleteinput" class="tsd-kind-icon">build<wbr>Batch<wbr>Delete<wbr>Input</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildbatchgetinput" class="tsd-kind-icon">build<wbr>Batch<wbr>Get<wbr>Input</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_requestbuilder_.html#buildbatchputinput" class="tsd-kind-icon">build<wbr>Batch<wbr>Put<wbr>Input</a></li>
@@ -99,13 +100,13 @@
 					<a name="addcondition" class="tsd-anchor"></a>
 					<h3>add<wbr>Condition</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Condition&lt;T&gt;<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, conditionableRequest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, <span class="tsd-signature-symbol">...</span>conditions<span class="tsd-signature-symbol">: </span><a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Condition&lt;T&gt;<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, conditionableRequest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, <span class="tsd-signature-symbol">...</span>conditions<span class="tsd-signature-symbol">: </span><a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L825">requestBuilder.ts:825</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L831">requestBuilder.ts:831</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -139,7 +140,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 							<p>A copy of conditionableRequest with the condition expression set.</p>
 						</li>
 					</ul>
@@ -148,13 +149,13 @@
 					<a name="addfilter" class="tsd-anchor"></a>
 					<h3>add<wbr>Filter</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Filter&lt;T&gt;<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, filterableRequest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, <span class="tsd-signature-symbol">...</span>filters<span class="tsd-signature-symbol">: </span><a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Filter&lt;T&gt;<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, filterableRequest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, <span class="tsd-signature-symbol">...</span>filters<span class="tsd-signature-symbol">: </span><a href="../interfaces/_condition_.condition.html" class="tsd-signature-type">Condition</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L842">requestBuilder.ts:842</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L848">requestBuilder.ts:848</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -190,7 +191,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 							<p>A copy of filterableRequest with the condition expression set.</p>
 						</li>
 					</ul>
@@ -199,13 +200,13 @@
 					<a name="addprojection" class="tsd-anchor"></a>
 					<h3>add<wbr>Projection</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Projection&lt;T&gt;<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, projectableRequest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, attributes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Projection&lt;T&gt;<span class="tsd-signature-symbol">(</span>tableSchema<span class="tsd-signature-symbol">: </span><a href="../interfaces/_tableschema_.tableschema.html" class="tsd-signature-type">TableSchema</a>, projectableRequest<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, attributes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L780">requestBuilder.ts:780</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L790">requestBuilder.ts:790</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -240,8 +241,45 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 							<p>A copy of projectableRequest with the projection expression set.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="addtransactwriteitemsinput" class="tsd-anchor"></a>
+					<h3>add<wbr>Transact<wbr>Write<wbr>Items<wbr>Input</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Transact<wbr>Write<wbr>Items<wbr>Input<span class="tsd-signature-symbol">(</span>request<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TransactWriteItemsInput</span>, <span class="tsd-signature-symbol">...</span>input<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">PutItemInput</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">UpdateItemInput</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">DeleteItemInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L572">requestBuilder.ts:572</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Add more items to an existing TransactWriteItemsInput object.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>request: <span class="tsd-signature-type">TransactWriteItemsInput</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An existing TransactWriteItemsInput object.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>input: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-type">PutItemInput</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">UpdateItemInput</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">DeleteItemInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Any combination of inputs into <code>putItem</code>, <code>deleteItem</code> and <code>updateItem</code>.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -255,7 +293,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L487">requestBuilder.ts:487</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L487">requestBuilder.ts:487</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -290,7 +328,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L527">requestBuilder.ts:527</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L527">requestBuilder.ts:527</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -325,7 +363,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L462">requestBuilder.ts:462</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L462">requestBuilder.ts:462</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -360,7 +398,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L593">requestBuilder.ts:593</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L603">requestBuilder.ts:603</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -406,7 +444,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L332">requestBuilder.ts:332</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L332">requestBuilder.ts:332</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -444,7 +482,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L728">requestBuilder.ts:728</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L738">requestBuilder.ts:738</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -474,7 +512,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L92">requestBuilder.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L92">requestBuilder.ts:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -515,7 +553,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L115">requestBuilder.ts:115</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L115">requestBuilder.ts:115</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -553,7 +591,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L372">requestBuilder.ts:372</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L372">requestBuilder.ts:372</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -607,7 +645,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L29">requestBuilder.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L29">requestBuilder.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -643,7 +681,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L438">requestBuilder.ts:438</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L438">requestBuilder.ts:438</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -688,7 +726,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L561">requestBuilder.ts:561</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L561">requestBuilder.ts:561</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -719,7 +757,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L181">requestBuilder.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L181">requestBuilder.ts:181</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -766,7 +804,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/5c8956a/src/requestBuilder.ts#L747">requestBuilder.ts:747</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/c498446/src/requestBuilder.ts#L757">requestBuilder.ts:757</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -843,6 +881,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-has-type-parameter">
 						<a href="_requestbuilder_.html#addprojection" class="tsd-kind-icon">add<wbr>Projection</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_requestbuilder_.html#addtransactwriteitemsinput" class="tsd-kind-icon">add<wbr>Transact<wbr>Write<wbr>Items<wbr>Input</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_requestbuilder_.html#buildbatchdeleteinput" class="tsd-kind-icon">build<wbr>Batch<wbr>Delete<wbr>Input</a>
