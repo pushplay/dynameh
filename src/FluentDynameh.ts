@@ -67,8 +67,21 @@ export class FluentTransactWriteItemsBuilder<T extends object> {
         return this.response;
     }
 
-    forTable<U extends object>(fluentDynameh: FluentDynameh<U>): FluentTransactWriteItemsBuilder<U> {
-        return new FluentTransactWriteItemsBuilder<U>(fluentDynameh instanceof FluentDynameh ? fluentDynameh.tableSchema : fluentDynameh, this.client, this.request);
+    forTable<U extends object>(fluentDynameh: FluentDynameh<U>): FluentTransactWriteItemsBuilderScoped<U> {
+        return new FluentTransactWriteItemsBuilderScoped<U>(fluentDynameh.tableSchema, this.request);
+    }
+
+    forSchema(tableSchema: TableSchema): FluentTransactWriteItemsBuilderScoped<any> {
+        return new FluentTransactWriteItemsBuilderScoped<any>(tableSchema, this.request);
+    }
+}
+
+export class FluentTransactWriteItemsBuilderScoped<T extends object> {
+
+    constructor(
+        public readonly tableSchema: TableSchema,
+        public readonly request: aws.DynamoDB.TransactWriteItemsInput = {TransactItems: []}
+    ) {
     }
 
     putItem(item: T): FluentRequestBuilder<aws.DynamoDB.PutItemInput, void, {}> {
