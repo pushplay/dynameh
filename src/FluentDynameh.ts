@@ -49,39 +49,49 @@ export class FluentRequestBuilder<TRequest, TResponse, TResult> {
     }
 }
 
-export class FluentTransactWriteItemsBuilder<T extends object> {
+export class FluentTransactWriteItemsMultiTableBuilder<T extends object> {
 
     private response: aws.DynamoDB.TransactWriteItemsOutput;
 
     constructor(
         public readonly tableSchema: TableSchema,
-        public readonly client: aws.DynamoDB,
+        private readonly executor: (param: aws.DynamoDB.TransactWriteItemsInput) => aws.Request<aws.DynamoDB.TransactWriteItemsOutput, aws.AWSError>,
         public readonly request: aws.DynamoDB.TransactWriteItemsInput = {TransactItems: []}
     ) {
     }
 
     async execute(): Promise<aws.DynamoDB.TransactWriteItemsOutput> {
         if (!this.response) {
-            this.response = await this.client.transactWriteItems(this.request).promise();
+            this.response = await this.executor(this.request).promise();
         }
         return this.response;
     }
 
-    forTable<U extends object>(fluentDynameh: FluentDynameh<U>): FluentTransactWriteItemsBuilderScoped<U> {
-        return new FluentTransactWriteItemsBuilderScoped<U>(fluentDynameh.tableSchema, this.request);
+    forTable<U extends object>(fluentDynameh: FluentDynameh<U>): FluentTransactWriteItemsBuilder<U> {
+        return new FluentTransactWriteItemsBuilder<U>(fluentDynameh.tableSchema, notExecutable, this.request);
     }
 
-    forSchema(tableSchema: TableSchema): FluentTransactWriteItemsBuilderScoped<any> {
-        return new FluentTransactWriteItemsBuilderScoped<any>(tableSchema, this.request);
+    forSchema(tableSchema: TableSchema): FluentTransactWriteItemsBuilder<any> {
+        return new FluentTransactWriteItemsBuilder<any>(tableSchema, notExecutable, this.request);
     }
 }
 
-export class FluentTransactWriteItemsBuilderScoped<T extends object> {
+export class FluentTransactWriteItemsBuilder<T extends object> {
+
+    private response: aws.DynamoDB.TransactWriteItemsOutput;
 
     constructor(
         public readonly tableSchema: TableSchema,
+        private readonly executor: (param: aws.DynamoDB.TransactWriteItemsInput) => aws.Request<aws.DynamoDB.TransactWriteItemsOutput, aws.AWSError>,
         public readonly request: aws.DynamoDB.TransactWriteItemsInput = {TransactItems: []}
     ) {
+    }
+
+    async execute(): Promise<aws.DynamoDB.TransactWriteItemsOutput> {
+        if (!this.response) {
+            this.response = await this.executor(this.request).promise();
+        }
+        return this.response;
     }
 
     putItem(item: T): FluentRequestBuilder<aws.DynamoDB.PutItemInput, void, {}> {
@@ -108,7 +118,7 @@ function emptyResultGetter(): {} {
 }
 
 function notExecutable(): any {
-    throw new Error("This builder is not executable because it is part of a transaction.");
+    throw new Error("This builder is not executable.");
 }
 
 export class FluentDynameh<T extends object> {
@@ -150,7 +160,11 @@ export class FluentDynameh<T extends object> {
     }
 
     transactWriteItems(): FluentTransactWriteItemsBuilder<T> {
-        return new FluentTransactWriteItemsBuilder(this.tableSchema, this.client);
+        return new FluentTransactWriteItemsBuilder(this.tableSchema, this.client.transactWriteItems);
+    }
+
+    transactWriteItemsMultiTable(): FluentTransactWriteItemsMultiTableBuilder<T> {
+        return new FluentTransactWriteItemsMultiTableBuilder(this.tableSchema, this.client.transactWriteItems);
     }
 
     createTable(additionalTableSchemas: TableSchema[] = [], readCapacity?: number, writeCapacity?: number): FluentRequestBuilder<aws.DynamoDB.CreateTableInput, aws.DynamoDB.CreateTableOutput, {}> {
