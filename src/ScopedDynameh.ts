@@ -21,10 +21,8 @@ export interface ScopedDynameh {
         buildRequestPutItem: (item: object) => aws.DynamoDB.AttributeValue;
         buildGetInput: (partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey) => aws.DynamoDB.GetItemInput;
         buildPutInput: (item: object) => aws.DynamoDB.PutItemInput;
-        buildConditionalPutInput: (item: object, ...conditions: Condition[]) => aws.DynamoDB.PutItemInput;
         buildUpdateInputFromActions: (itemToUpdate: object, ...updateActions: UpdateExpressionAction[]) => aws.DynamoDB.UpdateItemInput;
         buildDeleteInput: (itemToDelete: object) => aws.DynamoDB.DeleteItemInput;
-        buildConditionalDeleteInput: (itemToDelete: object, ...conditions: Condition[]) => aws.DynamoDB.DeleteItemInput;
         buildQueryInput: (partitionKeyValue: DynamoKey, sortKeyOp?: DynamoQueryConditionOperator, ...sortKeyValues: DynamoKey[]) => aws.DynamoDB.QueryInput;
         buildScanInput: (...filters: Condition[]) => aws.DynamoDB.ScanInput;
         buildBatchPutInput: (items: object[]) => aws.DynamoDB.BatchWriteItemInput;
