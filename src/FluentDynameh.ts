@@ -10,7 +10,12 @@ export class FluentRequestBuilder<TRequest, TResponse, TResult> {
 
     private response: TResponse & { getResult: () => TResult };
 
-    constructor(public tableSchema: TableSchema, public request: TRequest, public executor: (param: TRequest) => aws.Request<TResponse, aws.AWSError>, public resultGetter: (resp: TResponse) => TResult) {
+    constructor(
+        public readonly tableSchema: TableSchema,
+        public readonly request: TRequest,
+        private readonly executor: (param: TRequest) => aws.Request<TResponse, aws.AWSError>,
+        private readonly resultGetter: (resp: TResponse) => TResult
+    ) {
     }
 
     async execute(): Promise<TResponse & { getResult: () => TResult }> {
@@ -28,24 +33,62 @@ export class FluentRequestBuilder<TRequest, TResponse, TResult> {
         return this.resultGetter(await this.execute());
     }
 
-    addProjection(attributes: string[]): FluentRequestBuilder<TRequest, TResponse, Partial<TResult>> {
-        const req = requestBuilder.addProjection(this.tableSchema, this.request, attributes);
-        return new FluentRequestBuilder(this.tableSchema, req, this.executor, this.resultGetter);
+    addProjection(attributes: string[]): this {
+        requestBuilder.addProjection(this.tableSchema, this.request, attributes);
+        return this;
     }
 
-    addCondition(...conditions: Condition[]): FluentRequestBuilder<TRequest, TResponse, TResult> {
-        const req = requestBuilder.addCondition(this.tableSchema, this.request, ...conditions);
-        return new FluentRequestBuilder(this.tableSchema, req, this.executor, this.resultGetter);
+    addCondition(...conditions: Condition[]): this {
+        requestBuilder.addCondition(this.tableSchema, this.request, ...conditions);
+        return this;
     }
 
-    addFilter(...filter: Condition[]): FluentRequestBuilder<TRequest, TResponse, TResult> {
-        const req = requestBuilder.addFilter(this.tableSchema, this.request, ...filter);
-        return new FluentRequestBuilder(this.tableSchema, req, this.executor, this.resultGetter);
+    addFilter(...filter: Condition[]): this {
+        requestBuilder.addFilter(this.tableSchema, this.request, ...filter);
+        return this;
+    }
+}
+
+export class FluentTransactWriteItemsBuilder<T extends object> {
+
+    public readonly request: aws.DynamoDB.TransactWriteItemsInput;
+    private response: aws.DynamoDB.TransactWriteItemsOutput;
+
+    constructor(public readonly tableSchema: TableSchema, public readonly client: aws.DynamoDB) {
+    }
+
+    async execute(): Promise<aws.DynamoDB.TransactWriteItemsOutput> {
+        if (!this.response) {
+            this.response = await this.client.transactWriteItems(this.request).promise();
+        }
+        return this.response;
+    }
+
+    putItem(item: T): FluentRequestBuilder<aws.DynamoDB.PutItemInput, void, {}> {
+        const req = requestBuilder.buildPutInput(this.tableSchema, item);
+        requestBuilder.addTransactWriteItemsInput(this.request, req);
+        return new FluentRequestBuilder(this.tableSchema, req, notExecutable, emptyResultGetter);
+    }
+
+    updateItemFromActions(itemToUpdate: object, ...updateActions: UpdateExpressionAction[]): FluentRequestBuilder<aws.DynamoDB.UpdateItemInput, void, {}> {
+        const req = requestBuilder.buildUpdateInputFromActions(this.tableSchema, itemToUpdate, ...updateActions);
+        requestBuilder.addTransactWriteItemsInput(this.request, req);
+        return new FluentRequestBuilder(this.tableSchema, req, notExecutable, emptyResultGetter);
+    }
+
+    deleteItem(itemToDelete: Partial<T>): FluentRequestBuilder<aws.DynamoDB.DeleteItemInput, void, {}> {
+        const req = requestBuilder.buildDeleteInput(this.tableSchema, itemToDelete);
+        requestBuilder.addTransactWriteItemsInput(this.request, req);
+        return new FluentRequestBuilder(this.tableSchema, req, notExecutable, emptyResultGetter);
     }
 }
 
 function emptyResultGetter(): {} {
     return {};
+}
+
+function notExecutable(): any {
+    throw new Error("This builder is not executable because it is part of a transaction.");
 }
 
 export class FluentDynameh<T extends object> {
@@ -86,9 +129,8 @@ export class FluentDynameh<T extends object> {
         // TODO executor should get ALL scan results with paging
     }
 
-    transactWriteItems(...input: FluentRequestBuilder<aws.DynamoDB.PutItemInput | aws.DynamoDB.DeleteItemInput | aws.DynamoDB.UpdateItemInput, any, {}>[]): FluentRequestBuilder<aws.DynamoDB.TransactWriteItemsInput, aws.DynamoDB.TransactWriteItemsOutput, {}> {
-        const req = requestBuilder.buildTransactWriteItemsInput(...input.map(i => i.request));
-        return new FluentRequestBuilder(this.tableSchema, req, this.client.transactWriteItems, emptyResultGetter);
+    transactWriteItems(): FluentTransactWriteItemsBuilder<T> {
+        return new FluentTransactWriteItemsBuilder(this.tableSchema, this.client);
     }
 
     createTable(additionalTableSchemas: TableSchema[] = [], readCapacity?: number, writeCapacity?: number): FluentRequestBuilder<aws.DynamoDB.CreateTableInput, aws.DynamoDB.CreateTableOutput, {}> {

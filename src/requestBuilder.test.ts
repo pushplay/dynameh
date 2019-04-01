@@ -1079,10 +1079,9 @@ describe("requestBuilder", () => {
 
         it("adds a projection to get input", () => {
             const input = buildGetInput(defaultTableSchema, "prim", "so");
-            const projectedInput = addProjection(defaultTableSchema, input, ["key", "lock"]);
+            addProjection(defaultTableSchema, input, ["key", "lock"]);
 
-            chai.assert.notEqual(input, projectedInput);
-            chai.assert.deepEqual(projectedInput, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 Key: {
                     primary: {S: "prim"},
@@ -1098,12 +1097,10 @@ describe("requestBuilder", () => {
 
         it("adds a projection to an already projected expression", () => {
             const input = buildGetInput(defaultTableSchema, "prim", "so");
-            const projectedInput = addProjection(defaultTableSchema, input, ["key", "lock"]);
-            const projectedInput2 = addProjection(defaultTableSchema, projectedInput, ["key", "value"]);
+            addProjection(defaultTableSchema, input, ["key", "lock"]);
+            addProjection(defaultTableSchema, input, ["key", "value"]);
 
-            chai.assert.notEqual(input, projectedInput);
-            chai.assert.notEqual(projectedInput, projectedInput2);
-            chai.assert.deepEqual(projectedInput2, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 Key: {
                     primary: {S: "prim"},
@@ -1120,10 +1117,9 @@ describe("requestBuilder", () => {
 
         it("adds a projection to query input without key values", () => {
             const input = buildQueryInput(defaultTableSchema, "mah value", "BETWEEN", "alpha", "beta");
-            const projectedInput = addProjection(defaultTableSchema, input, ["key", "lock"]);
+            addProjection(defaultTableSchema, input, ["key", "lock"]);
 
-            chai.assert.notEqual(input, projectedInput);
-            chai.assert.deepEqual(projectedInput, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 ExpressionAttributeNames: {
                     "#P": "primary",
@@ -1149,10 +1145,9 @@ describe("requestBuilder", () => {
 
         it("adds a projection to query input that includes key values", () => {
             const input = buildQueryInput(defaultTableSchema, "mah value", "BETWEEN", "alpha", "beta");
-            const projectedInput = addProjection(defaultTableSchema, input, ["primary", "sort", "key", "lock"]);
+            addProjection(defaultTableSchema, input, ["primary", "sort", "key", "lock"]);
 
-            chai.assert.notEqual(input, projectedInput);
-            chai.assert.deepEqual(projectedInput, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 ExpressionAttributeNames: {
                     "#P": "primary",
@@ -1186,13 +1181,12 @@ describe("requestBuilder", () => {
 
         it("adds a condition to put input", () => {
             const input = buildPutInput(defaultTableSchema, {primary: "foo"});
-            const conditionalInput = addCondition(defaultTableSchema, input, {
+            addCondition(defaultTableSchema, input, {
                 attribute: "primary",
                 operator: "attribute_not_exists"
             });
 
-            chai.assert.notEqual(input, conditionalInput);
-            chai.assert.deepEqual(conditionalInput, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 Item: {
                     primary: {
@@ -1205,7 +1199,7 @@ describe("requestBuilder", () => {
 
         it("adds three conditions to put input", () => {
             const input = buildPutInput(defaultTableSchema, {primary: "hick", eyes: 2, teeth: 12, ears: 2});
-            const conditionalInput = addCondition(
+            addCondition(
                 defaultTableSchema,
                 input,
                 {attribute: "eyes", operator: "<", values: [3]},
@@ -1213,8 +1207,7 @@ describe("requestBuilder", () => {
                 {attribute: "ears", operator: "=", values: [2]}
             );
 
-            chai.assert.notEqual(input, conditionalInput);
-            chai.assert.deepEqual(conditionalInput, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 Item: {
                     primary: {
@@ -1247,23 +1240,23 @@ describe("requestBuilder", () => {
 
         it("adds three conditions to put input, one at a time", () => {
             const input = buildPutInput(defaultTableSchema, {primary: "hick", eyes: 2, teeth: 12, ears: 2});
-            const conditionalInput1 = addCondition(
+            addCondition(
                 defaultTableSchema,
                 input,
                 {attribute: "eyes", operator: "<", values: [3]}
             );
-            const conditionalInput2 = addCondition(
+            addCondition(
                 defaultTableSchema,
-                conditionalInput1,
+                input,
                 {attribute: "teeth", operator: ">", values: [4]}
             );
-            const conditionalInput3 = addCondition(
+            addCondition(
                 defaultTableSchema,
-                conditionalInput2,
+                input,
                 {attribute: "ears", operator: "=", values: [2]}
             );
 
-            chai.assert.deepEqual(conditionalInput3, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 Item: {
                     primary: {
@@ -1299,14 +1292,13 @@ describe("requestBuilder", () => {
                 primary: "foo",
                 alphabet: "αβγδε"
             });
-            const conditionalInput = addCondition(defaultTableSchema, input, {
+            addCondition(defaultTableSchema, input, {
                 attribute: "alphabet",
                 operator: "begins_with",
                 values: ["abc"]
             });
 
-            chai.assert.notEqual(input, conditionalInput);
-            chai.assert.deepEqual(conditionalInput, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 Item: {
                     primary: {
@@ -1330,7 +1322,7 @@ describe("requestBuilder", () => {
 
         it("adds a condition to put input with reserved words", () => {
             const input = buildPutInput(defaultTableSchema, {primary: "foo"});
-            const conditionalInput = addCondition(
+            addCondition(
                 defaultTableSchema,
                 input,
                 {attribute: "ASCII", operator: "begins_with", values: ["abc"]},
@@ -1338,8 +1330,7 @@ describe("requestBuilder", () => {
                 {attribute: "a.b\\.c", operator: "<", values: [0]},
             );
 
-            chai.assert.notEqual(input, conditionalInput);
-            chai.assert.deepEqual(conditionalInput, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 Item: {
                     primary: {
@@ -1378,14 +1369,13 @@ describe("requestBuilder", () => {
 
         it("adds a filter to query input", () => {
             const input = buildQueryInput(defaultTableSchema, "foo");
-            const filteredInput = addFilter(defaultTableSchema, input, {
+            addFilter(defaultTableSchema, input, {
                 attribute: "nonprimary",
                 operator: "=",
                 values: [11]
             });
 
-            chai.assert.notEqual(input, filteredInput);
-            chai.assert.deepEqual(filteredInput, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 ExpressionAttributeNames: {
                     "#P": "primary"
@@ -1405,7 +1395,7 @@ describe("requestBuilder", () => {
 
         it("adds three filters to query input", () => {
             const input = buildQueryInput(defaultTableSchema, "foo");
-            const filteredInput = addFilter(
+            addFilter(
                 defaultTableSchema,
                 input,
                 {attribute: "eyes", operator: "<", values: [3]},
@@ -1413,8 +1403,7 @@ describe("requestBuilder", () => {
                 {attribute: "ears", operator: "=", values: [2]}
             );
 
-            chai.assert.notEqual(input, filteredInput);
-            chai.assert.deepEqual(filteredInput, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 ExpressionAttributeNames: {
                     "#P": "primary"
@@ -1440,24 +1429,23 @@ describe("requestBuilder", () => {
 
         it("adds three filters to query input, one at a time", () => {
             const input = buildQueryInput(defaultTableSchema, "foo");
-            const filteredInput1 = addFilter(
+            addFilter(
                 defaultTableSchema,
                 input,
                 {attribute: "eyes", operator: "<", values: [3]}
             );
-            const filteredInput2 = addFilter(
+            addFilter(
                 defaultTableSchema,
-                filteredInput1,
+                input,
                 {attribute: "teeth", operator: ">", values: [4]}
             );
-            const filteredInput3 = addFilter(
+            addFilter(
                 defaultTableSchema,
-                filteredInput2,
+                input,
                 {attribute: "ears", operator: "=", values: [2]}
             );
 
-            chai.assert.notEqual(input, filteredInput3);
-            chai.assert.deepEqual(filteredInput3, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 ExpressionAttributeNames: {
                     "#P": "primary"
@@ -1483,7 +1471,7 @@ describe("requestBuilder", () => {
 
         it("adds a filter to query input with reserved words", () => {
             const input = buildQueryInput(defaultTableSchema, "foo");
-            const filteredInput = addFilter(
+            addFilter(
                 defaultTableSchema,
                 input,
                 {attribute: "ASCII", operator: "begins_with", values: ["abc"]},
@@ -1491,8 +1479,7 @@ describe("requestBuilder", () => {
                 {attribute: "a.b\\.c", operator: "<", values: [0]},
             );
 
-            chai.assert.notEqual(input, filteredInput);
-            chai.assert.deepEqual(filteredInput, {
+            chai.assert.deepEqual(input, {
                 TableName: "table",
                 ExpressionAttributeNames: {
                     "#P": "primary",
