@@ -51,10 +51,13 @@ export class FluentRequestBuilder<TRequest, TResponse, TResult> {
 
 export class FluentTransactWriteItemsBuilder<T extends object> {
 
-    public readonly request: aws.DynamoDB.TransactWriteItemsInput;
     private response: aws.DynamoDB.TransactWriteItemsOutput;
 
-    constructor(public readonly tableSchema: TableSchema, public readonly client: aws.DynamoDB) {
+    constructor(
+        public readonly tableSchema: TableSchema,
+        public readonly client: aws.DynamoDB,
+        public readonly request: aws.DynamoDB.TransactWriteItemsInput = {TransactItems: []}
+    ) {
     }
 
     async execute(): Promise<aws.DynamoDB.TransactWriteItemsOutput> {
@@ -62,6 +65,10 @@ export class FluentTransactWriteItemsBuilder<T extends object> {
             this.response = await this.client.transactWriteItems(this.request).promise();
         }
         return this.response;
+    }
+
+    forTable<U extends object>(fluentDynameh: FluentDynameh<U>): FluentTransactWriteItemsBuilder<U> {
+        return new FluentTransactWriteItemsBuilder<U>(fluentDynameh instanceof FluentDynameh ? fluentDynameh.tableSchema : fluentDynameh, this.client, this.request);
     }
 
     putItem(item: T): FluentRequestBuilder<aws.DynamoDB.PutItemInput, void, {}> {
