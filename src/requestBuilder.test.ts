@@ -863,7 +863,7 @@ describe("requestBuilder", () => {
                 },
                 {
                     action: "put",
-                    attribute: "other",
+                    attribute: "zing",
                     value: 123
                 }
             );
@@ -894,7 +894,7 @@ describe("requestBuilder", () => {
                             Key: {
                                 primary: {S: "qux"}
                             },
-                            UpdateExpression: "SET other = :a",
+                            UpdateExpression: "SET zing = :a",
                             ExpressionAttributeValues: {
                                 ":a": {N: "123"}
                             }
@@ -1182,6 +1182,24 @@ describe("requestBuilder", () => {
         it("adds a condition to put input", () => {
             const input = buildPutInput(defaultTableSchema, {primary: "foo"});
             addCondition(defaultTableSchema, input, {
+                attribute: "attributetoset",
+                operator: "attribute_not_exists"
+            });
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                Item: {
+                    primary: {
+                        S: "foo"
+                    }
+                },
+                ConditionExpression: "attribute_not_exists(attributetoset)"
+            });
+        });
+
+        it("adds a condition with a reserved word key to put input", () => {
+            const input = buildPutInput(defaultTableSchema, {primary: "foo"});
+            addCondition(defaultTableSchema, input, {
                 attribute: "primary",
                 operator: "attribute_not_exists"
             });
@@ -1193,7 +1211,8 @@ describe("requestBuilder", () => {
                         S: "foo"
                     }
                 },
-                ConditionExpression: "attribute_not_exists(primary)"
+                ExpressionAttributeNames: {"#A": "primary"},
+                ConditionExpression: "attribute_not_exists(#A)"
             });
         });
 

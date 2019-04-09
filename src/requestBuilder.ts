@@ -560,7 +560,7 @@ export function buildBatchGetInput(tableSchema: TableSchema, keyValues: DynamoKe
  */
 export function buildTransactWriteItemsInput(...input: (aws.DynamoDB.PutItemInput | aws.DynamoDB.DeleteItemInput | aws.DynamoDB.UpdateItemInput)[]): aws.DynamoDB.TransactWriteItemsInput {
     const request: aws.DynamoDB.TransactWriteItemsInput = {TransactItems: []};
-    addTransactWriteItemsInput(request, ...input);
+    addTransactWriteItems(request, ...input);
     return request;
 }
 
@@ -569,7 +569,7 @@ export function buildTransactWriteItemsInput(...input: (aws.DynamoDB.PutItemInpu
  * @param request An existing TransactWriteItemsInput object.
  * @param input Any combination of inputs into `putItem`, `deleteItem` and `updateItem`.
  */
-export function addTransactWriteItemsInput(request: aws.DynamoDB.TransactWriteItemsInput, ...input: (aws.DynamoDB.PutItemInput | aws.DynamoDB.DeleteItemInput | aws.DynamoDB.UpdateItemInput)[]): void {
+export function addTransactWriteItems(request: aws.DynamoDB.TransactWriteItemsInput, ...input: (aws.DynamoDB.PutItemInput | aws.DynamoDB.DeleteItemInput | aws.DynamoDB.UpdateItemInput)[]): void {
     const newItems: aws.DynamoDB.TransactWriteItemList = input.map(i => {
         if ((i as aws.DynamoDB.PutItemInput).Item) {
             return {
@@ -944,7 +944,7 @@ function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttribu
 
     return attributeParts
         .map(attributePart => {
-            if (/^[a-zA-Z][^\s#:.]*$/.test(attributePart) && dynamoDbReservedWords.indexOf(attributePart) === -1) {
+            if (/^[a-zA-Z][^\s#:.]*$/.test(attributePart) && dynamoDbReservedWords.indexOf(attributePart.toUpperCase()) === -1) {
                 // This name is clean for use as is.
                 return attributePart;
             }
