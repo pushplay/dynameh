@@ -3,15 +3,16 @@ import * as concurrentHelper from "./concurrentHelper";
 import * as requestBuilder from "./requestBuilder";
 import * as requestUnwrapper from "./requestUnwrapper";
 import * as responseUnwrapper from "./responseUnwrapper";
+import * as validation from "./validation";
 import {TableSchema} from "./TableSchema";
 import {ScopedDynameh} from "./ScopedDynameh";
-import {DynamoKey} from "./validation";
 
 export * from "./Condition";
+export * from "./ScopedDynameh";
 export * from "./TableSchema";
 export * from "./UpdateExpressionAction";
 
-export {batchHelper, concurrentHelper, requestBuilder, requestUnwrapper, responseUnwrapper};
+export {batchHelper, concurrentHelper, requestBuilder, requestUnwrapper, responseUnwrapper, validation};
 
 /**
  * Create an instance of Dynameh scoped to the given TableSchema.  All calls that require
@@ -27,7 +28,7 @@ export function scope(tableSchema: TableSchema): ScopedDynameh {
             buildUpdateInputFromActions: (itemToUpdate, ...updateActions) => requestBuilder.buildUpdateInputFromActions(tableSchema, itemToUpdate, ...updateActions),
             buildDeleteInput: (itemToDelete) => requestBuilder.buildDeleteInput(tableSchema, itemToDelete),
             buildDeleteTableInput: () => requestBuilder.buildDeleteTableInput(tableSchema),
-            buildQueryInput: (partitionKeyValue: DynamoKey, sortKeyOp?, ...sortKeyValues: DynamoKey[]) => requestBuilder.buildQueryInput(tableSchema, partitionKeyValue, sortKeyOp, ...sortKeyValues),
+            buildQueryInput: (partitionKeyValue: validation.DynamoKey, sortKeyOp?, ...sortKeyValues: validation.DynamoKey[]) => requestBuilder.buildQueryInput(tableSchema, partitionKeyValue, sortKeyOp, ...sortKeyValues),
             buildScanInput: (...filters) => requestBuilder.buildScanInput(tableSchema, ...filters),
             buildBatchPutInput: (items) => requestBuilder.buildBatchPutInput(tableSchema, items),
             buildBatchDeleteInput: (keyValues) => requestBuilder.buildBatchDeleteInput(tableSchema, keyValues),

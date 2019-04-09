@@ -944,7 +944,7 @@ function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttribu
 
     return attributeParts
         .map(attributePart => {
-            if (/^[a-zA-Z][^\s#:.]*$/.test(attributePart) && dynamoDbReservedWords.indexOf(attributePart) === -1) {
+            if (/^[a-zA-Z][^\s#:.]*$/.test(attributePart) && dynamoDbReservedWords.indexOf(attributePart.toUpperCase()) === -1) {
                 // This name is clean for use as is.
                 return attributePart;
             }
