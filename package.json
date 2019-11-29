@@ -33,19 +33,19 @@
   "homepage": "https://github.com/Giftbit/dynameh#readme",
   "dependencies": {},
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.6",
-    "@types/node": "^11.12.1",
-    "aws-sdk": "^2.431.0",
+    "@types/chai": "^4.2.5",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "12.x",
+    "aws-sdk": "^2.580.0",
     "chai": "^4.2.0",
-    "gh-pages": "^2.0.1",
-    "mocha": "^6.0.2",
-    "rimraf": "^2.6.3",
+    "gh-pages": "^2.1.1",
+    "mocha": "^6.2.2",
+    "rimraf": "^3.0.0",
     "touch": "^3.1.0",
-    "ts-node": "^8.0.3",
-    "tslint": "^5.14.0",
-    "typedoc": "^0.14.2",
-    "typescript": "^3.3.4000"
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1",
+    "typedoc": "^0.15.3",
+    "typescript": "^3.7.2"
   },
   "peerDependencies": {
     "aws-sdk": "^2.431.0"
