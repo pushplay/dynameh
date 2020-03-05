@@ -6,33 +6,33 @@ import * as aws from "aws-sdk";
  * @returns The deserialized value.
  */
 export function unwrapResponseItem(item: aws.DynamoDB.AttributeValue): any {
-    if (item.hasOwnProperty("B")) {
+    if (Object.prototype.hasOwnProperty.call(item, "B")) {
         if (typeof item.B === "string") {
             return Buffer.from(item.B as string, "base64");
         }
         return item.B;
-    } else if (item.hasOwnProperty("BS")) {
+    } else if (Object.prototype.hasOwnProperty.call(item, "BS")) {
         return new Set(item.BS.map(b => {
             if (typeof b === "string") {
                 return Buffer.from(b as string, "base64");
             }
             return b;
         }));
-    } else if (item.hasOwnProperty("BOOL")) {
+    } else if (Object.prototype.hasOwnProperty.call(item, "BOOL")) {
         return item.BOOL;
-    } else if (item.hasOwnProperty("L")) {
+    } else if (Object.prototype.hasOwnProperty.call(item, "L")) {
         return item.L.map(i => unwrapResponseItem(i));
-    } else if (item.hasOwnProperty("N")) {
+    } else if (Object.prototype.hasOwnProperty.call(item, "N")) {
         return parseFloat(item.N);
-    } else if (item.hasOwnProperty("NS")) {
+    } else if (Object.prototype.hasOwnProperty.call(item, "NS")) {
         return new Set(item.NS.map(n => parseFloat(n)));
-    } else if (item.hasOwnProperty("NULL")) {
+    } else if (Object.prototype.hasOwnProperty.call(item, "NULL")) {
         return null;
-    } else if (item.hasOwnProperty("S")) {
+    } else if (Object.prototype.hasOwnProperty.call(item, "S")) {
         return item.S;
-    } else if (item.hasOwnProperty("SS")) {
+    } else if (Object.prototype.hasOwnProperty.call(item, "SS")) {
         return new Set(item.SS);
-    } else if (item.hasOwnProperty("M")) {
+    } else if (Object.prototype.hasOwnProperty.call(item, "M")) {
         const resp: any = {};
         Object.keys(item.M).forEach(key => resp[key] = unwrapResponseItem(item.M[key]));
         return resp;

@@ -143,13 +143,13 @@ export function checkSchemaItemAgreement(tableSchema: TableSchema, item: object,
     if (typeof item !== "object") {
         throw new Error(`${paramName} must be an object.`);
     }
-    if (!item.hasOwnProperty(tableSchema.partitionKeyField)) {
+    if (!Object.prototype.hasOwnProperty.call(item, tableSchema.partitionKeyField)) {
         throw new Error(`TableSchema defines a partitionKeyField '${tableSchema.partitionKeyField}' which is not on ${paramName}.`);
     }
     if (typeof item[tableSchema.partitionKeyField] !== tableSchema.partitionKeyType) {
         throw new Error(`TableSchema defines partitionKeyType '${tableSchema.partitionKeyType}' which does not match ${paramName}'s '${typeof item[tableSchema.partitionKeyField]}'.`);
     }
-    if (tableSchema.sortKeyField && !item.hasOwnProperty(tableSchema.sortKeyField)) {
+    if (tableSchema.sortKeyField && !Object.prototype.hasOwnProperty.call(item, tableSchema.sortKeyField)) {
         throw new Error(`TableSchema defines a sortKeyField '${tableSchema.sortKeyField}' which is not on ${paramName}.`);
     }
     if (tableSchema.sortKeyField && typeof item[tableSchema.sortKeyField] !== tableSchema.sortKeyType) {

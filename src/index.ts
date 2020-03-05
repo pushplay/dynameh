@@ -1,8 +1,10 @@
 import * as batchHelper from "./batchHelper";
 import * as concurrentHelper from "./concurrentHelper";
+import * as queryHelper from "./queryHelper";
 import * as requestBuilder from "./requestBuilder";
 import * as requestUnwrapper from "./requestUnwrapper";
 import * as responseUnwrapper from "./responseUnwrapper";
+import * as scanHelper from "./scanHelper";
 import * as validation from "./validation";
 import {TableSchema} from "./TableSchema";
 import {ScopedDynameh} from "./ScopedDynameh";
@@ -12,7 +14,7 @@ export * from "./ScopedDynameh";
 export * from "./TableSchema";
 export * from "./UpdateExpressionAction";
 
-export {batchHelper, concurrentHelper, requestBuilder, requestUnwrapper, responseUnwrapper, validation};
+export {batchHelper, concurrentHelper, queryHelper, requestBuilder, requestUnwrapper, responseUnwrapper, validation};
 
 /**
  * Create an instance of Dynameh scoped to the given TableSchema.  All calls that require
@@ -21,6 +23,9 @@ export {batchHelper, concurrentHelper, requestBuilder, requestUnwrapper, respons
  */
 export function scope(tableSchema: TableSchema): ScopedDynameh {
     return {
+        batchHelper: batchHelper,
+        concurrentHelper: concurrentHelper,
+        queryHelper: queryHelper,
         requestBuilder: {
             buildRequestPutItem: (item) => requestBuilder.buildRequestPutItem(tableSchema, item),
             buildGetInput: (partitionKeyValue, sortKeyValue?) => requestBuilder.buildGetInput(tableSchema, partitionKeyValue, sortKeyValue),
@@ -42,7 +47,6 @@ export function scope(tableSchema: TableSchema): ScopedDynameh {
             addFilter: (filterableRequest, ...filters) => requestBuilder.addFilter(tableSchema, filterableRequest, ...filters)
         },
         responseUnwrapper: responseUnwrapper,
-        batchHelper: batchHelper,
-        concurrentHelper: concurrentHelper
+        scanHelper: scanHelper
     };
 }
