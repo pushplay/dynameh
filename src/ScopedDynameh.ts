@@ -1,7 +1,9 @@
 import * as aws from "aws-sdk";
 import * as batchHelper from "./batchHelper";
 import * as concurrentHelper from "./concurrentHelper";
+import * as queryHelper from "./queryHelper";
 import * as responseUnwrapper from "./responseUnwrapper";
+import * as scanHelper from "./scanHelper";
 import {DynamoKey, DynamoKeyPair, DynamoQueryConditionOperator} from "./validation";
 import {TableSchema} from "./TableSchema";
 import {UpdateExpressionAction} from "./UpdateExpressionAction";
@@ -16,6 +18,8 @@ export interface ScopedDynameh {
     batchHelper: typeof batchHelper;
 
     concurrentHelper: typeof concurrentHelper;
+
+    queryHelper: typeof queryHelper;
 
     requestBuilder: {
         buildRequestPutItem: (item: object) => aws.DynamoDB.AttributeValue;
@@ -36,8 +40,9 @@ export interface ScopedDynameh {
         addProjection: <T extends { ProjectionExpression?: aws.DynamoDB.ProjectionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap }>(projectableRequest: T, attributes: string[]) => void;
         addCondition: <T extends { ConditionExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(conditionableRequest: T, ...conditions: Condition[]) => void;
         addFilter: <T extends { FilterExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(filterableRequest: T, ...filters: Condition[]) => void;
-
     };
 
     responseUnwrapper: typeof responseUnwrapper;
+
+    scanHelper: typeof scanHelper;
 }
