@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> Dynameh</h1>
+			<h1>Dynameh</h1>
 		</div>
 	</div>
 </header>
@@ -62,7 +62,9 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="dynameh">Dynameh</h1>
+				<a href="#dynameh" id="dynameh" style="color: inherit; text-decoration: none;">
+					<h1>Dynameh</h1>
+				</a>
 				<p>DynamoDB on Node more easier</p>
 				<p>Dynameh makes the official <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html">DynamoDB JavaScript API</a> easier to use.  It makes it easier to:</p>
 				<ul>
@@ -75,15 +77,21 @@
 					<li><a href="https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield">implement optimistic locking</a></li>
 					<li><a href="https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#dateserializationfunction">configure Date serialization</a></li>
 				</ul>
-				<h2 id="installation">Installation</h2>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
 				<p>Dynameh is your typical NPM package.</p>
 				<pre><code class="language-bash">npm install --save dynameh</code></pre>
-				<h2 id="usage">Usage</h2>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
 				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> dynameh <span class="hljs-keyword">from</span> <span class="hljs-string">"dynameh"</span>;
 <span class="hljs-comment">// or</span>
 <span class="hljs-keyword">const</span> dynameh = <span class="hljs-built_in">require</span>(<span class="hljs-string">"dynameh"</span>);</code></pre>
 				<p>See the <a href="https://giftbit.github.io/dynameh/">documentation</a> for details on each module and its methods.</p>
-				<h3 id="a-simple-example">A Simple Example</h3>
+				<a href="#a-simple-example" id="a-simple-example" style="color: inherit; text-decoration: none;">
+					<h3>A Simple Example</h3>
+				</a>
 				<p>This example is written using async/await which is available in TypeScript and ES2017.</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> aws <span class="hljs-keyword">from</span> <span class="hljs-string">"aws-sdk"</span>;
 <span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> dynameh <span class="hljs-keyword">from</span> <span class="hljs-string">"dynameh"</span>;
@@ -123,7 +131,9 @@
 }
 
 updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span class="hljs-number">73.4</span>);</code></pre>
-				<h3 id="tableschema">TableSchema</h3>
+				<a href="#tableschema" id="tableschema" style="color: inherit; text-decoration: none;">
+					<h3>TableSchema</h3>
+				</a>
 				<p>The key to easy building of requests in Dynameh is the <a href="https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html">TableSchema</a>.  This simple object defines all the extra information Dynameh needs to build requests.</p>
 				<p>For a table called <code>MyTable</code> with a partition key <code>id</code> that is a number...</p>
 				<pre><code class="language-json">{
@@ -140,7 +150,9 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
   <span class="hljs-attr">"sortKeyType"</span>: <span class="hljs-string">"number"</span>,
   <span class="hljs-attr">"versionKeyField"</span>: <span class="hljs-string">"version"</span>
 }</code></pre>
-				<h3 id="optimistic-locking">Optimistic Locking</h3>
+				<a href="#optimistic-locking" id="optimistic-locking" style="color: inherit; text-decoration: none;">
+					<h3>Optimistic Locking</h3>
+				</a>
 				<p>Optimistic locking is a strategy for preventing changes from clobbering each other.  For example two processes read from the database, make unrelated changes, and then both write to the database but the second write overwrites the first (clobbers).</p>
 				<p>Enable optimistic locking by setting the <code>versionKeyField</code> on your TableSchema.  In the second TableSchema example that field is <code>version</code>.  The <code>versionKeyField</code> will be automatically incremented on the server side during a put request.  If the value for <code>versionKeyField</code> sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> aws <span class="hljs-keyword">from</span> <span class="hljs-string">"aws-sdk"</span>;
@@ -193,7 +205,9 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 }
 
 updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span class="hljs-number">73.4</span>);</code></pre>
-				<h3 id="conditions">Conditions</h3>
+				<a href="#conditions" id="conditions" style="color: inherit; text-decoration: none;">
+					<h3>Conditions</h3>
+				</a>
 				<p>Conditions can be added to a put or delete request to make the operation conditional.</p>
 				<p>One of the most useful conditions is that the item must not already exist (create but not update).  This is done by asserting <code>attribute_not_exists</code> on the primary key.  For example...</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> tableSchema = {
@@ -289,7 +303,9 @@ addNewBoat({
 							<td>0</td>
 						</tr>
 				</tbody></table>
-				<h3 id="projections">Projections</h3>
+				<a href="#projections" id="projections" style="color: inherit; text-decoration: none;">
+					<h3>Projections</h3>
+				</a>
 				<p>Projections can be added to a get, batch get or query request to control what attributes are returned.  This saves bandwidth on the request.</p>
 				<p>For example...</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> tableSchema = {
@@ -312,7 +328,9 @@ addNewBoat({
 }
 
 getTransactionDates(<span class="hljs-string">"BusinessFactory"</span>);</code></pre>
-				<h3 id="date-serialization">Date Serialization</h3>
+				<a href="#date-serialization" id="date-serialization" style="color: inherit; text-decoration: none;">
+					<h3>Date Serialization</h3>
+				</a>
 				<p>Date serialization can be configured by setting <code>dateSerializationFunction</code> on your <code>TableSchema</code>.  It&#39;s a function that takes in a <code>Date</code> and returns a <code>string</code> or <code>number</code>.  By default Dates are serialized as ISO-8601 strings.</p>
 				<p>For example...</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> tableSchema = {
@@ -330,40 +348,46 @@ getTransactionDates(<span class="hljs-string">"BusinessFactory"</span>);</code><
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_condition_.html">"<wbr>Condition"</a>
+						<a href="modules/_condition_.html">&quot;<wbr>Condition&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_scopeddynameh_.html">"<wbr>Scoped<wbr>Dynameh"</a>
+						<a href="modules/_scopeddynameh_.html">&quot;<wbr>Scoped<wbr>Dynameh&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_tableschema_.html">"<wbr>Table<wbr>Schema"</a>
+						<a href="modules/_tableschema_.html">&quot;<wbr>Table<wbr>Schema&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_updateexpressionaction_.html">"<wbr>Update<wbr>Expression<wbr>Action"</a>
+						<a href="modules/_updateexpressionaction_.html">&quot;<wbr>Update<wbr>Expression<wbr>Action&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_batchhelper_.html">"batch<wbr>Helper"</a>
+						<a href="modules/_batchhelper_.html">&quot;batch<wbr>Helper&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_concurrenthelper_.html">"concurrent<wbr>Helper"</a>
+						<a href="modules/_concurrenthelper_.html">&quot;concurrent<wbr>Helper&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_dynamodbreservedwords_.html">"dynamo<wbr>DbReserved<wbr>Words"</a>
+						<a href="modules/_dynamodbreservedwords_.html">&quot;dynamo<wbr>DbReserved<wbr>Words&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_index_.html">"index"</a>
+						<a href="modules/_index_.html">&quot;index&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_requestbuilder_.html">"request<wbr>Builder"</a>
+						<a href="modules/_queryhelper_.html">&quot;query<wbr>Helper&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_requestunwrapper_.html">"request<wbr>Unwrapper"</a>
+						<a href="modules/_requestbuilder_.html">&quot;request<wbr>Builder&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_responseunwrapper_.html">"response<wbr>Unwrapper"</a>
+						<a href="modules/_requestunwrapper_.html">&quot;request<wbr>Unwrapper&quot;</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_validation_.html">"validation"</a>
+						<a href="modules/_responseunwrapper_.html">&quot;response<wbr>Unwrapper&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_scanhelper_.html">&quot;scan<wbr>Helper&quot;</a>
+					</li>
+					<li class=" tsd-kind-external-module">
+						<a href="modules/_validation_.html">&quot;validation&quot;</a>
 					</li>
 				</ul>
 			</nav>
@@ -386,6 +410,7 @@ getTransactionDates(<span class="hljs-string">"BusinessFactory"</span>);</code><
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
@@ -434,7 +459,7 @@ getTransactionDates(<span class="hljs-string">"BusinessFactory"</span>);</code><
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>
