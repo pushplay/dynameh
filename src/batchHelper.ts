@@ -37,14 +37,14 @@ export function configure(options: {
     backoffInitial?: number;
     backoffMax?: number;
     backoffFactor?: number;
-}) {
-    if (options.hasOwnProperty("backoffInitial")) {
+}): void {
+    if (typeof options.backoffInitial === "number") {
         backoffInitial = options.backoffInitial;
     }
-    if (options.hasOwnProperty("backoffMax")) {
+    if (typeof options.backoffMax === "number") {
         backoffMax = options.backoffMax;
     }
-    if (options.hasOwnProperty("backoffFactor")) {
+    if (typeof options.backoffFactor === "number") {
         backoffFactor = options.backoffFactor;
     }
 }

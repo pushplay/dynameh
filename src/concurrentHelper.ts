@@ -21,6 +21,31 @@ export let backoffMax = 60000;
 export let backoffFactor = 2.0;
 
 /**
+ * Configure module settings for: concurrentFactor, backoffInitial, backoffMax, backoffFactor.
+ * See the module member for individual documentation.
+ * @param options an object with optional values for the settings
+ */
+export function configure(options: {
+    concurrentFactor?: number;
+    backoffInitial?: number;
+    backoffMax?: number;
+    backoffFactor?: number;
+}): void {
+    if (typeof options.concurrentFactor === "number") {
+        concurrentFactor = options.concurrentFactor;
+    }
+    if (typeof options.backoffInitial === "number") {
+        backoffInitial = options.backoffInitial;
+    }
+    if (typeof options.backoffMax === "number") {
+        backoffMax = options.backoffMax;
+    }
+    if (typeof options.backoffFactor === "number") {
+        backoffFactor = options.backoffFactor;
+    }
+}
+
+/**
  * Manages a number of concurrent dynamodb putItem requests.  Put requests
  * are more powerful than batchWrites but cannot be done in batch form.  Making
  * them concurrently is the next best thing.

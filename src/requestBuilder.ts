@@ -116,7 +116,7 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, item);
 
-    let request: aws.DynamoDB.PutItemInput = {
+    const request: aws.DynamoDB.PutItemInput = {
         Item: buildRequestPutItem(tableSchema, item).M,
         TableName: tableSchema.tableName
     };
@@ -146,7 +146,7 @@ export function buildPutInput(tableSchema: TableSchema, item: object): aws.Dynam
         }
     }
 
-    if (tableSchema.ttlField && item.hasOwnProperty(tableSchema.ttlField)) {
+    if (tableSchema.ttlField && Object.prototype.hasOwnProperty.call(item, tableSchema.ttlField)) {
         if (item === null || typeof item[tableSchema.ttlField] === "number") {
             // No-op because it was already serialized correctly.
             // I'm waffling on trying to re-interpret unix-epoch millisecond dates as seconds since
@@ -333,7 +333,7 @@ export function buildDeleteInput(tableSchema: TableSchema, itemToDelete: object)
     checkSchema(tableSchema);
     checkSchemaItemAgreement(tableSchema, itemToDelete);
 
-    let request: aws.DynamoDB.DeleteItemInput = {
+    const request: aws.DynamoDB.DeleteItemInput = {
         Key: getKey(tableSchema, itemToDelete[tableSchema.partitionKeyField], tableSchema.sortKeyField && itemToDelete[tableSchema.sortKeyField]),
         TableName: tableSchema.tableName
     };
@@ -908,6 +908,7 @@ function getKey(tableSchema: TableSchema, partitionKeyValue: DynamoKey, sortKeyV
 function getExpressionValueName(tableSchema: TableSchema, valueMap: aws.DynamoDB.ExpressionAttributeValueMap, value: any): string {
     let name: string;
     for (let i = 0; valueMap[name = `:${indexToAlias(i, false)}`]; i++) {
+        // no-op
     }
     valueMap[name] = buildRequestPutItem(tableSchema, value);
     return name;
@@ -956,6 +957,7 @@ function getExpressionAttributeName(attributeMap: aws.DynamoDB.ExpressionAttribu
 
             let newName: string = null;
             for (let i = 0; attributeMap[newName = `#${indexToAlias(i, true)}`]; i++) {
+                // no-op
             }
             attributeMap[newName] = attributePart;
             return newName;
