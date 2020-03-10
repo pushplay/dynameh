@@ -1375,6 +1375,51 @@ describe("requestBuilder", () => {
                 }
             });
         });
+
+        it("adds a condition with not=true", () => {
+            const input = buildPutInput(defaultTableSchema, {
+                primary: "Canada",
+                capital: "Ottawa",
+                population: 37797496
+            });
+            addCondition(
+                defaultTableSchema,
+                input,
+                {attribute: "primary", operator: "attribute_exists"}
+            );
+            addCondition(
+                defaultTableSchema,
+                input,
+                {attribute: "population", not: true, operator: "BETWEEN", values: [20000000, 50000000]}
+            );
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                Item: {
+                    primary: {
+                        S: "Canada"
+                    },
+                    capital: {
+                        S: "Ottawa"
+                    },
+                    population: {
+                        N: "37797496"
+                    }
+                },
+                ConditionExpression: "attribute_exists(#A) AND NOT population BETWEEN :a AND :b",
+                ExpressionAttributeNames: {
+                    "#A": "primary"
+                },
+                ExpressionAttributeValues: {
+                    ":a": {
+                        N: "20000000"
+                    },
+                    ":b": {
+                        N: "50000000"
+                    }
+                }
+            });
+        });
     });
 
     describe("addFilter", () => {
@@ -1522,6 +1567,35 @@ describe("requestBuilder", () => {
                 },
                 KeyConditionExpression: "#P = :p",
                 FilterExpression: "begins_with(#A, :a) AND #B > :b AND a.#C < :c"
+            });
+        });
+
+        it("adds a filter with not=true", () => {
+            const input = buildQueryInput(defaultTableSchema, "Canada");
+            addFilter(
+                defaultTableSchema,
+                input,
+                {attribute: "population", not: true, operator: "BETWEEN", values: [20000000, 50000000]}
+            );
+
+            chai.assert.deepEqual(input, {
+                TableName: "table",
+                ExpressionAttributeNames: {
+                    "#P": "primary"
+                },
+                ExpressionAttributeValues: {
+                    ":a": {
+                        N: "20000000"
+                    },
+                    ":b": {
+                        N: "50000000"
+                    },
+                    ":p": {
+                        S: "Canada"
+                    }
+                },
+                KeyConditionExpression: "#P = :p",
+                FilterExpression: "NOT population BETWEEN :a AND :b",
             });
         });
     });

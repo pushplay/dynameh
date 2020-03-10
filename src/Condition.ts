@@ -16,6 +16,11 @@ export interface Condition {
     attribute: string;
 
     /**
+     * True to invert the condition.
+     */
+    not?: boolean;
+
+    /**
      * A comparison operator or function name.  All DynamoDB operators and functions
      * are supported: `=,` `<>,` `<,` `<=,` `>,` `>=,` `BETWEEN`, `IN`, `attribute_exists`,
      * `attribute_not_exists`, `attribute_type`, `begins_with`, `contains`, `size`.

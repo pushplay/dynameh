@@ -32,10 +32,10 @@ export async function scanAll(dynamodb: aws.DynamoDB, req: aws.DynamoDB.ScanInpu
  * An example where scan is used to delete every object in a table.
  * (For large tables it's more efficient to delete and recreate the table.)
  * ```typescript
- * const scanInput = buildScanInput(objectSchema);
+ * const scanInput = buildScanInput(tableSchema);
  * await scanByCallback(dynamodbClient, scanInput, async items => {
  *     for (const item of items) {
- *         const delInput = buildDeleteInput(objectSchema, item);
+ *         const delInput = buildDeleteInput(tableSchema, item);
  *         await dynamodbClient.deleteItem(delInput).promise();
  *     }
  *     return true;

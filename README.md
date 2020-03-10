@@ -163,6 +163,29 @@ async function updateMotorcycleHorsePower(motorcycleId, bhp) {
 updateMotorcycleHorsePower("sv-650", 73.4);
 ```
 
+### Query and Scan
+
+Both query and scan are paginated operations.  They may return a limited set of results and you must make repeated calls to get all the results.  [queryHelper](https://giftbit.github.io/dynameh/modules/_queryhelper_.html) and [scanHelper](https://giftbit.github.io/dynameh/modules/_scanhelper_.html) provide utilities that go through the pagination for you.
+
+`queryAll()` and `scanAll()` will collect all results in a single array.  For small result sets this is easiest to work with but for large result sets this may require a lot of memory to store all results at once.
+
+`queryByCallback()` and `scanByCallback()` take a callback parameter that processes each page of results.  Processing one page at a time reduces the amount of memory required.
+
+This example function scans the table for items and deletes them all one at a time:
+
+```javascript
+async function deleteAllItems(dynamodbClient, tableSchema) {
+    const scanInput = buildScanInput(tableSchema);
+    await scanByCallback(dynamodbClient, scanInput, async items => {
+        for (const item of items) {
+            const delInput = buildDeleteInput(tableSchema, item);
+            await dynamodbClient.deleteItem(delInput).promise();
+        }
+        return true;    // return true to continue, false to stop pagination
+    });
+}
+```
+
 ### Conditions
 
 Conditions can be added to a put or delete request to make the operation conditional.
@@ -178,12 +201,10 @@ const tableSchema = {
 
 async function addNewBoat(boat) {
     const putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, boat);
-    const conditionalPutRequest = dynameh.requestBuilder.addCondition(tableSchema, putRequest, {attribute: "name", operator: "attribute_not_exists"});
-    // Note that addCondition() does not change the original object.
-    // putRequest != conditionalPutRequest
+    dynameh.requestBuilder.addCondition(tableSchema, putRequest, {attribute: "name", operator: "attribute_not_exists"});
     
     try {
-        await dynamodb.putItem(conditionalPutRequest).promise();
+        await dynamodb.putItem(putRequest).promise();
     } catch (err) {
         if (err.code === "ConditionalCheckFailedException") {
             throw new Error("This boat already exists!");
@@ -202,22 +223,23 @@ addNewBoat({
 
 The following conditions are available...
 
-| condition            | # of value parameters |
-|----------------------|-----------------------|
-| =                    | 1                     |
-| <>                   | 1                     |
-| <                    | 1                     |
-| <=                   | 1                     |
-| >                    | 1                     |
-| >=                   | 1                     |
-| BETWEEN              | 2                     |
-| IN                   | at least 1            |
-| attribute_exists     | 0                     |
-| attribute_not_exists | 0                     |
-| attribute_type       | 1                     |
-| begins_with          | 1                     |
-| contains             | 1                     |
-| size                 | 0                     |
+| condition            | # of value parameters | description |
+|----------------------|-----------------------|-------------|
+| =                    | 1                     | the attribute's value equals the supplied value |
+| <>                   | 1                     | the attribute's value does not equal the supplied value |
+| <                    | 1                     | the attribute's value is less than the supplied value |
+| <=                   | 1                     | the attribute's value is less than or equal to the supplied value |
+| >                    | 1                     | the attribute's value is greater than the supplied value |
+| >=                   | 1                     | the attribute's value is greater than or equal to the supplied value |
+| BETWEEN              | 2                     | the attribute's value is between the supplied values |
+| IN                   | at least 1            | the attribute's value is in the list of supplied values |
+| attribute_exists     | 0                     | the attribute has a value |
+| attribute_not_exists | 0                     | the attribute does not have a value |
+| attribute_type       | 1                     | the attribute's value is of the supplied type |
+| begins_with          | 1                     | the attribute's value begins with the supplied value |
+| contains             | 1                     | the attribute's value is a string that contains the supplied substring or a set that contains the supplied element  |
+
+See [the official documentation](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html) for more info.
 
 ### Projections
 

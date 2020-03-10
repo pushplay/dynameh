@@ -865,6 +865,9 @@ function addExpression<T extends { ExpressionAttributeNames?: aws.DynamoDB.Expre
         } else {
             exp = "";
         }
+        if (condition.not) {
+            exp += "NOT ";
+        }
         if (condition.operator === "BETWEEN") {
             // This isn't worth generalizing because it's not like other operators.
             exp += `${attributeName} BETWEEN ${valueNames[0]} AND ${valueNames[1]}`;
