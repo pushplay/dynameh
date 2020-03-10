@@ -91,7 +91,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/90b736b/src/scanHelper.ts#L12">scanHelper.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/bac1ed6/src/scanHelper.ts#L12">scanHelper.ts:12</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -129,7 +129,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/90b736b/src/scanHelper.ts#L50">scanHelper.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/bac1ed6/src/scanHelper.ts#L50">scanHelper.ts:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -141,10 +141,10 @@
 								<p>For large results this can use significantly <em>less</em> memory than <code>scanAll()</code>.</p>
 								<p>An example where scan is used to delete every object in a table.
 								(For large tables it&#39;s more efficient to delete and recreate the table.)</p>
-								<pre><code class="language-typescript"><span class="hljs-keyword">const</span> scanInput = buildScanInput(objectSchema);
+								<pre><code class="language-typescript"><span class="hljs-keyword">const</span> scanInput = buildScanInput(tableSchema);
 <span class="hljs-keyword">await</span> scanByCallback(dynamodbClient, scanInput, <span class="hljs-keyword">async</span> items =&gt; {
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item of items) {
-        <span class="hljs-keyword">const</span> delInput = buildDeleteInput(objectSchema, item);
+        <span class="hljs-keyword">const</span> delInput = buildDeleteInput(tableSchema, item);
         <span class="hljs-keyword">await</span> dynamodbClient.deleteItem(delInput).promise();
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
@@ -204,7 +204,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/90b736b/src/scanHelper.ts#L74">scanHelper.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/bac1ed6/src/scanHelper.ts#L74">scanHelper.ts:74</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

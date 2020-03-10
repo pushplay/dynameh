@@ -207,6 +207,23 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 }
 
 updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span class="hljs-number">73.4</span>);</code></pre>
+				<a href="#query-and-scan" id="query-and-scan" style="color: inherit; text-decoration: none;">
+					<h3>Query and Scan</h3>
+				</a>
+				<p>Both query and scan are paginated operations.  They may return a limited set of results and you must make repeated calls to get all the results.  <a href="https://giftbit.github.io/dynameh/modules/_queryhelper_.html">queryHelper</a> and <a href="https://giftbit.github.io/dynameh/modules/_scanhelper_.html">scanHelper</a> provide utilities that go through the pagination for you.</p>
+				<p><code>queryAll()</code> and <code>scanAll()</code> will collect all results in a single array.  For small result sets this is easiest to work with but for large result sets this may require a lot of memory to store all results at once.</p>
+				<p><code>queryByCallback()</code> and <code>scanByCallback()</code> take a callback parameter that processes each page of results.  Processing one page at a time reduces the amount of memory required.</p>
+				<p>This example function scans the table for items and deletes them all one at a time:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deleteAllItems</span>(<span class="hljs-params">dynamodbClient, tableSchema</span>) </span>{
+    <span class="hljs-keyword">const</span> scanInput = buildScanInput(tableSchema);
+    <span class="hljs-keyword">await</span> scanByCallback(dynamodbClient, scanInput, <span class="hljs-keyword">async</span> items =&gt; {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item <span class="hljs-keyword">of</span> items) {
+            <span class="hljs-keyword">const</span> delInput = buildDeleteInput(tableSchema, item);
+            <span class="hljs-keyword">await</span> dynamodbClient.deleteItem(delInput).promise();
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;    <span class="hljs-comment">// return true to continue, false to stop pagination</span>
+    });
+}</code></pre>
 				<a href="#conditions" id="conditions" style="color: inherit; text-decoration: none;">
 					<h3>Conditions</h3>
 				</a>
@@ -220,12 +237,10 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addNewBoat</span>(<span class="hljs-params">boat</span>) </span>{
     <span class="hljs-keyword">const</span> putRequest = dynameh.requestBuilder.buildPutInput(tableSchema, boat);
-    <span class="hljs-keyword">const</span> conditionalPutRequest = dynameh.requestBuilder.addCondition(tableSchema, putRequest, {<span class="hljs-attr">attribute</span>: <span class="hljs-string">"name"</span>, <span class="hljs-attr">operator</span>: <span class="hljs-string">"attribute_not_exists"</span>});
-    <span class="hljs-comment">// Note that addCondition() does not change the original object.</span>
-    <span class="hljs-comment">// putRequest != conditionalPutRequest</span>
+    dynameh.requestBuilder.addCondition(tableSchema, putRequest, {<span class="hljs-attr">attribute</span>: <span class="hljs-string">"name"</span>, <span class="hljs-attr">operator</span>: <span class="hljs-string">"attribute_not_exists"</span>});
 
     <span class="hljs-keyword">try</span> {
-        <span class="hljs-keyword">await</span> dynamodb.putItem(conditionalPutRequest).promise();
+        <span class="hljs-keyword">await</span> dynamodb.putItem(putRequest).promise();
     } <span class="hljs-keyword">catch</span> (err) {
         <span class="hljs-keyword">if</span> (err.code === <span class="hljs-string">"ConditionalCheckFailedException"</span>) {
             <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">"This boat already exists!"</span>);
@@ -246,65 +261,76 @@ addNewBoat({
 						<tr>
 							<th>condition</th>
 							<th># of value parameters</th>
+							<th>description</th>
 						</tr>
 					</thead>
 					<tbody><tr>
 							<td>=</td>
 							<td>1</td>
+							<td>the attribute&#39;s value equals the supplied value</td>
 						</tr>
 						<tr>
 							<td>&lt;&gt;</td>
 							<td>1</td>
+							<td>the attribute&#39;s value does not equal the supplied value</td>
 						</tr>
 						<tr>
 							<td>&lt;</td>
 							<td>1</td>
+							<td>the attribute&#39;s value is less than the supplied value</td>
 						</tr>
 						<tr>
 							<td>&lt;=</td>
 							<td>1</td>
+							<td>the attribute&#39;s value is less than or equal to the supplied value</td>
 						</tr>
 						<tr>
 							<td>&gt;</td>
 							<td>1</td>
+							<td>the attribute&#39;s value is greater than the supplied value</td>
 						</tr>
 						<tr>
 							<td>&gt;=</td>
 							<td>1</td>
+							<td>the attribute&#39;s value is greater than or equal to the supplied value</td>
 						</tr>
 						<tr>
 							<td>BETWEEN</td>
 							<td>2</td>
+							<td>the attribute&#39;s value is between the supplied values</td>
 						</tr>
 						<tr>
 							<td>IN</td>
 							<td>at least 1</td>
+							<td>the attribute&#39;s value is in the list of supplied values</td>
 						</tr>
 						<tr>
 							<td>attribute_exists</td>
 							<td>0</td>
+							<td>the attribute has a value</td>
 						</tr>
 						<tr>
 							<td>attribute_not_exists</td>
 							<td>0</td>
+							<td>the attribute does not have a value</td>
 						</tr>
 						<tr>
 							<td>attribute_type</td>
 							<td>1</td>
+							<td>the attribute&#39;s value is of the supplied type</td>
 						</tr>
 						<tr>
 							<td>begins_with</td>
 							<td>1</td>
+							<td>the attribute&#39;s value begins with the supplied value</td>
 						</tr>
 						<tr>
 							<td>contains</td>
 							<td>1</td>
-						</tr>
-						<tr>
-							<td>size</td>
-							<td>0</td>
+							<td>the attribute&#39;s value is a string that contains the supplied substring or a set that contains the supplied element</td>
 						</tr>
 				</tbody></table>
+				<p>See <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html">the official documentation</a> for more info.</p>
 				<a href="#projections" id="projections" style="color: inherit; text-decoration: none;">
 					<h3>Projections</h3>
 				</a>
