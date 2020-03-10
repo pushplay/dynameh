@@ -72,6 +72,7 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_scanhelper_.html#scanall" class="tsd-kind-icon">scan<wbr>All</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_scanhelper_.html#scanbycallback" class="tsd-kind-icon">scan<wbr>ByCallback</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-external-module"><a href="_scanhelper_.html#scancountall" class="tsd-kind-icon">scan<wbr>Count<wbr>All</a></li>
 							</ul>
 						</section>
@@ -90,7 +91,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/17c9223/src/scanHelper.ts#L9">scanHelper.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/30f7873/src/scanHelper.ts#L10">scanHelper.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -118,6 +119,80 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
+					<a name="scanbycallback" class="tsd-anchor"></a>
+					<h3>scan<wbr>ByCallback</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
+						<li class="tsd-signature tsd-kind-icon">scan<wbr>ByCallback<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DynamoDB</span>, req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ScanInput</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/30f7873/src/scanHelper.ts#L46">scanHelper.ts:46</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Paginate through a scan and pass each page of results to a callback.
+										Pagination can be aborted by returning <code>false</code> (or a Promise that
+									resolves to <code>false</code>) from the callback.</p>
+								</div>
+								<p>An example where scan is used to delete every object in a table.
+								(For large tables it&#39;s more efficient to delete and recreate the table.)</p>
+								<pre><code class="language-typescript"><span class="hljs-keyword">const</span> scanInput = buildScanInput(objectSchema);
+<span class="hljs-keyword">await</span> scanByCallback(dynamodbClient, scanInput, <span class="hljs-keyword">async</span> items =&gt; {
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item of items) {
+        <span class="hljs-keyword">const</span> delInput = buildDeleteInput(objectSchema, item);
+        <span class="hljs-keyword">await</span> dynamodbClient.deleteItem(delInput).promise();
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+});</code></pre>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>dynamodb: <span class="tsd-signature-type">DynamoDB</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The DynamoDB client instance to use.</p>
+									</div>
+								</li>
+								<li>
+									<h5>req: <span class="tsd-signature-type">ScanInput</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The scan input.</p>
+									</div>
+								</li>
+								<li>
+									<h5>callback: <span class="tsd-signature-symbol">(</span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A function that each page of results is passed to.  Return
+										<code>false</code> (or a Promise that resolves to <code>false</code>) to abort the scan.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>items: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module">
 					<a name="scancountall" class="tsd-anchor"></a>
 					<h3>scan<wbr>Count<wbr>All</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module">
@@ -127,7 +202,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/17c9223/src/scanHelper.ts#L28">scanHelper.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/30f7873/src/scanHelper.ts#L70">scanHelper.ts:70</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -211,6 +286,9 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_scanhelper_.html#scanall" class="tsd-kind-icon">scan<wbr>All</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module">
+						<a href="_scanhelper_.html#scanbycallback" class="tsd-kind-icon">scan<wbr>ByCallback</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module">
 						<a href="_scanhelper_.html#scancountall" class="tsd-kind-icon">scan<wbr>Count<wbr>All</a>
