@@ -14,7 +14,16 @@ export * from "./ScopedDynameh";
 export * from "./TableSchema";
 export * from "./UpdateExpressionAction";
 
-export {batchHelper, concurrentHelper, queryHelper, requestBuilder, requestUnwrapper, responseUnwrapper, validation};
+export {
+    batchHelper,
+    concurrentHelper,
+    queryHelper,
+    requestBuilder,
+    requestUnwrapper,
+    responseUnwrapper,
+    scanHelper,
+    validation
+};
 
 /**
  * Create an instance of Dynameh scoped to the given TableSchema.  All calls that require
