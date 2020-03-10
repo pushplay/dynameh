@@ -91,14 +91,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/bac1ed6/src/scanHelper.ts#L12">scanHelper.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b6222dc/src/scanHelper.ts#L12">scanHelper.ts:12</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Paginate through a scan to collect all results.</p>
 								</div>
-								<p>For large results this can use significantly <em>more</em> memory than <code>scanByCallback()</code>.</p>
+								<p>For large results this can use significantly <em>more</em> memory than <a href="_scanhelper_.html#scanbycallback">scanByCallback</a>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -129,7 +129,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/bac1ed6/src/scanHelper.ts#L50">scanHelper.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b6222dc/src/scanHelper.ts#L49">scanHelper.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -138,17 +138,16 @@
 										Pagination can be aborted by returning <code>false</code> (or a Promise that
 									resolves to <code>false</code>) from the callback.</p>
 								</div>
-								<p>For large results this can use significantly <em>less</em> memory than <code>scanAll()</code>.</p>
+								<p>For large results this can use significantly <em>less</em> memory than <a href="_scanhelper_.html#scanall">scanAll</a>.</p>
 								<p>An example where scan is used to delete every object in a table.
 								(For large tables it&#39;s more efficient to delete and recreate the table.)</p>
-								<pre><code class="language-typescript"><span class="hljs-keyword">const</span> scanInput = buildScanInput(tableSchema);
-<span class="hljs-keyword">await</span> scanByCallback(dynamodbClient, scanInput, <span class="hljs-keyword">async</span> items =&gt; {
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> item of items) {
-        <span class="hljs-keyword">const</span> delInput = buildDeleteInput(tableSchema, item);
-        <span class="hljs-keyword">await</span> dynamodbClient.deleteItem(delInput).promise();
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-});</code></pre>
+								<pre><code class="language-typescript"><span class="hljs-keyword">const</span> scanInput = dynemeh.requestBuilder.buildScanInput(tableSchema);
+<span class="hljs-keyword">await</span> dynemeh.scanHelper.scanByCallback(dynamodbClient, scanInput, <span class="hljs-keyword">async</span> items =&gt; {
+     <span class="hljs-keyword">const</span> keysToDelete = items.map(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> objectSchema.sortKeyField ? [item[tableSchema.partitionKeyField], item[tableSchema.sortKeyField]] : item[tableSchema.partitionKeyField]);
+     <span class="hljs-keyword">const</span> batchDeleteInput = dynemeh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
+     <span class="hljs-keyword">await</span> dynemeh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
+     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+ });</code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -204,12 +203,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/bac1ed6/src/scanHelper.ts#L74">scanHelper.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/b6222dc/src/scanHelper.ts#L73">scanHelper.ts:73</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Paginate through a scan to count all results.  This is more efficient than <code>scanAll()</code>
+									<p>Paginate through a scan to count all results.  This is more efficient than <a href="_scanhelper_.html#scanall">scanAll</a>
 									when only the count is needed.</p>
 								</div>
 							</div>
