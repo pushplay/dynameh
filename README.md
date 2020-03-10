@@ -235,7 +235,7 @@ The following conditions are available...
 | IN                   | at least 1            | the attribute's value is in the list of supplied values |
 | attribute_exists     | 0                     | the attribute has a value |
 | attribute_not_exists | 0                     | the attribute does not have a value |
-| attribute_type       | 1                     | the attribute's value is of the supplied type |
+| attribute_type       | 1                     | the attribute's value is of the supplied type (S, SS, N, NS, B, BS, BOOL, NULL, L, M) |
 | begins_with          | 1                     | the attribute's value begins with the supplied value |
 | contains             | 1                     | the attribute's value is a string that contains the supplied substring or a set that contains the supplied element  |
 
