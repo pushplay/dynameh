@@ -91,13 +91,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/30f7873/src/scanHelper.ts#L10">scanHelper.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/30f7873/src/scanHelper.ts#L12">scanHelper.ts:12</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Paginate through a scan to collect all results.</p>
 								</div>
+								<p>For large results this can use significantly <em>more</em> memory than <code>scanByCallback()</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -128,7 +129,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/30f7873/src/scanHelper.ts#L46">scanHelper.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/30f7873/src/scanHelper.ts#L50">scanHelper.ts:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -137,6 +138,7 @@
 										Pagination can be aborted by returning <code>false</code> (or a Promise that
 									resolves to <code>false</code>) from the callback.</p>
 								</div>
+								<p>For large results this can use significantly <em>less</em> memory than <code>scanAll()</code>.</p>
 								<p>An example where scan is used to delete every object in a table.
 								(For large tables it&#39;s more efficient to delete and recreate the table.)</p>
 								<pre><code class="language-typescript"><span class="hljs-keyword">const</span> scanInput = buildScanInput(objectSchema);
@@ -202,7 +204,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/30f7873/src/scanHelper.ts#L70">scanHelper.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/Giftbit/dynameh/blob/30f7873/src/scanHelper.ts#L74">scanHelper.ts:74</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
