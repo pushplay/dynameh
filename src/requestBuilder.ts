@@ -818,7 +818,7 @@ export function addProjection<T extends { ProjectionExpression?: aws.DynamoDB.Pr
 }
 
 /**
- * Adds a condition expression to a input object.  A condition expression
+ * Adds a condition expression to an input object.  A condition expression
  * defines under what conditions the item can be put/deleted.
  *
  * Any existing condition expression will be amended.
@@ -833,7 +833,7 @@ export function addCondition<T extends { ConditionExpression?: aws.DynamoDB.Cond
 }
 
 /**
- * Adds a filter expression to a input object.  A filter expression
+ * Adds a filter expression to an input object.  A filter expression
  * refines results returned from a scan or query.  The filter applies
  * after the search and you will be billed for the bandwidth of all results
  * before the filter is applied.
