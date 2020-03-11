@@ -215,15 +215,15 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 				<p><code>queryByCallback()</code> and <code>scanByCallback()</code> take a callback parameter that processes each page of results.  Processing one page at a time reduces the amount of memory required.</p>
 				<p>This example function scans the table for items and deletes them in batches:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deleteAllItems</span>(<span class="hljs-params">dynamodbClient, tableSchema</span>) </span>{
-    <span class="hljs-keyword">const</span> scanInput = dynemeh.requestBuilder.buildScanInput(tableSchema);
+    <span class="hljs-keyword">const</span> scanInput = dynameh.requestBuilder.buildScanInput(tableSchema);
     <span class="hljs-keyword">let</span> deleteCount = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">await</span> dynemeh.scanHelper.scanByCallback(dynamodbClient, scanInput, <span class="hljs-keyword">async</span> items =&gt; {
-        <span class="hljs-comment">// If there is a sort key then we must specify both the partition key and sort key.</span>
+    <span class="hljs-keyword">await</span> dynameh.scanHelper.scanByCallback(dynamodbClient, scanInput, <span class="hljs-keyword">async</span> items =&gt; {
         <span class="hljs-keyword">const</span> keysToDelete = objectSchema.sortKeyField ?
             items.map(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> [item[tableSchema.partitionKeyField], item[tableSchema.sortKeyField]]) :
             items.map(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item[tableSchema.partitionKeyField]);
-        <span class="hljs-keyword">const</span> batchDeleteInput = dynemeh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
-        <span class="hljs-keyword">await</span> dynemeh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
+
+        <span class="hljs-keyword">const</span> batchDeleteInput = dynameh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
+        <span class="hljs-keyword">await</span> dynameh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
         <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"deleted"</span>, (deleteCount += keysToDelete.length), <span class="hljs-string">"items"</span>);
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     });
