@@ -351,9 +351,7 @@ addNewBoat({
 };
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getVigentennialBoats</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">const</span> anniversaryYear = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
-    anniversaryYear.setFullYear(anniversaryYear.getFullYear() - <span class="hljs-number">20</span>);
-
+    <span class="hljs-keyword">const</span> anniversaryYear = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getFullYear() - <span class="hljs-number">20</span>;
     <span class="hljs-keyword">const</span> scanRequest = dynameh.requestBuilder.buildScanInput(tableSchema);
     dynameh.requestBuilder.addFilter(tableSchema, scanRequest, {<span class="hljs-attr">attribute</span>: <span class="hljs-string">"year"</span>, <span class="hljs-attr">operator</span>: <span class="hljs-string">"="</span>, <span class="hljs-attr">values</span>: [anniversaryYear]});
 
