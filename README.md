@@ -175,15 +175,15 @@ This example function scans the table for items and deletes them in batches:
 
 ```javascript
 async function deleteAllItems(dynamodbClient, tableSchema) {
-    const scanInput = dynemeh.requestBuilder.buildScanInput(tableSchema);
+    const scanInput = dynameh.requestBuilder.buildScanInput(tableSchema);
     let deleteCount = 0;
-    await dynemeh.scanHelper.scanByCallback(dynamodbClient, scanInput, async items => {
+    await dynameh.scanHelper.scanByCallback(dynamodbClient, scanInput, async items => {
         const keysToDelete = objectSchema.sortKeyField ?
             items.map(item => [item[tableSchema.partitionKeyField], item[tableSchema.sortKeyField]]) :
             items.map(item => item[tableSchema.partitionKeyField]);
 
-        const batchDeleteInput = dynemeh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
-        await dynemeh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
+        const batchDeleteInput = dynameh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
+        await dynameh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
         console.log("deleted", (deleteCount += keysToDelete.length), "items");
         return true;
     });
@@ -221,7 +221,8 @@ async function addNewBoat(boat) {
 addNewBoat({
     name: "Boaty McBoatface",
     type: "submarine",
-    autonomous: true
+    autonomous: true,
+    commissioned: 2016
 });
 ```
 
@@ -244,6 +245,32 @@ The following conditions are available...
 | contains             | 1                     | the attribute's value is a string that contains the supplied substring or a set that contains the supplied element  |
 
 See [the official documentation](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html) for more info.
+
+### Filters
+
+Filters can be added to query and scan operations to refine what objects are returned to you.  Query conditions operate on indexed fields (partition and sort) and filters operate on non-indexed fields.  Because filters are for non-indexed fields each object must be read from the database, consuming read capacity.  This makes them slower and more expensive than a well-chosen index.  A filter may still be a good idea to save bandwidth on an infrequent operation.
+
+The filter object and the operators available are the same as conditions above.
+
+This example scans for boats commissioned exactly 20 years ago for an anniversary announcement (an infrequent operation).
+
+```javascript
+const tableSchema = {
+    tableName: "Boats",
+    partitionKeyField: "name",
+    partitionKeyType: "string"
+};
+
+async function getAnniversaryBoats() {
+    const anniversaryYear = new Date();
+    anniversaryYear.setFullYear(anniversaryYear.getFullYear() - 20);
+    
+    const scanRequest = dynameh.requestBuilder.buildScanInput(tableSchema);
+    dynameh.requestBuilder.addFilter(tableSchema, scanRequest, {attribute: "year", operator: "=", values: [anniversaryYear]});
+    
+    return await dynameh.scanHelper.scanAll(dynamodb, scanRequest);
+}
+```
 
 ### Projections
 
@@ -276,7 +303,7 @@ getTransactionDates("BusinessFactory");
 
 ### Date Serialization
 
-Date serialization can be configured by setting `dateSerializationFunction` on your `TableSchema`.  It's a function that takes in a `Date` and returns a `string` or `number`.  By default Dates are serialized as ISO-8601 strings.
+Date serialization can be configured by setting `dateSerializationFunction` on your `TableSchema`.  It's a function that takes in a `Date` and returns a `string` or `number`.  By default Dates are serialized as ISO-8601 strings (the only correct date format).
 
 For example...
 

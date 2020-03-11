@@ -33,12 +33,12 @@ export async function scanAll(dynamodb: aws.DynamoDB, req: aws.DynamoDB.ScanInpu
  * (For large tables it's more efficient to delete and recreate the table.)
  * ```typescript
  * const scanInput = dynemeh.requestBuilder.buildScanInput(tableSchema);
- * await dynemeh.scanHelper.scanByCallback(dynamodbClient, scanInput, async items => {
+ * await dynameh.scanHelper.scanByCallback(dynamodbClient, scanInput, async items => {
  *      const keysToDelete = objectSchema.sortKeyField ?
  *          items.map(item => [item[tableSchema.partitionKeyField], item[tableSchema.sortKeyField]]) :
  *          items.map(item => item[tableSchema.partitionKeyField]);
- *      const batchDeleteInput = dynemeh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
- *      await dynemeh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
+ *      const batchDeleteInput = dynameh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
+ *      await dynameh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
  *      return true;
  *  });
  * ```
