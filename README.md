@@ -14,6 +14,8 @@ Dynameh makes the official [DynamoDB JavaScript API](http://docs.aws.amazon.com/
 - [implement optimistic locking](https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield)
 - [configure Date serialization](https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#dateserializationfunction)
 
+Click above for API-specifics or read on for a general overview.
+
 ## Installation
 
 Dynameh is your typical NPM package.
@@ -21,6 +23,8 @@ Dynameh is your typical NPM package.
 ```bash
 npm install --save dynameh
 ```
+
+`aws-sdk` is a peer dependency.  There are no other runtime dependencies.
 
 ## Usage
 
@@ -261,10 +265,8 @@ const tableSchema = {
     partitionKeyType: "string"
 };
 
-async function getAnniversaryBoats() {
-    const anniversaryYear = new Date();
-    anniversaryYear.setFullYear(anniversaryYear.getFullYear() - 20);
-    
+async function getVigentennialBoats() {
+    const anniversaryYear = new Date().getFullYear() - 20;
     const scanRequest = dynameh.requestBuilder.buildScanInput(tableSchema);
     dynameh.requestBuilder.addFilter(tableSchema, scanRequest, {attribute: "year", operator: "=", values: [anniversaryYear]});
     
