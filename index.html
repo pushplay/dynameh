@@ -257,7 +257,8 @@ updateMotorcycleHorsePower(<span class="hljs-string">"sv-650"</span>, <span clas
 addNewBoat({
     <span class="hljs-attr">name</span>: <span class="hljs-string">"Boaty McBoatface"</span>,
     <span class="hljs-attr">type</span>: <span class="hljs-string">"submarine"</span>,
-    <span class="hljs-attr">autonomous</span>: <span class="hljs-literal">true</span>
+    <span class="hljs-attr">autonomous</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">commissioned</span>: <span class="hljs-number">2016</span>
 });</code></pre>
 				<p>The following conditions are available...</p>
 				<table>
@@ -335,6 +336,27 @@ addNewBoat({
 						</tr>
 				</tbody></table>
 				<p>See <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html">the official documentation</a> for more info.</p>
+				<a href="#filters" id="filters" style="color: inherit; text-decoration: none;">
+					<h3>Filters</h3>
+				</a>
+				<p>Filters can be added to query and scan operations to refine what objects are returned to you.  Query conditions operate on indexed fields (partition and sort) and filters operate on non-indexed fields.  Because filters are for non-indexed fields each object must be read from the database, consuming read capacity.  This makes them slower and more expensive than a well-chosen index.  A filter may still be a good idea to save bandwidth on an infrequent operation.</p>
+				<p>The filter object and the operators available are the same as conditions above.</p>
+				<p>This example scans for boats commissioned exactly 20 years ago for an anniversary announcement (an infrequent operation).</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> tableSchema = {
+    <span class="hljs-attr">tableName</span>: <span class="hljs-string">"Boats"</span>,
+    <span class="hljs-attr">partitionKeyField</span>: <span class="hljs-string">"name"</span>,
+    <span class="hljs-attr">partitionKeyType</span>: <span class="hljs-string">"string"</span>
+};
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getAnniversaryBoats</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">const</span> anniversaryYear = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>();
+    anniversaryYear.setFullYear(anniversaryYear.getFullYear() - <span class="hljs-number">20</span>);
+
+    <span class="hljs-keyword">const</span> scanRequest = dynameh.requestBuilder.buildScanInput(tableSchema);
+    dynameh.requestBuilder.addFilter(tableSchema, scanRequest, {<span class="hljs-attr">attribute</span>: <span class="hljs-string">"year"</span>, <span class="hljs-attr">operator</span>: <span class="hljs-string">"="</span>, <span class="hljs-attr">values</span>: [anniversaryYear]});
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">await</span> dynameh.scanHelper.scanAll(dynamodb, scanRequest);
+}</code></pre>
 				<a href="#projections" id="projections" style="color: inherit; text-decoration: none;">
 					<h3>Projections</h3>
 				</a>
@@ -363,7 +385,7 @@ getTransactionDates(<span class="hljs-string">"BusinessFactory"</span>);</code><
 				<a href="#date-serialization" id="date-serialization" style="color: inherit; text-decoration: none;">
 					<h3>Date Serialization</h3>
 				</a>
-				<p>Date serialization can be configured by setting <code>dateSerializationFunction</code> on your <code>TableSchema</code>.  It&#39;s a function that takes in a <code>Date</code> and returns a <code>string</code> or <code>number</code>.  By default Dates are serialized as ISO-8601 strings.</p>
+				<p>Date serialization can be configured by setting <code>dateSerializationFunction</code> on your <code>TableSchema</code>.  It&#39;s a function that takes in a <code>Date</code> and returns a <code>string</code> or <code>number</code>.  By default Dates are serialized as ISO-8601 strings (the only correct date format).</p>
 				<p>For example...</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> tableSchema = {
     <span class="hljs-attr">tableName</span>: <span class="hljs-string">"MyTable"</span>,
