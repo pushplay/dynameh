@@ -4,7 +4,7 @@ import {unwrapQueryOutput} from "./responseUnwrapper";
 /**
  * Paginate through a query to collect all results.
  *
- * For large results this can use significantly *more* memory than `queryByCallback()`.
+ * For large results this can use significantly *more* memory than [[queryByCallback]].
  *
  * @param dynamodb The DynamoDB client instance to use.
  * @param req The query input.
@@ -27,7 +27,7 @@ export async function queryAll(dynamodb: aws.DynamoDB, req: aws.DynamoDB.QueryIn
  * Pagination can be aborted by returning `false` (or a Promise that
  * resolves to `false`) from the callback.
  *
- * For large results this can use significantly *less* memory than `queryAll()`.
+ * For large results this can use significantly *less* memory than [[queryAll]].
  *
  * @param dynamodb The DynamoDB client instance to use.
  * @param req The query input.
@@ -52,7 +52,7 @@ export async function queryByCallback(dynamodb: aws.DynamoDB, req: aws.DynamoDB.
 }
 
 /**
- * Paginate through a query to count all results.  This is more efficient than `queryAll()`
+ * Paginate through a query to count all results.  This is more efficient than [[queryAll]]
  * when only the count is needed.
  *
  * @param dynamodb The DynamoDB client instance to use.

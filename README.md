@@ -171,17 +171,21 @@ Both query and scan are paginated operations.  They may return a limited set of 
 
 `queryByCallback()` and `scanByCallback()` take a callback parameter that processes each page of results.  Processing one page at a time reduces the amount of memory required.
 
-This example function scans the table for items and deletes them all one at a time:
+This example function scans the table for items and deletes them in batches:
 
 ```javascript
 async function deleteAllItems(dynamodbClient, tableSchema) {
-    const scanInput = buildScanInput(tableSchema);
-    await scanByCallback(dynamodbClient, scanInput, async items => {
-        for (const item of items) {
-            const delInput = buildDeleteInput(tableSchema, item);
-            await dynamodbClient.deleteItem(delInput).promise();
-        }
-        return true;    // return true to continue, false to stop pagination
+    const scanInput = dynemeh.requestBuilder.buildScanInput(tableSchema);
+    let deleteCount = 0;
+    await dynemeh.scanHelper.scanByCallback(dynamodbClient, scanInput, async items => {
+        const keysToDelete = objectSchema.sortKeyField ?
+            items.map(item => [item[tableSchema.partitionKeyField], item[tableSchema.sortKeyField]]) :
+            items.map(item => item[tableSchema.partitionKeyField]);
+
+        const batchDeleteInput = dynemeh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
+        await dynemeh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
+        console.log("deleted", (deleteCount += keysToDelete.length), "items");
+        return true;
     });
 }
 ```

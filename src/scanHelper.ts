@@ -4,7 +4,7 @@ import {unwrapScanOutput} from "./responseUnwrapper";
 /**
  * Paginate through a scan to collect all results.
  *
- * For large results this can use significantly *more* memory than `scanByCallback()`.
+ * For large results this can use significantly *more* memory than [[scanByCallback]].
  *
  * @param dynamodb The DynamoDB client instance to use.
  * @param req The scan input.
@@ -27,19 +27,20 @@ export async function scanAll(dynamodb: aws.DynamoDB, req: aws.DynamoDB.ScanInpu
  * Pagination can be aborted by returning `false` (or a Promise that
  * resolves to `false`) from the callback.
  *
- * For large results this can use significantly *less* memory than `scanAll()`.
+ * For large results this can use significantly *less* memory than [[scanAll]].
  *
  * An example where scan is used to delete every object in a table.
  * (For large tables it's more efficient to delete and recreate the table.)
  * ```typescript
- * const scanInput = buildScanInput(tableSchema);
- * await scanByCallback(dynamodbClient, scanInput, async items => {
- *     for (const item of items) {
- *         const delInput = buildDeleteInput(tableSchema, item);
- *         await dynamodbClient.deleteItem(delInput).promise();
- *     }
- *     return true;
- * });
+ * const scanInput = dynemeh.requestBuilder.buildScanInput(tableSchema);
+ * await dynemeh.scanHelper.scanByCallback(dynamodbClient, scanInput, async items => {
+ *      const keysToDelete = objectSchema.sortKeyField ?
+ *          items.map(item => [item[tableSchema.partitionKeyField], item[tableSchema.sortKeyField]]) :
+ *          items.map(item => item[tableSchema.partitionKeyField]);
+ *      const batchDeleteInput = dynemeh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
+ *      await dynemeh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
+ *      return true;
+ *  });
  * ```
  *
  * @param dynamodb The DynamoDB client instance to use.
@@ -65,7 +66,7 @@ export async function scanByCallback(dynamodb: aws.DynamoDB, req: aws.DynamoDB.S
 }
 
 /**
- * Paginate through a scan to count all results.  This is more efficient than `scanAll()`
+ * Paginate through a scan to count all results.  This is more efficient than [[scanAll]]
  * when only the count is needed.
  *
  * @param dynamodb The DynamoDB client instance to use.
