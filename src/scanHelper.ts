@@ -73,7 +73,7 @@ export async function scanByCallback(dynamodb: aws.DynamoDB, req: aws.DynamoDB.S
  * @param req The scan input.
  */
 export async function scanCountAll(dynamodb: aws.DynamoDB, req: aws.DynamoDB.ScanInput): Promise<number> {
-    req.Select = "Count";
+    req.Select = "COUNT";
     let resp = await dynamodb.scan(req).promise();
     let count = resp.Count;
 
