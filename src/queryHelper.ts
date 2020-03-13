@@ -59,7 +59,7 @@ export async function queryByCallback(dynamodb: aws.DynamoDB, req: aws.DynamoDB.
  * @param req The query input.
  */
 export async function queryCountAll(dynamodb: aws.DynamoDB, req: aws.DynamoDB.QueryInput): Promise<number> {
-    req.Select = "Count";
+    req.Select = "COUNT";
     let resp = await dynamodb.query(req).promise();
     let count = resp.Count;
 
