@@ -24,14 +24,29 @@ describe("requestBuilder", () => {
             partitionKeyType: "string"
         };
 
+        it("serializes an empty string", () => {
+            const serialized = buildRequestPutItem(defaultTableSchema, "");
+            chai.assert.deepEqual(serialized, {S: ""});
+        });
+
         it("serializes a Buffer", () => {
             const serialized = buildRequestPutItem(defaultTableSchema, Buffer.from([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f, 0x72, 0x6c, 0x64]));
             chai.assert.deepEqual(serialized, {B: "SGVsbG8gV29ybGQ="});
         });
 
+        it("serializes an empty Buffer", () => {
+            const serialized = buildRequestPutItem(defaultTableSchema, Buffer.from([]));
+            chai.assert.deepEqual(serialized, {B: ""});
+        });
+
         it("serializes a Uint8Array", () => {
             const serialized = buildRequestPutItem(defaultTableSchema, new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f, 0x72, 0x6c, 0x64]));
             chai.assert.deepEqual(serialized, {B: "SGVsbG8gV29ybGQ="});
+        });
+
+        it("serializes an empty Uint8Array", () => {
+            const serialized = buildRequestPutItem(defaultTableSchema, new Uint8Array([]));
+            chai.assert.deepEqual(serialized, {B: ""});
         });
 
         it("serializes an array of numbers", () => {

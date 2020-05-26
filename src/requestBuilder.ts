@@ -51,7 +51,7 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
             } else if (item instanceof Set) {
                 const items = Array.from(item);
                 if (item.size === 0) {
-                    throw new Error("Empty Sets are not supported.");
+                    throw new Error("Empty Sets cannot be serialized.");
                 }
 
                 if (items.every(x => typeof x === "string")) {
@@ -67,7 +67,7 @@ export function buildRequestPutItem(tableSchema: TableSchema, item: any): aws.Dy
                     return {BS: items.map(b => Buffer.from(b).toString("base64"))};
                 }
 
-                throw new Error(`Set [${items.slice(0, 10).map(i => typeof i).join(",")}] cannot be serialized into a request object.`);
+                throw new Error(`Set [${items.slice(0, 10).map(i => typeof i).join(",")}] cannot be serialized to a request object.  All objects must be one of: string, number, Buffer or Uint8Array.`);
             } else if (Array.isArray(item)) {
                 return {L: item.map(i => buildRequestPutItem(tableSchema, i))};
             } else {
