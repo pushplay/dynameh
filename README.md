@@ -188,7 +188,6 @@ async function deleteAllItems(dynamodbClient, tableSchema) {
 
         const batchDeleteInput = dynameh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
         await dynameh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
-        console.log("deleted", (deleteCount += keysToDelete.length), "items");
         return true;
     });
 }
