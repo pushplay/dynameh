@@ -37,6 +37,8 @@ export interface ScopedDynameh {
         buildCreateTableInput: (additionalTableSchemas?: TableSchema[], readCapacity?: number, writeCapacity?: number) => aws.DynamoDB.CreateTableInput;
         buildDeleteTableInput: () => aws.DynamoDB.DeleteTableInput;
         buildUpdateTimeToLiveInput: () => aws.DynamoDB.UpdateTimeToLiveInput;
+        buildDescribeTableInput: () => aws.DynamoDB.DescribeTableInput;
+        buildDescribeTimeToLiveInput: () => aws.DynamoDB.DescribeTimeToLiveInput;
         addProjection: <T extends { ProjectionExpression?: aws.DynamoDB.ProjectionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap }>(projectableRequest: T, attributes: string[]) => void;
         addCondition: <T extends { ConditionExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(conditionableRequest: T, ...conditions: Condition[]) => void;
         addFilter: <T extends { FilterExpression?: aws.DynamoDB.ConditionExpression, ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(filterableRequest: T, ...filters: Condition[]) => void;

@@ -776,6 +776,22 @@ export function buildUpdateTimeToLiveInput(tableSchema: TableSchema): aws.Dynamo
     }
 }
 
+export function buildDescribeTableInput(tableSchema: TableSchema): aws.DynamoDB.DescribeTableInput {
+    checkSchema(tableSchema);
+
+    return {
+        TableName: tableSchema.tableName
+    };
+}
+
+export function buildDescribeTimeToLiveInput(tableSchema: TableSchema): aws.DynamoDB.DescribeTimeToLiveInput {
+    checkSchema(tableSchema);
+
+    return {
+        TableName: tableSchema.tableName
+    };
+}
+
 /**
  * Add a projection expression to an input object.  A projection expression
  * defines what attributes are returned in the result.  This can save

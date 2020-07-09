@@ -51,6 +51,8 @@ export function scope(tableSchema: TableSchema): ScopedDynameh {
             addTransactWriteItems: (request, ...input) => requestBuilder.addTransactWriteItems(request, ...input),
             buildCreateTableInput: (additionalTableSchemas: TableSchema[] = [], readCapacity: number = 1, writeCapacity: number = 1) => requestBuilder.buildCreateTableInput([tableSchema, ...additionalTableSchemas], readCapacity, writeCapacity),
             buildUpdateTimeToLiveInput: () => requestBuilder.buildUpdateTimeToLiveInput(tableSchema),
+            buildDescribeTableInput: () => requestBuilder.buildDescribeTableInput(tableSchema),
+            buildDescribeTimeToLiveInput: () => requestBuilder.buildDescribeTimeToLiveInput(tableSchema),
             addProjection: (projectableRequest, attributes) => requestBuilder.addProjection(tableSchema, projectableRequest, attributes),
             addCondition: (conditionableRequest, ...conditions) => requestBuilder.addCondition(tableSchema, conditionableRequest, ...conditions),
             addFilter: (filterableRequest, ...filters) => requestBuilder.addFilter(tableSchema, filterableRequest, ...filters)

@@ -6,6 +6,8 @@ import {
     buildCreateTableInput,
     buildDeleteInput,
     buildDeleteTableInput,
+    buildDescribeTableInput,
+    buildDescribeTimeToLiveInput,
     buildGetInput,
     buildPutInput,
     buildQueryInput,
@@ -1080,6 +1082,28 @@ describe("requestBuilder", () => {
                     partitionKeyType: "string"
                 });
             });
+        });
+    });
+
+    describe("buildDescribeTableInput", () => {
+        it("builds the describe table input", () => {
+            const req = buildDescribeTableInput({
+                tableName: "table",
+                partitionKeyField: "primary",
+                partitionKeyType: "string"
+            });
+            chai.assert.equal(req.TableName, "table");
+        });
+    });
+
+    describe("buildDescribeTimeToLiveInput", () => {
+        it("builds the describe time-to-live input", () => {
+            const req = buildDescribeTimeToLiveInput({
+                tableName: "table",
+                partitionKeyField: "primary",
+                partitionKeyType: "string"
+            });
+            chai.assert.equal(req.TableName, "table");
         });
     });
 
