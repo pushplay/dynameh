@@ -24,7 +24,7 @@ Make sure your code conforms to our code style:
 
 Push to your fork and [submit a pull request][pr].
 
-[pr]: https://github.com/giftbit/dynameh/compare/
+[pr]: https://github.com/pushplay/dynameh/compare/
 
 At this point you're waiting on us. We like to at least comment on pull requests
 within three business days (and, typically, one business day). We may suggest

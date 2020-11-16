@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/pushplay/dynameh/issues"
   },
-  "homepage": "https://github.com/pushplay/dynameh#readme",
+  "homepage": "https://pushplay.github.io/dynameh/",
   "dependencies": {},
   "devDependencies": {
     "@types/chai": "^4.2.11",

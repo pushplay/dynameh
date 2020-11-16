@@ -3,16 +3,16 @@ DynamoDB on Node more easier
 
 Dynameh makes the official [DynamoDB JavaScript API](http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html) easier to use.  It makes it easier to:
 
-- [build request objects](https://giftbit.github.io/dynameh/modules/_requestbuilder_.html)
-- [unwrap response objects](https://giftbit.github.io/dynameh/modules/_responseunwrapper_.html)
-- [build a projection expression](https://giftbit.github.io/dynameh/modules/_requestbuilder_.html#addprojection)
-- [build a condition expression](https://giftbit.github.io/dynameh/modules/_requestbuilder_.html#addcondition)
-- [run oversized batch requests](https://giftbit.github.io/dynameh/modules/_batchhelper_.html)
-- [paginate through queries](https://giftbit.github.io/dynameh/modules/_queryhelper_.html)
-- [paginate through scans](https://giftbit.github.io/dynameh/modules/_scanhelper_.html)
-- [run requests concurrently that can't be run in batch](https://giftbit.github.io/dynameh/modules/_concurrenthelper_.html)
-- [implement optimistic locking](https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield)
-- [configure Date serialization](https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#dateserializationfunction)
+- [build request objects](https://pushplay.github.io/dynameh/modules/_requestbuilder_.html)
+- [unwrap response objects](https://pushplay.github.io/dynameh/modules/_responseunwrapper_.html)
+- [build a projection expression](https://pushplay.github.io/dynameh/modules/_requestbuilder_.html#addprojection)
+- [build a condition expression](https://pushplay.github.io/dynameh/modules/_requestbuilder_.html#addcondition)
+- [run oversized batch requests](https://pushplay.github.io/dynameh/modules/_batchhelper_.html)
+- [paginate through queries](https://pushplay.github.io/dynameh/modules/_queryhelper_.html)
+- [paginate through scans](https://pushplay.github.io/dynameh/modules/_scanhelper_.html)
+- [run requests concurrently that can't be run in batch](https://pushplay.github.io/dynameh/modules/_concurrenthelper_.html)
+- [implement optimistic locking](https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield)
+- [configure Date serialization](https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html#dateserializationfunction)
 
 Click above for API-specifics or read on for a general overview.
 
@@ -34,7 +34,7 @@ import * as dynameh from "dynameh";
 const dynameh = require("dynameh");
 ```
 
-See the [documentation](https://giftbit.github.io/dynameh/) for details on each module and its methods.
+See the [documentation](https://pushplay.github.io/dynameh/) for details on each module and its methods.
 
 ### A Simple Example
 
@@ -83,7 +83,7 @@ updateMotorcycleHorsePower("sv-650", 73.4);
 
 ### TableSchema
 
-The key to easy building of requests in Dynameh is the [TableSchema](https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html).  This simple object defines all the extra information Dynameh needs to build requests.
+The key to easy building of requests in Dynameh is the [TableSchema](https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html).  This simple object defines all the extra information Dynameh needs to build requests.
 
 For a table called `MyTable` with a partition key `id` that is a number...
 
@@ -169,7 +169,7 @@ updateMotorcycleHorsePower("sv-650", 73.4);
 
 ### Query and Scan
 
-Both query and scan are paginated operations.  They may return a limited set of results and you must make repeated calls to get all the results.  [queryHelper](https://giftbit.github.io/dynameh/modules/_queryhelper_.html) and [scanHelper](https://giftbit.github.io/dynameh/modules/_scanhelper_.html) provide utilities that go through the pagination for you.
+Both query and scan are paginated operations.  They may return a limited set of results and you must make repeated calls to get all the results.  [queryHelper](https://pushplay.github.io/dynameh/modules/_queryhelper_.html) and [scanHelper](https://pushplay.github.io/dynameh/modules/_scanhelper_.html) provide utilities that go through the pagination for you.
 
 `queryAll()` and `scanAll()` will collect all results in a single array.  For small result sets this is easiest to work with but for large result sets this may require a lot of memory to store all results at once.
 
