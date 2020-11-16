@@ -68,16 +68,16 @@
 				<p>DynamoDB on Node more easier</p>
 				<p>Dynameh makes the official <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html">DynamoDB JavaScript API</a> easier to use.  It makes it easier to:</p>
 				<ul>
-					<li><a href="https://giftbit.github.io/dynameh/modules/_requestbuilder_.html">build request objects</a></li>
-					<li><a href="https://giftbit.github.io/dynameh/modules/_responseunwrapper_.html">unwrap response objects</a></li>
-					<li><a href="https://giftbit.github.io/dynameh/modules/_requestbuilder_.html#addprojection">build a projection expression</a></li>
-					<li><a href="https://giftbit.github.io/dynameh/modules/_requestbuilder_.html#addcondition">build a condition expression</a></li>
-					<li><a href="https://giftbit.github.io/dynameh/modules/_batchhelper_.html">run oversized batch requests</a></li>
-					<li><a href="https://giftbit.github.io/dynameh/modules/_queryhelper_.html">paginate through queries</a></li>
-					<li><a href="https://giftbit.github.io/dynameh/modules/_scanhelper_.html">paginate through scans</a></li>
-					<li><a href="https://giftbit.github.io/dynameh/modules/_concurrenthelper_.html">run requests concurrently that can&#39;t be run in batch</a></li>
-					<li><a href="https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield">implement optimistic locking</a></li>
-					<li><a href="https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html#dateserializationfunction">configure Date serialization</a></li>
+					<li><a href="https://pushplay.github.io/dynameh/modules/_requestbuilder_.html">build request objects</a></li>
+					<li><a href="https://pushplay.github.io/dynameh/modules/_responseunwrapper_.html">unwrap response objects</a></li>
+					<li><a href="https://pushplay.github.io/dynameh/modules/_requestbuilder_.html#addprojection">build a projection expression</a></li>
+					<li><a href="https://pushplay.github.io/dynameh/modules/_requestbuilder_.html#addcondition">build a condition expression</a></li>
+					<li><a href="https://pushplay.github.io/dynameh/modules/_batchhelper_.html">run oversized batch requests</a></li>
+					<li><a href="https://pushplay.github.io/dynameh/modules/_queryhelper_.html">paginate through queries</a></li>
+					<li><a href="https://pushplay.github.io/dynameh/modules/_scanhelper_.html">paginate through scans</a></li>
+					<li><a href="https://pushplay.github.io/dynameh/modules/_concurrenthelper_.html">run requests concurrently that can&#39;t be run in batch</a></li>
+					<li><a href="https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield">implement optimistic locking</a></li>
+					<li><a href="https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html#dateserializationfunction">configure Date serialization</a></li>
 				</ul>
 				<p>Click above for API-specifics or read on for a general overview.</p>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
@@ -92,7 +92,7 @@
 				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> dynameh <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;dynameh&quot;</span>;
 <span class="hljs-comment">// or</span>
 <span class="hljs-keyword">const</span> dynameh = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;dynameh&quot;</span>);</code></pre>
-				<p>See the <a href="https://giftbit.github.io/dynameh/">documentation</a> for details on each module and its methods.</p>
+				<p>See the <a href="https://pushplay.github.io/dynameh/">documentation</a> for details on each module and its methods.</p>
 				<a href="#a-simple-example" id="a-simple-example" style="color: inherit; text-decoration: none;">
 					<h3>A Simple Example</h3>
 				</a>
@@ -138,7 +138,7 @@ updateMotorcycleHorsePower(<span class="hljs-string">&quot;sv-650&quot;</span>, 
 				<a href="#tableschema" id="tableschema" style="color: inherit; text-decoration: none;">
 					<h3>TableSchema</h3>
 				</a>
-				<p>The key to easy building of requests in Dynameh is the <a href="https://giftbit.github.io/dynameh/interfaces/_tableschema_.tableschema.html">TableSchema</a>.  This simple object defines all the extra information Dynameh needs to build requests.</p>
+				<p>The key to easy building of requests in Dynameh is the <a href="https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html">TableSchema</a>.  This simple object defines all the extra information Dynameh needs to build requests.</p>
 				<p>For a table called <code>MyTable</code> with a partition key <code>id</code> that is a number...</p>
 				<pre><code class="language-json">{
   <span class="hljs-attr">&quot;tableName&quot;</span>: <span class="hljs-string">&quot;MyTable&quot;</span>,
@@ -212,7 +212,7 @@ updateMotorcycleHorsePower(<span class="hljs-string">&quot;sv-650&quot;</span>, 
 				<a href="#query-and-scan" id="query-and-scan" style="color: inherit; text-decoration: none;">
 					<h3>Query and Scan</h3>
 				</a>
-				<p>Both query and scan are paginated operations.  They may return a limited set of results and you must make repeated calls to get all the results.  <a href="https://giftbit.github.io/dynameh/modules/_queryhelper_.html">queryHelper</a> and <a href="https://giftbit.github.io/dynameh/modules/_scanhelper_.html">scanHelper</a> provide utilities that go through the pagination for you.</p>
+				<p>Both query and scan are paginated operations.  They may return a limited set of results and you must make repeated calls to get all the results.  <a href="https://pushplay.github.io/dynameh/modules/_queryhelper_.html">queryHelper</a> and <a href="https://pushplay.github.io/dynameh/modules/_scanhelper_.html">scanHelper</a> provide utilities that go through the pagination for you.</p>
 				<p><code>queryAll()</code> and <code>scanAll()</code> will collect all results in a single array.  For small result sets this is easiest to work with but for large result sets this may require a lot of memory to store all results at once.</p>
 				<p><code>queryByCallback()</code> and <code>scanByCallback()</code> take a callback parameter that processes each page of results.  Processing one page at a time reduces the amount of memory required.</p>
 				<p>This example function scans the table for items and deletes them in batches:</p>
