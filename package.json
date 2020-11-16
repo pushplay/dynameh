@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Giftbit/dynameh.git"
+    "url": "git+https://github.com/pushplay/dynameh.git"
   },
   "keywords": [
     "dynamodb"
@@ -28,9 +28,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Giftbit/dynameh/issues"
+    "url": "https://github.com/pushplay/dynameh/issues"
   },
-  "homepage": "https://github.com/Giftbit/dynameh#readme",
+  "homepage": "https://github.com/pushplay/dynameh#readme",
   "dependencies": {},
   "devDependencies": {
     "@types/chai": "^4.2.11",
