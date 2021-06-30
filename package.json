@@ -1,6 +1,6 @@
 {
   "name": "dynameh",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "description": "DynamoDB on Node more easier",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rimraf ./dist",
-    "docs": "rimraf ./docs && typedoc src/ --out docs --mode modules --module commonjs --target es6 --excludePrivate --excludeNotExported --exclude '**/*.test.ts' --name Dynameh && touch ./docs/.nojekyll && gh-pages -d docs -t",
+    "docs": "rimraf ./docs && typedoc && touch ./docs/.nojekyll && gh-pages -d docs -t",
     "lint": "eslint . --ext .ts,.tsx",
     "prepublishOnly": "npm run clean && npm run build && npm run lint && npm run test && npm run docs",
     "test": "mocha --recursive --throw-deprecation --require ts-node/register \"src/**/*.test.ts\""
@@ -33,21 +33,21 @@
   "homepage": "https://pushplay.github.io/dynameh/",
   "dependencies": {},
   "devDependencies": {
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^7.0.2",
+    "@types/chai": "^4.2.19",
+    "@types/mocha": "^8.2.2",
     "@types/node": "12.x",
-    "@typescript-eslint/eslint-plugin": "^3.6.0",
-    "@typescript-eslint/parser": "^3.6.0",
-    "aws-sdk": "^2.713.0",
-    "chai": "^4.2.0",
-    "eslint": "^7.4.0",
-    "gh-pages": "^3.1.0",
-    "mocha": "^8.1.3",
+    "@typescript-eslint/eslint-plugin": "^4.28.1",
+    "@typescript-eslint/parser": "^4.28.1",
+    "aws-sdk": "^2.937.0",
+    "chai": "^4.3.4",
+    "eslint": "^7.29.0",
+    "gh-pages": "^3.2.3",
+    "mocha": "^9.0.1",
     "rimraf": "^3.0.2",
     "touch": "^3.1.0",
-    "ts-node": "^8.10.2",
-    "typedoc": "^0.17.8",
-    "typescript": "^3.9.6"
+    "ts-node": "^10.0.0",
+    "typedoc": "^0.21.2",
+    "typescript": "^4.3.4"
   },
   "peerDependencies": {
     "aws-sdk": "^2.431.0"

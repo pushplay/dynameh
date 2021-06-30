@@ -22,7 +22,7 @@ export interface ScopedDynameh {
     queryHelper: typeof queryHelper;
 
     requestBuilder: {
-        buildRequestPutItem: (item: object) => aws.DynamoDB.AttributeValue;
+        buildRequestPutItem: (item: any) => aws.DynamoDB.AttributeValue;
         buildGetInput: (partitionKeyValue: DynamoKey, sortKeyValue?: DynamoKey) => aws.DynamoDB.GetItemInput;
         buildPutInput: (item: object) => aws.DynamoDB.PutItemInput;
         buildUpdateInputFromActions: (itemToUpdate: object, ...updateActions: UpdateExpressionAction[]) => aws.DynamoDB.UpdateItemInput;

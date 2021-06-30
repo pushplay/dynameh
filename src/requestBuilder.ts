@@ -865,7 +865,7 @@ export function addFilter<T extends { FilterExpression?: aws.DynamoDB.ConditionE
     addExpression("FilterExpression", tableSchema, filterableRequest, ...filters);
 }
 
-function addExpression<T extends { ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }, K extends keyof T>(expressionKey: string, tableSchema: TableSchema, conditionableRequest: T, ...conditions: Condition[]): void {
+function addExpression<T extends { ExpressionAttributeNames?: aws.DynamoDB.ExpressionAttributeNameMap, ExpressionAttributeValues?: aws.DynamoDB.ExpressionAttributeValueMap }>(expressionKey: string, tableSchema: TableSchema, conditionableRequest: T, ...conditions: Condition[]): void {
     checkSchema(tableSchema);
     checkConditions(conditions, "default");
     let exp: aws.DynamoDB.ConditionExpression = conditionableRequest[expressionKey] || undefined;

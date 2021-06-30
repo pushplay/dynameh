@@ -31,6 +31,11 @@ describe("requestBuilder", () => {
             chai.assert.deepEqual(serialized, {S: ""});
         });
 
+        it("serializes a non-empty string", () => {
+            const serialized = buildRequestPutItem(defaultTableSchema, "Hey man nice marmot.");
+            chai.assert.deepEqual(serialized, {S: "Hey man nice marmot."});
+        });
+
         it("serializes a Buffer", () => {
             const serialized = buildRequestPutItem(defaultTableSchema, Buffer.from([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x57, 0x6f, 0x72, 0x6c, 0x64]));
             chai.assert.deepEqual(serialized, {B: "SGVsbG8gV29ybGQ="});
