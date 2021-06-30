@@ -7,6 +7,7 @@
 	<meta name="description" content="Documentation for Dynameh">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -38,8 +39,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,13 +50,13 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">Dynameh</a>
 				</li>
 				<li>
-					<a href="../modules/_tableschema_.html">&quot;TableSchema&quot;</a>
+					<a href="../modules/tableschema.html">TableSchema</a>
 				</li>
 				<li>
-					<a href="_tableschema_.tableschema.html">TableSchema</a>
+					<a href="tableschema.tableschema-1.html">TableSchema</a>
 				</li>
 			</ul>
 			<h1>Interface TableSchema</h1>
@@ -89,16 +88,16 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#dateserializationfunction" class="tsd-kind-icon">date<wbr>Serialization<wbr>Function</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#indexname" class="tsd-kind-icon">index<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#indexproperties" class="tsd-kind-icon">index<wbr>Properties</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#partitionkeyfield" class="tsd-kind-icon">partition<wbr>Key<wbr>Field</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#partitionkeytype" class="tsd-kind-icon">partition<wbr>Key<wbr>Type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#sortkeyfield" class="tsd-kind-icon">sort<wbr>Key<wbr>Field</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#sortkeytype" class="tsd-kind-icon">sort<wbr>Key<wbr>Type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#tablename" class="tsd-kind-icon">table<wbr>Name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#ttlfield" class="tsd-kind-icon">ttl<wbr>Field</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_tableschema_.tableschema.html#versionkeyfield" class="tsd-kind-icon">version<wbr>Key<wbr>Field</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="tableschema.tableschema-1.html#dateserializationfunction" class="tsd-kind-icon">date<wbr>Serialization<wbr>Function</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="tableschema.tableschema-1.html#indexname" class="tsd-kind-icon">index<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="tableschema.tableschema-1.html#indexproperties" class="tsd-kind-icon">index<wbr>Properties</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="tableschema.tableschema-1.html#partitionkeyfield" class="tsd-kind-icon">partition<wbr>Key<wbr>Field</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="tableschema.tableschema-1.html#partitionkeytype" class="tsd-kind-icon">partition<wbr>Key<wbr>Type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="tableschema.tableschema-1.html#sortkeyfield" class="tsd-kind-icon">sort<wbr>Key<wbr>Field</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="tableschema.tableschema-1.html#sortkeytype" class="tsd-kind-icon">sort<wbr>Key<wbr>Type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="tableschema.tableschema-1.html#tablename" class="tsd-kind-icon">table<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="tableschema.tableschema-1.html#ttlfield" class="tsd-kind-icon">ttl<wbr>Field</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="tableschema.tableschema-1.html#versionkeyfield" class="tsd-kind-icon">version<wbr>Key<wbr>Field</a></li>
 							</ul>
 						</section>
 					</div>
@@ -112,38 +111,36 @@
 					<div class="tsd-signature tsd-kind-icon">date<wbr>Serialization<wbr>Function<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/TableSchema.ts#L84">TableSchema.ts:84</a></li>
+							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/TableSchema.ts#L84">TableSchema.ts:84</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>How to serialize Dates when encountered.  Defaults to ISO8601.</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>param</dt>
-							<dd><p>the Date to serialize</p>
-							</dd>
-							<dt>returns</dt>
-							<dd><p>a serialization of the Date</p>
-							</dd>
-						</dl>
-					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-signature">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-interface">
 									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
+										<div class="tsd-comment tsd-typography">
+											<div class="lead">
+												<p>How to serialize Dates when encountered.  Defaults to ISO8601.</p>
+											</div>
+										</div>
 										<h4 class="tsd-parameters-title">Parameters</h4>
 										<ul class="tsd-parameters">
 											<li>
 												<h5>d: <span class="tsd-signature-type">Date</span></h5>
+												<div class="tsd-comment tsd-typography">
+													<div class="lead">
+														<p>the Date to serialize</p>
+													</div>
+												</div>
 											</li>
 										</ul>
 										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h4>
+										<p>a serialization of the Date</p>
 									</li>
 								</ul>
 							</li>
@@ -156,7 +153,7 @@
 					<div class="tsd-signature tsd-kind-icon">index<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/TableSchema.ts#L14">TableSchema.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/TableSchema.ts#L14">TableSchema.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -168,10 +165,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="indexproperties" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> index<wbr>Properties</h3>
-					<div class="tsd-signature tsd-kind-icon">index<wbr>Properties<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>projectedAttributes<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>projectionType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"ALL"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"KEYS_ONLY"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"INCLUDE"</span><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"GLOBAL"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LOCAL"</span><span class="tsd-signature-symbol"> }</span></div>
+					<div class="tsd-signature tsd-kind-icon">index<wbr>Properties<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>projectedAttributes<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>projectionType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">&quot;ALL&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;KEYS_ONLY&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;INCLUDE&quot;</span><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">&quot;GLOBAL&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;LOCAL&quot;</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/TableSchema.ts#L20">TableSchema.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/TableSchema.ts#L20">TableSchema.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -193,7 +190,7 @@
 								</div>
 							</li>
 							<li class="tsd-parameter">
-								<h5>projection<wbr>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"ALL"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"KEYS_ONLY"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"INCLUDE"</span></h5>
+								<h5>projection<wbr>Type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">&quot;ALL&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;KEYS_ONLY&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;INCLUDE&quot;</span></h5>
 								<div class="tsd-comment tsd-typography">
 									<div class="lead">
 										<p>&quot;ALL&quot; to include all table attributes,
@@ -203,7 +200,7 @@
 								</div>
 							</li>
 							<li class="tsd-parameter">
-								<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"GLOBAL"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"LOCAL"</span></h5>
+								<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">&quot;GLOBAL&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;LOCAL&quot;</span></h5>
 								<div class="tsd-comment tsd-typography">
 									<div class="lead">
 										<p>&quot;GLOBAL&quot; for a global secondary index or &quot;LOCAL&quot; for a local secondary index.</p>
@@ -219,7 +216,7 @@
 					<div class="tsd-signature tsd-kind-icon">partition<wbr>Key<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/TableSchema.ts#L43">TableSchema.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/TableSchema.ts#L43">TableSchema.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -231,10 +228,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="partitionkeytype" class="tsd-anchor"></a>
 					<h3>partition<wbr>Key<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">partition<wbr>Key<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span></div>
+					<div class="tsd-signature tsd-kind-icon">partition<wbr>Key<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;string&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;number&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/TableSchema.ts#L48">TableSchema.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/TableSchema.ts#L48">TableSchema.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -249,7 +246,7 @@
 					<div class="tsd-signature tsd-kind-icon">sort<wbr>Key<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/TableSchema.ts#L54">TableSchema.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/TableSchema.ts#L54">TableSchema.ts:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -262,10 +259,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="sortkeytype" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> sort<wbr>Key<wbr>Type</h3>
-					<div class="tsd-signature tsd-kind-icon">sort<wbr>Key<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"string"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"number"</span></div>
+					<div class="tsd-signature tsd-kind-icon">sort<wbr>Key<wbr>Type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;string&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;number&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/TableSchema.ts#L60">TableSchema.ts:60</a></li>
+							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/TableSchema.ts#L60">TableSchema.ts:60</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -281,7 +278,7 @@
 					<div class="tsd-signature tsd-kind-icon">table<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/TableSchema.ts#L9">TableSchema.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/TableSchema.ts#L9">TableSchema.ts:9</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -296,7 +293,7 @@
 					<div class="tsd-signature tsd-kind-icon">ttl<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/TableSchema.ts#L77">TableSchema.ts:77</a></li>
+							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/TableSchema.ts#L77">TableSchema.ts:77</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -313,7 +310,7 @@
 					<div class="tsd-signature tsd-kind-icon">version<wbr>Key<wbr>Field<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/TableSchema.ts#L70">TableSchema.ts:70</a></li>
+							<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/TableSchema.ts#L70">TableSchema.ts:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -332,50 +329,50 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Modules</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_condition_.html">&quot;<wbr>Condition&quot;</a>
+						<a href="../modules/condition.html">Condition</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_scopeddynameh_.html">&quot;<wbr>Scoped<wbr>Dynameh&quot;</a>
+						<a href="../modules/scopeddynameh.html">Scoped<wbr>Dynameh</a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="../modules/_tableschema_.html">&quot;<wbr>Table<wbr>Schema&quot;</a>
+						<a href="../modules/tableschema.html">Table<wbr>Schema</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_updateexpressionaction_.html">&quot;<wbr>Update<wbr>Expression<wbr>Action&quot;</a>
+						<a href="../modules/updateexpressionaction.html">Update<wbr>Expression<wbr>Action</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_batchhelper_.html">&quot;batch<wbr>Helper&quot;</a>
+						<a href="../modules/batchhelper.html">batch<wbr>Helper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_concurrenthelper_.html">&quot;concurrent<wbr>Helper&quot;</a>
+						<a href="../modules/concurrenthelper.html">concurrent<wbr>Helper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_dynamodbreservedwords_.html">&quot;dynamo<wbr>DbReserved<wbr>Words&quot;</a>
+						<a href="../modules/dynamodbreservedwords.html">dynamo<wbr>DbReserved<wbr>Words</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_index_.html">&quot;index&quot;</a>
+						<a href="../modules/index.html">index</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_queryhelper_.html">&quot;query<wbr>Helper&quot;</a>
+						<a href="../modules/queryhelper.html">query<wbr>Helper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_requestbuilder_.html">&quot;request<wbr>Builder&quot;</a>
+						<a href="../modules/requestbuilder.html">request<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_requestunwrapper_.html">&quot;request<wbr>Unwrapper&quot;</a>
+						<a href="../modules/requestunwrapper.html">request<wbr>Unwrapper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_responseunwrapper_.html">&quot;response<wbr>Unwrapper&quot;</a>
+						<a href="../modules/responseunwrapper.html">response<wbr>Unwrapper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_scanhelper_.html">&quot;scan<wbr>Helper&quot;</a>
+						<a href="../modules/scanhelper.html">scan<wbr>Helper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="../modules/_validation_.html">&quot;validation&quot;</a>
+						<a href="../modules/validation.html">validation</a>
 					</li>
 				</ul>
 			</nav>
@@ -384,37 +381,37 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_tableschema_.tableschema.html" class="tsd-kind-icon">Table<wbr>Schema</a>
+						<a href="tableschema.tableschema-1.html" class="tsd-kind-icon">Table<wbr>Schema</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#dateserializationfunction" class="tsd-kind-icon">date<wbr>Serialization<wbr>Function</a>
+								<a href="tableschema.tableschema-1.html#dateserializationfunction" class="tsd-kind-icon">date<wbr>Serialization<wbr>Function</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#indexname" class="tsd-kind-icon">index<wbr>Name</a>
+								<a href="tableschema.tableschema-1.html#indexname" class="tsd-kind-icon">index<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#indexproperties" class="tsd-kind-icon">index<wbr>Properties</a>
+								<a href="tableschema.tableschema-1.html#indexproperties" class="tsd-kind-icon">index<wbr>Properties</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#partitionkeyfield" class="tsd-kind-icon">partition<wbr>Key<wbr>Field</a>
+								<a href="tableschema.tableschema-1.html#partitionkeyfield" class="tsd-kind-icon">partition<wbr>Key<wbr>Field</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#partitionkeytype" class="tsd-kind-icon">partition<wbr>Key<wbr>Type</a>
+								<a href="tableschema.tableschema-1.html#partitionkeytype" class="tsd-kind-icon">partition<wbr>Key<wbr>Type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#sortkeyfield" class="tsd-kind-icon">sort<wbr>Key<wbr>Field</a>
+								<a href="tableschema.tableschema-1.html#sortkeyfield" class="tsd-kind-icon">sort<wbr>Key<wbr>Field</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#sortkeytype" class="tsd-kind-icon">sort<wbr>Key<wbr>Type</a>
+								<a href="tableschema.tableschema-1.html#sortkeytype" class="tsd-kind-icon">sort<wbr>Key<wbr>Type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#tablename" class="tsd-kind-icon">table<wbr>Name</a>
+								<a href="tableschema.tableschema-1.html#tablename" class="tsd-kind-icon">table<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#ttlfield" class="tsd-kind-icon">ttl<wbr>Field</a>
+								<a href="tableschema.tableschema-1.html#ttlfield" class="tsd-kind-icon">ttl<wbr>Field</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_tableschema_.tableschema.html#versionkeyfield" class="tsd-kind-icon">version<wbr>Key<wbr>Field</a>
+								<a href="tableschema.tableschema-1.html#versionkeyfield" class="tsd-kind-icon">version<wbr>Key<wbr>Field</a>
 							</li>
 						</ul>
 					</li>

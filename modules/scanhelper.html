@@ -3,10 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;scanHelper&quot; | Dynameh</title>
+	<title>scanHelper | Dynameh</title>
 	<meta name="description" content="Documentation for Dynameh">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -38,8 +39,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,13 +50,13 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">Dynameh</a>
 				</li>
 				<li>
-					<a href="_scanhelper_.html">&quot;scanHelper&quot;</a>
+					<a href="scanhelper.html">scanHelper</a>
 				</li>
 			</ul>
-			<h1>Module &quot;scanHelper&quot;</h1>
+			<h1>Module scanHelper</h1>
 		</div>
 	</div>
 </header>
@@ -71,9 +70,9 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_scanhelper_.html#scanall" class="tsd-kind-icon">scan<wbr>All</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_scanhelper_.html#scanbycallback" class="tsd-kind-icon">scan<wbr>ByCallback</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_scanhelper_.html#scancountall" class="tsd-kind-icon">scan<wbr>Count<wbr>All</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="scanhelper.html#scanall" class="tsd-kind-icon">scan<wbr>All</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="scanhelper.html#scanbycallback" class="tsd-kind-icon">scan<wbr>ByCallback</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="scanhelper.html#scancountall" class="tsd-kind-icon">scan<wbr>Count<wbr>All</a></li>
 							</ul>
 						</section>
 					</div>
@@ -85,31 +84,31 @@
 					<a name="scanall" class="tsd-anchor"></a>
 					<h3>scan<wbr>All</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">scan<wbr>All<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DynamoDB</span>, req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ScanInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">scan<wbr>All<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB</span>, req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB.ScanInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/scanHelper.ts#L12">scanHelper.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/scanHelper.ts#L12">scanHelper.ts:12</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Paginate through a scan to collect all results.</p>
 								</div>
-								<p>For large results this can use significantly <em>more</em> memory than <a href="_scanhelper_.html#scanbycallback">scanByCallback</a>.</p>
+								<p>For large results this can use significantly <em>more</em> memory than <a href="scanhelper.html#scanbycallback">scanByCallback</a>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>dynamodb: <span class="tsd-signature-type">DynamoDB</span></h5>
+									<h5>dynamodb: <span class="tsd-signature-type">aws.DynamoDB</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The DynamoDB client instance to use.</p>
 									</div>
 								</li>
 								<li>
-									<h5>req: <span class="tsd-signature-type">ScanInput</span></h5>
+									<h5>req: <span class="tsd-signature-type">aws.DynamoDB.ScanInput</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The scan input.</p>
 									</div>
@@ -123,13 +122,13 @@
 					<a name="scanbycallback" class="tsd-anchor"></a>
 					<h3>scan<wbr>ByCallback</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">scan<wbr>ByCallback<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DynamoDB</span>, req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ScanInput</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">scan<wbr>ByCallback<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB</span>, req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB.ScanInput</span>, callback<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>items<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/scanHelper.ts#L51">scanHelper.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/scanHelper.ts#L51">scanHelper.ts:51</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -138,29 +137,30 @@
 										Pagination can be aborted by returning <code>false</code> (or a Promise that
 									resolves to <code>false</code>) from the callback.</p>
 								</div>
-								<p>For large results this can use significantly <em>less</em> memory than <a href="_scanhelper_.html#scanall">scanAll</a>.</p>
+								<p>For large results this can use significantly <em>less</em> memory than <a href="scanhelper.html#scanall">scanAll</a>.</p>
 								<p>An example where scan is used to delete every object in a table.
 								(For large tables it&#39;s more efficient to delete and recreate the table.)</p>
-								<pre><code class="language-typescript"><span class="hljs-keyword">const</span> scanInput = dynemeh.requestBuilder.buildScanInput(tableSchema);
-<span class="hljs-keyword">await</span> dynameh.scanHelper.scanByCallback(dynamodbClient, scanInput, <span class="hljs-keyword">async</span> items =&gt; {
-     <span class="hljs-keyword">const</span> keysToDelete = objectSchema.sortKeyField ?
-         items.map(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> [item[tableSchema.partitionKeyField], item[tableSchema.sortKeyField]]) :
-         items.map(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item[tableSchema.partitionKeyField]);
-     <span class="hljs-keyword">const</span> batchDeleteInput = dynameh.requestBuilder.buildBatchDeleteInput(tableSchema, keysToDelete);
-     <span class="hljs-keyword">await</span> dynameh.batchHelper.batchWriteAll(dynamodbClient, batchDeleteInput);
-     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
- });</code></pre>
+								<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">scanInput</span><span style="color: #000000"> = </span><span style="color: #001080">dynemeh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildScanInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">);</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">scanHelper</span><span style="color: #000000">.</span><span style="color: #795E26">scanByCallback</span><span style="color: #000000">(</span><span style="color: #001080">dynamodbClient</span><span style="color: #000000">, </span><span style="color: #001080">scanInput</span><span style="color: #000000">, </span><span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #001080">items</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">     </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">keysToDelete</span><span style="color: #000000"> = </span><span style="color: #001080">objectSchema</span><span style="color: #000000">.</span><span style="color: #001080">sortKeyField</span><span style="color: #000000"> ?</span>
+<span style="color: #000000">         </span><span style="color: #001080">items</span><span style="color: #000000">.</span><span style="color: #795E26">map</span><span style="color: #000000">(</span><span style="color: #001080">item</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> [</span><span style="color: #001080">item</span><span style="color: #000000">[</span><span style="color: #001080">tableSchema</span><span style="color: #000000">.</span><span style="color: #001080">partitionKeyField</span><span style="color: #000000">], </span><span style="color: #001080">item</span><span style="color: #000000">[</span><span style="color: #001080">tableSchema</span><span style="color: #000000">.</span><span style="color: #001080">sortKeyField</span><span style="color: #000000">]]) :</span>
+<span style="color: #000000">         </span><span style="color: #001080">items</span><span style="color: #000000">.</span><span style="color: #795E26">map</span><span style="color: #000000">(</span><span style="color: #001080">item</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">item</span><span style="color: #000000">[</span><span style="color: #001080">tableSchema</span><span style="color: #000000">.</span><span style="color: #001080">partitionKeyField</span><span style="color: #000000">]);</span>
+<span style="color: #000000">     </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">batchDeleteInput</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildBatchDeleteInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">keysToDelete</span><span style="color: #000000">);</span>
+<span style="color: #000000">     </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">batchHelper</span><span style="color: #000000">.</span><span style="color: #795E26">batchWriteAll</span><span style="color: #000000">(</span><span style="color: #001080">dynamodbClient</span><span style="color: #000000">, </span><span style="color: #001080">batchDeleteInput</span><span style="color: #000000">);</span>
+<span style="color: #000000">     </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">;</span>
+<span style="color: #000000"> });</span>
+</code></pre>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>dynamodb: <span class="tsd-signature-type">DynamoDB</span></h5>
+									<h5>dynamodb: <span class="tsd-signature-type">aws.DynamoDB</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The DynamoDB client instance to use.</p>
 									</div>
 								</li>
 								<li>
-									<h5>req: <span class="tsd-signature-type">ScanInput</span></h5>
+									<h5>req: <span class="tsd-signature-type">aws.DynamoDB.ScanInput</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The scan input.</p>
 									</div>
@@ -199,31 +199,31 @@
 					<a name="scancountall" class="tsd-anchor"></a>
 					<h3>scan<wbr>Count<wbr>All</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">scan<wbr>Count<wbr>All<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DynamoDB</span>, req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ScanInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">scan<wbr>Count<wbr>All<span class="tsd-signature-symbol">(</span>dynamodb<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB</span>, req<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">aws.DynamoDB.ScanInput</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/55856e6/src/scanHelper.ts#L75">scanHelper.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/pushplay/dynameh/blob/fbfa563/src/scanHelper.ts#L75">scanHelper.ts:75</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Paginate through a scan to count all results.  This is more efficient than <a href="_scanhelper_.html#scanall">scanAll</a>
+									<p>Paginate through a scan to count all results.  This is more efficient than <a href="scanhelper.html#scanall">scanAll</a>
 									when only the count is needed.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>dynamodb: <span class="tsd-signature-type">DynamoDB</span></h5>
+									<h5>dynamodb: <span class="tsd-signature-type">aws.DynamoDB</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The DynamoDB client instance to use.</p>
 									</div>
 								</li>
 								<li>
-									<h5>req: <span class="tsd-signature-type">ScanInput</span></h5>
+									<h5>req: <span class="tsd-signature-type">aws.DynamoDB.ScanInput</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The scan input.</p>
 									</div>
@@ -238,63 +238,63 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Modules</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_condition_.html">&quot;<wbr>Condition&quot;</a>
+						<a href="condition.html">Condition</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_scopeddynameh_.html">&quot;<wbr>Scoped<wbr>Dynameh&quot;</a>
+						<a href="scopeddynameh.html">Scoped<wbr>Dynameh</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_tableschema_.html">&quot;<wbr>Table<wbr>Schema&quot;</a>
+						<a href="tableschema.html">Table<wbr>Schema</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_updateexpressionaction_.html">&quot;<wbr>Update<wbr>Expression<wbr>Action&quot;</a>
+						<a href="updateexpressionaction.html">Update<wbr>Expression<wbr>Action</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_batchhelper_.html">&quot;batch<wbr>Helper&quot;</a>
+						<a href="batchhelper.html">batch<wbr>Helper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_concurrenthelper_.html">&quot;concurrent<wbr>Helper&quot;</a>
+						<a href="concurrenthelper.html">concurrent<wbr>Helper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_dynamodbreservedwords_.html">&quot;dynamo<wbr>DbReserved<wbr>Words&quot;</a>
+						<a href="dynamodbreservedwords.html">dynamo<wbr>DbReserved<wbr>Words</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_index_.html">&quot;index&quot;</a>
+						<a href="index.html">index</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_queryhelper_.html">&quot;query<wbr>Helper&quot;</a>
+						<a href="queryhelper.html">query<wbr>Helper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_requestbuilder_.html">&quot;request<wbr>Builder&quot;</a>
+						<a href="requestbuilder.html">request<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_requestunwrapper_.html">&quot;request<wbr>Unwrapper&quot;</a>
+						<a href="requestunwrapper.html">request<wbr>Unwrapper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_responseunwrapper_.html">&quot;response<wbr>Unwrapper&quot;</a>
+						<a href="responseunwrapper.html">response<wbr>Unwrapper</a>
 					</li>
 					<li class="current tsd-kind-module">
-						<a href="_scanhelper_.html">&quot;scan<wbr>Helper&quot;</a>
+						<a href="scanhelper.html">scan<wbr>Helper</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_validation_.html">&quot;validation&quot;</a>
+						<a href="validation.html">validation</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_scanhelper_.html#scanall" class="tsd-kind-icon">scan<wbr>All</a>
+						<a href="scanhelper.html#scanall" class="tsd-kind-icon">scan<wbr>All</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_scanhelper_.html#scanbycallback" class="tsd-kind-icon">scan<wbr>ByCallback</a>
+						<a href="scanhelper.html#scanbycallback" class="tsd-kind-icon">scan<wbr>ByCallback</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_scanhelper_.html#scancountall" class="tsd-kind-icon">scan<wbr>Count<wbr>All</a>
+						<a href="scanhelper.html#scancountall" class="tsd-kind-icon">scan<wbr>Count<wbr>All</a>
 					</li>
 				</ul>
 			</nav>
