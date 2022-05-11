@@ -1,481 +1,180 @@
-<!doctype html>
-<html class="default no-js">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Dynameh</title>
-	<meta name="description" content="Documentation for Dynameh">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
-	<script async src="assets/js/search.js" id="search-script"></script>
-</head>
-<body>
-<header>
-	<div class="tsd-page-toolbar">
-		<div class="container">
-			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
-					<div class="field">
-						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-						<input id="tsd-search-field" type="text" />
-					</div>
-					<ul class="results">
-						<li class="state loading">Preparing search index...</li>
-						<li class="state failure">The search index is not available</li>
-					</ul>
-					<a href="index.html" class="title">Dynameh</a>
-				</div>
-				<div class="table-cell" id="tsd-widgets">
-					<div id="tsd-filter">
-						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
-						<div class="tsd-filter-group">
-							<div class="tsd-select" id="tsd-filter-visibility">
-								<span class="tsd-select-label">All</span>
-								<ul class="tsd-select-list">
-									<li data-value="public">Public</li>
-									<li data-value="protected">Public/Protected</li>
-									<li data-value="private" class="selected">All</li>
-								</ul>
-							</div>
-							<input type="checkbox" id="tsd-filter-inherited" checked />
-							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-						</div>
-					</div>
-					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="tsd-page-title">
-		<div class="container">
-			<h1>Dynameh</h1>
-		</div>
-	</div>
-</header>
-<div class="container container-main">
-	<div class="row">
-		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<a href="#dynameh" id="dynameh" style="color: inherit; text-decoration: none;">
-					<h1>Dynameh</h1>
-				</a>
-				<p>DynamoDB on Node more easier</p>
-				<p>Dynameh makes the official <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html">DynamoDB JavaScript API</a> easier to use.  It makes it easier to:</p>
-				<ul>
-					<li><a href="https://pushplay.github.io/dynameh/modules/_requestbuilder_.html">build request objects</a></li>
-					<li><a href="https://pushplay.github.io/dynameh/modules/_responseunwrapper_.html">unwrap response objects</a></li>
-					<li><a href="https://pushplay.github.io/dynameh/modules/_requestbuilder_.html#addprojection">build a projection expression</a></li>
-					<li><a href="https://pushplay.github.io/dynameh/modules/_requestbuilder_.html#addcondition">build a condition expression</a></li>
-					<li><a href="https://pushplay.github.io/dynameh/modules/_batchhelper_.html">run oversized batch requests</a></li>
-					<li><a href="https://pushplay.github.io/dynameh/modules/_queryhelper_.html">paginate through queries</a></li>
-					<li><a href="https://pushplay.github.io/dynameh/modules/_scanhelper_.html">paginate through scans</a></li>
-					<li><a href="https://pushplay.github.io/dynameh/modules/_concurrenthelper_.html">run requests concurrently that can&#39;t be run in batch</a></li>
-					<li><a href="https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield">implement optimistic locking</a></li>
-					<li><a href="https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html#dateserializationfunction">configure Date serialization</a></li>
-				</ul>
-				<p>Click above for API-specifics or read on for a general overview.</p>
-				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-					<h2>Installation</h2>
-				</a>
-				<p>Dynameh is your typical NPM package.</p>
-				<pre><code class="language-bash"><span style="color: #000000">npm install --save dynameh</span>
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Dynameh</title><meta name="description" content="Documentation for Dynameh"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">Dynameh</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>Dynameh </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#dynameh" id="dynameh" style="color: inherit; text-decoration: none;">
+  <h1>Dynameh</h1>
+</a>
+<p>DynamoDB on Node more easier</p>
+<p>Dynameh makes the official <a href="http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html">DynamoDB JavaScript API</a> easier to use.  It makes it easier to:</p>
+<ul>
+<li><a href="https://pushplay.github.io/dynameh/modules/_requestbuilder_.html">build request objects</a></li>
+<li><a href="https://pushplay.github.io/dynameh/modules/_responseunwrapper_.html">unwrap response objects</a></li>
+<li><a href="https://pushplay.github.io/dynameh/modules/_requestbuilder_.html#addprojection">build a projection expression</a></li>
+<li><a href="https://pushplay.github.io/dynameh/modules/_requestbuilder_.html#addcondition">build a condition expression</a></li>
+<li><a href="https://pushplay.github.io/dynameh/modules/_batchhelper_.html">run oversized batch requests</a></li>
+<li><a href="https://pushplay.github.io/dynameh/modules/_queryhelper_.html">paginate through queries</a></li>
+<li><a href="https://pushplay.github.io/dynameh/modules/_scanhelper_.html">paginate through scans</a></li>
+<li><a href="https://pushplay.github.io/dynameh/modules/_concurrenthelper_.html">run requests concurrently that can&#39;t be run in batch</a></li>
+<li><a href="https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html#versionkeyfield">implement optimistic locking</a></li>
+<li><a href="https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html#dateserializationfunction">configure Date serialization</a></li>
+</ul>
+<p>Click above for API-specifics or read on for a general overview.</p>
+
+<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+  <h2>Installation</h2>
+</a>
+<p>Dynameh is your typical NPM package.</p>
+<pre><code class="language-bash"><span class="hl-0">npm install --save dynameh</span>
 </code></pre>
-				<p><code>aws-sdk</code> is a peer dependency.  There are no other runtime dependencies.</p>
-				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h2>Usage</h2>
-				</a>
-				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">dynameh</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;dynameh&quot;</span><span style="color: #000000">;</span>
-<span style="color: #008000">// or</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dynameh</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;dynameh&quot;</span><span style="color: #000000">);</span>
+<p><code>aws-sdk</code> is a peer dependency.  There are no other runtime dependencies.</p>
+
+<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+  <h2>Usage</h2>
+</a>
+<pre><code class="language-javascript"><span class="hl-3">import</span><span class="hl-0"> </span><span class="hl-4">*</span><span class="hl-0"> </span><span class="hl-3">as</span><span class="hl-0"> </span><span class="hl-5">dynameh</span><span class="hl-0"> </span><span class="hl-3">from</span><span class="hl-0"> </span><span class="hl-2">&quot;dynameh&quot;</span><span class="hl-0">;</span><br/><span class="hl-6">// or</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">dynameh</span><span class="hl-0"> = </span><span class="hl-8">require</span><span class="hl-0">(</span><span class="hl-2">&quot;dynameh&quot;</span><span class="hl-0">);</span>
 </code></pre>
-				<p>See the <a href="https://pushplay.github.io/dynameh/">documentation</a> for details on each module and its methods.</p>
-				<a href="#a-simple-example" id="a-simple-example" style="color: inherit; text-decoration: none;">
-					<h3>A Simple Example</h3>
-				</a>
-				<p>This example is written using async/await which is available in TypeScript and ES2017.</p>
-				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">aws</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;aws-sdk&quot;</span><span style="color: #000000">;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">dynameh</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;dynameh&quot;</span><span style="color: #000000">;</span>
+<p>See the <a href="https://pushplay.github.io/dynameh/">documentation</a> for details on each module and its methods.</p>
 
-<span style="color: #008000">// Initialize the DynamoDB client.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dynamodb</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">aws</span><span style="color: #000000">.</span><span style="color: #795E26">DynamoDB</span><span style="color: #000000">({</span>
-<span style="color: #000000">    </span><span style="color: #001080">apiVersion:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;2012-08-10&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">region:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;us-west-1&quot;</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #008000">// Set up the table schema.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tableSchema</span><span style="color: #000000"> = {</span>
-<span style="color: #000000">    </span><span style="color: #001080">tableName:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;motorcycles&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyField:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;id&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyType:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;string&quot;</span>
-<span style="color: #000000">};</span>
-
-<span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">updateMotorcycleHorsePower</span><span style="color: #000000">(</span><span style="color: #001080">motorcycleId</span><span style="color: #000000">, </span><span style="color: #001080">bhp</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #008000">// Fetch the item from the database.</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">getRequest</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildGetInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">motorcycleId</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">getResult</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynamodb</span><span style="color: #000000">.</span><span style="color: #795E26">getItem</span><span style="color: #000000">(</span><span style="color: #001080">getRequest</span><span style="color: #000000">).</span><span style="color: #795E26">promise</span><span style="color: #000000">();</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">motorcycle</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">responseUnwrapper</span><span style="color: #000000">.</span><span style="color: #795E26">unwrapGetOutput</span><span style="color: #000000">(</span><span style="color: #001080">getResult</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (!</span><span style="color: #001080">motorcycle</span><span style="color: #000000">) {</span>
-<span style="color: #000000">        </span><span style="color: #008000">// Item not found, create it.</span>
-<span style="color: #000000">        </span><span style="color: #001080">motorcycle</span><span style="color: #000000"> = {</span>
-<span style="color: #000000">            </span><span style="color: #001080">id:</span><span style="color: #000000"> </span><span style="color: #001080">motorcycleId</span>
-<span style="color: #000000">        };</span>
-<span style="color: #000000">    }</span>
-<span style="color: #000000">    </span>
-<span style="color: #000000">    </span><span style="color: #008000">// Update the horse power stat.</span>
-<span style="color: #000000">    </span><span style="color: #001080">motorcycle</span><span style="color: #000000">.</span><span style="color: #001080">bhp</span><span style="color: #000000"> = </span><span style="color: #001080">bhp</span><span style="color: #000000">;</span>
-<span style="color: #000000">    </span>
-<span style="color: #000000">    </span><span style="color: #008000">// Put the updated object in the database.</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">putRequest</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildPutInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">motorcycle</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynamodb</span><span style="color: #000000">.</span><span style="color: #795E26">putItem</span><span style="color: #000000">(</span><span style="color: #001080">putRequest</span><span style="color: #000000">).</span><span style="color: #795E26">promise</span><span style="color: #000000">();</span>
-<span style="color: #000000">}</span>
-
-<span style="color: #795E26">updateMotorcycleHorsePower</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;sv-650&quot;</span><span style="color: #000000">, </span><span style="color: #098658">73.4</span><span style="color: #000000">);</span>
+<a href="#a-simple-example" id="a-simple-example" style="color: inherit; text-decoration: none;">
+  <h3>A Simple Example</h3>
+</a>
+<p>This example is written using async/await which is available in TypeScript and ES2017.</p>
+<pre><code class="language-javascript"><span class="hl-3">import</span><span class="hl-0"> </span><span class="hl-4">*</span><span class="hl-0"> </span><span class="hl-3">as</span><span class="hl-0"> </span><span class="hl-5">aws</span><span class="hl-0"> </span><span class="hl-3">from</span><span class="hl-0"> </span><span class="hl-2">&quot;aws-sdk&quot;</span><span class="hl-0">;</span><br/><span class="hl-3">import</span><span class="hl-0"> </span><span class="hl-4">*</span><span class="hl-0"> </span><span class="hl-3">as</span><span class="hl-0"> </span><span class="hl-5">dynameh</span><span class="hl-0"> </span><span class="hl-3">from</span><span class="hl-0"> </span><span class="hl-2">&quot;dynameh&quot;</span><span class="hl-0">;</span><br/><br/><span class="hl-6">// Initialize the DynamoDB client.</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">dynamodb</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-5">aws</span><span class="hl-0">.</span><span class="hl-8">DynamoDB</span><span class="hl-0">({</span><br/><span class="hl-0">    </span><span class="hl-5">apiVersion:</span><span class="hl-0"> </span><span class="hl-2">&quot;2012-08-10&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">region:</span><span class="hl-0"> </span><span class="hl-2">&quot;us-west-1&quot;</span><br/><span class="hl-0">});</span><br/><br/><span class="hl-6">// Set up the table schema.</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">tableSchema</span><span class="hl-0"> = {</span><br/><span class="hl-0">    </span><span class="hl-5">tableName:</span><span class="hl-0"> </span><span class="hl-2">&quot;motorcycles&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyField:</span><span class="hl-0"> </span><span class="hl-2">&quot;id&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyType:</span><span class="hl-0"> </span><span class="hl-2">&quot;string&quot;</span><br/><span class="hl-0">};</span><br/><br/><span class="hl-4">async</span><span class="hl-0"> </span><span class="hl-4">function</span><span class="hl-0"> </span><span class="hl-8">updateMotorcycleHorsePower</span><span class="hl-0">(</span><span class="hl-5">motorcycleId</span><span class="hl-0">, </span><span class="hl-5">bhp</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-6">// Fetch the item from the database.</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">getRequest</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">buildGetInput</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">, </span><span class="hl-5">motorcycleId</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">getResult</span><span class="hl-0"> = </span><span class="hl-3">await</span><span class="hl-0"> </span><span class="hl-5">dynamodb</span><span class="hl-0">.</span><span class="hl-8">getItem</span><span class="hl-0">(</span><span class="hl-5">getRequest</span><span class="hl-0">).</span><span class="hl-8">promise</span><span class="hl-0">();</span><br/><span class="hl-0">    </span><span class="hl-4">let</span><span class="hl-0"> </span><span class="hl-5">motorcycle</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">responseUnwrapper</span><span class="hl-0">.</span><span class="hl-8">unwrapGetOutput</span><span class="hl-0">(</span><span class="hl-5">getResult</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><br/><span class="hl-0">    </span><span class="hl-3">if</span><span class="hl-0"> (!</span><span class="hl-5">motorcycle</span><span class="hl-0">) {</span><br/><span class="hl-0">        </span><span class="hl-6">// Item not found, create it.</span><br/><span class="hl-0">        </span><span class="hl-5">motorcycle</span><span class="hl-0"> = {</span><br/><span class="hl-0">            </span><span class="hl-5">id:</span><span class="hl-0"> </span><span class="hl-5">motorcycleId</span><br/><span class="hl-0">        };</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">    </span><br/><span class="hl-0">    </span><span class="hl-6">// Update the horse power stat.</span><br/><span class="hl-0">    </span><span class="hl-5">motorcycle</span><span class="hl-0">.</span><span class="hl-5">bhp</span><span class="hl-0"> = </span><span class="hl-5">bhp</span><span class="hl-0">;</span><br/><span class="hl-0">    </span><br/><span class="hl-0">    </span><span class="hl-6">// Put the updated object in the database.</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">putRequest</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">buildPutInput</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">, </span><span class="hl-5">motorcycle</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><span class="hl-3">await</span><span class="hl-0"> </span><span class="hl-5">dynamodb</span><span class="hl-0">.</span><span class="hl-8">putItem</span><span class="hl-0">(</span><span class="hl-5">putRequest</span><span class="hl-0">).</span><span class="hl-8">promise</span><span class="hl-0">();</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-8">updateMotorcycleHorsePower</span><span class="hl-0">(</span><span class="hl-2">&quot;sv-650&quot;</span><span class="hl-0">, </span><span class="hl-9">73.4</span><span class="hl-0">);</span>
 </code></pre>
-				<a href="#tableschema" id="tableschema" style="color: inherit; text-decoration: none;">
-					<h3>TableSchema</h3>
-				</a>
-				<p>The key to easy building of requests in Dynameh is the <a href="https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html">TableSchema</a>.  This simple object defines all the extra information Dynameh needs to build requests.</p>
-				<p>For a table called <code>MyTable</code> with a partition key <code>id</code> that is a number...</p>
-				<pre><code class="language-json"><span style="color: #000000">{</span>
-<span style="color: #000000">  </span><span style="color: #0451A5">&quot;tableName&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;MyTable&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #0451A5">&quot;partitionKeyField&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;id&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #0451A5">&quot;partitionKeyType&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;number&quot;</span>
-<span style="color: #000000">}</span>
+
+<a href="#tableschema" id="tableschema" style="color: inherit; text-decoration: none;">
+  <h3>TableSchema</h3>
+</a>
+<p>The key to easy building of requests in Dynameh is the <a href="https://pushplay.github.io/dynameh/interfaces/_tableschema_.tableschema.html">TableSchema</a>.  This simple object defines all the extra information Dynameh needs to build requests.</p>
+<p>For a table called <code>MyTable</code> with a partition key <code>id</code> that is a number...</p>
+<pre><code class="language-json"><span class="hl-0">{</span><br/><span class="hl-0">  </span><span class="hl-10">&quot;tableName&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;MyTable&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-10">&quot;partitionKeyField&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;id&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-10">&quot;partitionKeyType&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;number&quot;</span><br/><span class="hl-0">}</span>
 </code></pre>
-				<p>For a table called <code>MyAdvancedTable</code> with a partition key <code>id</code> that is a string, a sort key <code>date</code> that is a number, and a version field <code>version</code>...</p>
-				<pre><code class="language-json"><span style="color: #000000">{</span>
-<span style="color: #000000">  </span><span style="color: #0451A5">&quot;tableName&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;MyAdvancedTable&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #0451A5">&quot;partitionKeyField&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;id&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #0451A5">&quot;partitionKeyType&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;string&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #0451A5">&quot;sortKeyField&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;date&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #0451A5">&quot;sortKeyType&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;number&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span><span style="color: #0451A5">&quot;versionKeyField&quot;</span><span style="color: #000000">: </span><span style="color: #A31515">&quot;version&quot;</span>
-<span style="color: #000000">}</span>
+<p>For a table called <code>MyAdvancedTable</code> with a partition key <code>id</code> that is a string, a sort key <code>date</code> that is a number, and a version field <code>version</code>...</p>
+<pre><code class="language-json"><span class="hl-0">{</span><br/><span class="hl-0">  </span><span class="hl-10">&quot;tableName&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;MyAdvancedTable&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-10">&quot;partitionKeyField&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;id&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-10">&quot;partitionKeyType&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;string&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-10">&quot;sortKeyField&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;date&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-10">&quot;sortKeyType&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;number&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-10">&quot;versionKeyField&quot;</span><span class="hl-0">: </span><span class="hl-2">&quot;version&quot;</span><br/><span class="hl-0">}</span>
 </code></pre>
-				<a href="#optimistic-locking" id="optimistic-locking" style="color: inherit; text-decoration: none;">
-					<h3>Optimistic Locking</h3>
-				</a>
-				<p>Optimistic locking is a strategy for preventing changes from clobbering each other.  For example two processes read from the database, make unrelated changes, and then both write to the database but the second write overwrites the first (clobbers).</p>
-				<p>Enable optimistic locking by setting the <code>versionKeyField</code> on your TableSchema.  In the second TableSchema example that field is <code>version</code>.  The <code>versionKeyField</code> will be automatically incremented on the server side during a put request.  If the value for <code>versionKeyField</code> sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.</p>
-				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">aws</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;aws-sdk&quot;</span><span style="color: #000000">;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #0000FF">*</span><span style="color: #000000"> </span><span style="color: #AF00DB">as</span><span style="color: #000000"> </span><span style="color: #001080">dynameh</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;dynameh&quot;</span><span style="color: #000000">;</span>
 
-<span style="color: #008000">// Initialize the DynamoDB client.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dynamodb</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">aws</span><span style="color: #000000">.</span><span style="color: #795E26">DynamoDB</span><span style="color: #000000">({</span>
-<span style="color: #000000">    </span><span style="color: #001080">apiVersion:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;2012-08-10&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">region:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;us-west-1&quot;</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #008000">// Set up the table schema.</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tableSchema</span><span style="color: #000000"> = {</span>
-<span style="color: #000000">    </span><span style="color: #001080">tableName:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;motorcycles&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyField:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;id&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyType:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;string&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">versionKeyField:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;version&quot;</span>
-<span style="color: #000000">};</span>
-
-<span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">updateMotorcycleHorsePower</span><span style="color: #000000">(</span><span style="color: #001080">motorcycleId</span><span style="color: #000000">, </span><span style="color: #001080">bhp</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #008000">// Fetch the item from the database.</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">getRequest</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildGetInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">motorcycleId</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">getResult</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynamodb</span><span style="color: #000000">.</span><span style="color: #795E26">getItem</span><span style="color: #000000">(</span><span style="color: #001080">getRequest</span><span style="color: #000000">).</span><span style="color: #795E26">promise</span><span style="color: #000000">();</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">motorcycle</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">responseUnwrapper</span><span style="color: #000000">.</span><span style="color: #795E26">unwrapGetOutput</span><span style="color: #000000">(</span><span style="color: #001080">getResult</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (!</span><span style="color: #001080">motorcycle</span><span style="color: #000000">) {</span>
-<span style="color: #000000">        </span><span style="color: #008000">// Item not found, create it.</span>
-<span style="color: #000000">        </span><span style="color: #008000">// Note that we don&#039;t need to set the version on create.</span>
-<span style="color: #000000">        </span><span style="color: #001080">motorcycle</span><span style="color: #000000"> = {</span>
-<span style="color: #000000">            </span><span style="color: #001080">id:</span><span style="color: #000000"> </span><span style="color: #001080">motorcycleId</span>
-<span style="color: #000000">        };</span>
-<span style="color: #000000">    }</span>
-<span style="color: #000000">    </span>
-<span style="color: #000000">    </span><span style="color: #008000">// Update the horse power stat.</span>
-<span style="color: #000000">    </span><span style="color: #001080">motorcycle</span><span style="color: #000000">.</span><span style="color: #001080">bhp</span><span style="color: #000000"> = </span><span style="color: #001080">bhp</span><span style="color: #000000">;</span>
-<span style="color: #000000">    </span>
-<span style="color: #000000">    </span><span style="color: #008000">// Put the updated object in the database.</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">putRequest</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildPutInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">motorcycle</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">try</span><span style="color: #000000"> {</span>
-<span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynamodb</span><span style="color: #000000">.</span><span style="color: #795E26">putItem</span><span style="color: #000000">(</span><span style="color: #001080">putRequest</span><span style="color: #000000">).</span><span style="color: #795E26">promise</span><span style="color: #000000">();</span>
-<span style="color: #000000">    } </span><span style="color: #AF00DB">catch</span><span style="color: #000000"> (</span><span style="color: #001080">err</span><span style="color: #000000">) {</span>
-<span style="color: #000000">        </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">err</span><span style="color: #000000">.</span><span style="color: #001080">code</span><span style="color: #000000"> === </span><span style="color: #A31515">&quot;ConditionalCheckFailedException&quot;</span><span style="color: #000000">) {</span>
-<span style="color: #000000">            </span><span style="color: #008000">// If this is the error code then the optimistic locking has failed</span>
-<span style="color: #000000">            </span><span style="color: #008000">// and we should redo the update operation (done here with recursion).</span>
-<span style="color: #000000">            </span><span style="color: #795E26">updateMotorcycleHorsePower</span><span style="color: #000000">(</span><span style="color: #001080">motorcycleId</span><span style="color: #000000">, </span><span style="color: #001080">bhp</span><span style="color: #000000">);</span>
-<span style="color: #000000">        } </span><span style="color: #AF00DB">else</span><span style="color: #000000"> {</span>
-<span style="color: #000000">            </span><span style="color: #AF00DB">throw</span><span style="color: #000000"> </span><span style="color: #001080">err</span><span style="color: #000000">;</span>
-<span style="color: #000000">        }</span>
-<span style="color: #000000">    }</span>
-<span style="color: #000000">}</span>
-
-<span style="color: #795E26">updateMotorcycleHorsePower</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;sv-650&quot;</span><span style="color: #000000">, </span><span style="color: #098658">73.4</span><span style="color: #000000">);</span>
+<a href="#optimistic-locking" id="optimistic-locking" style="color: inherit; text-decoration: none;">
+  <h3>Optimistic Locking</h3>
+</a>
+<p>Optimistic locking is a strategy for preventing changes from clobbering each other.  For example two processes read from the database, make unrelated changes, and then both write to the database but the second write overwrites the first (clobbers).</p>
+<p>Enable optimistic locking by setting the <code>versionKeyField</code> on your TableSchema.  In the second TableSchema example that field is <code>version</code>.  The <code>versionKeyField</code> will be automatically incremented on the server side during a put request.  If the value for <code>versionKeyField</code> sent does not match the current value in the database then the contents have changed since the last get and the optimistic lock has failed.  In that case you should get the latest version from the database and replay the update against that.</p>
+<pre><code class="language-javascript"><span class="hl-3">import</span><span class="hl-0"> </span><span class="hl-4">*</span><span class="hl-0"> </span><span class="hl-3">as</span><span class="hl-0"> </span><span class="hl-5">aws</span><span class="hl-0"> </span><span class="hl-3">from</span><span class="hl-0"> </span><span class="hl-2">&quot;aws-sdk&quot;</span><span class="hl-0">;</span><br/><span class="hl-3">import</span><span class="hl-0"> </span><span class="hl-4">*</span><span class="hl-0"> </span><span class="hl-3">as</span><span class="hl-0"> </span><span class="hl-5">dynameh</span><span class="hl-0"> </span><span class="hl-3">from</span><span class="hl-0"> </span><span class="hl-2">&quot;dynameh&quot;</span><span class="hl-0">;</span><br/><br/><span class="hl-6">// Initialize the DynamoDB client.</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">dynamodb</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-5">aws</span><span class="hl-0">.</span><span class="hl-8">DynamoDB</span><span class="hl-0">({</span><br/><span class="hl-0">    </span><span class="hl-5">apiVersion:</span><span class="hl-0"> </span><span class="hl-2">&quot;2012-08-10&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">region:</span><span class="hl-0"> </span><span class="hl-2">&quot;us-west-1&quot;</span><br/><span class="hl-0">});</span><br/><br/><span class="hl-6">// Set up the table schema.</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">tableSchema</span><span class="hl-0"> = {</span><br/><span class="hl-0">    </span><span class="hl-5">tableName:</span><span class="hl-0"> </span><span class="hl-2">&quot;motorcycles&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyField:</span><span class="hl-0"> </span><span class="hl-2">&quot;id&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyType:</span><span class="hl-0"> </span><span class="hl-2">&quot;string&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">versionKeyField:</span><span class="hl-0"> </span><span class="hl-2">&quot;version&quot;</span><br/><span class="hl-0">};</span><br/><br/><span class="hl-4">async</span><span class="hl-0"> </span><span class="hl-4">function</span><span class="hl-0"> </span><span class="hl-8">updateMotorcycleHorsePower</span><span class="hl-0">(</span><span class="hl-5">motorcycleId</span><span class="hl-0">, </span><span class="hl-5">bhp</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-6">// Fetch the item from the database.</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">getRequest</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">buildGetInput</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">, </span><span class="hl-5">motorcycleId</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">getResult</span><span class="hl-0"> = </span><span class="hl-3">await</span><span class="hl-0"> </span><span class="hl-5">dynamodb</span><span class="hl-0">.</span><span class="hl-8">getItem</span><span class="hl-0">(</span><span class="hl-5">getRequest</span><span class="hl-0">).</span><span class="hl-8">promise</span><span class="hl-0">();</span><br/><span class="hl-0">    </span><span class="hl-4">let</span><span class="hl-0"> </span><span class="hl-5">motorcycle</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">responseUnwrapper</span><span class="hl-0">.</span><span class="hl-8">unwrapGetOutput</span><span class="hl-0">(</span><span class="hl-5">getResult</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><br/><span class="hl-0">    </span><span class="hl-3">if</span><span class="hl-0"> (!</span><span class="hl-5">motorcycle</span><span class="hl-0">) {</span><br/><span class="hl-0">        </span><span class="hl-6">// Item not found, create it.</span><br/><span class="hl-0">        </span><span class="hl-6">// Note that we don&#39;t need to set the version on create.</span><br/><span class="hl-0">        </span><span class="hl-5">motorcycle</span><span class="hl-0"> = {</span><br/><span class="hl-0">            </span><span class="hl-5">id:</span><span class="hl-0"> </span><span class="hl-5">motorcycleId</span><br/><span class="hl-0">        };</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">    </span><br/><span class="hl-0">    </span><span class="hl-6">// Update the horse power stat.</span><br/><span class="hl-0">    </span><span class="hl-5">motorcycle</span><span class="hl-0">.</span><span class="hl-5">bhp</span><span class="hl-0"> = </span><span class="hl-5">bhp</span><span class="hl-0">;</span><br/><span class="hl-0">    </span><br/><span class="hl-0">    </span><span class="hl-6">// Put the updated object in the database.</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">putRequest</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">buildPutInput</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">, </span><span class="hl-5">motorcycle</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><span class="hl-3">try</span><span class="hl-0"> {</span><br/><span class="hl-0">        </span><span class="hl-3">await</span><span class="hl-0"> </span><span class="hl-5">dynamodb</span><span class="hl-0">.</span><span class="hl-8">putItem</span><span class="hl-0">(</span><span class="hl-5">putRequest</span><span class="hl-0">).</span><span class="hl-8">promise</span><span class="hl-0">();</span><br/><span class="hl-0">    } </span><span class="hl-3">catch</span><span class="hl-0"> (</span><span class="hl-5">err</span><span class="hl-0">) {</span><br/><span class="hl-0">        </span><span class="hl-3">if</span><span class="hl-0"> (</span><span class="hl-5">err</span><span class="hl-0">.</span><span class="hl-5">code</span><span class="hl-0"> === </span><span class="hl-2">&quot;ConditionalCheckFailedException&quot;</span><span class="hl-0">) {</span><br/><span class="hl-0">            </span><span class="hl-6">// If this is the error code then the optimistic locking has failed</span><br/><span class="hl-0">            </span><span class="hl-6">// and we should redo the update operation (done here with recursion).</span><br/><span class="hl-0">            </span><span class="hl-8">updateMotorcycleHorsePower</span><span class="hl-0">(</span><span class="hl-5">motorcycleId</span><span class="hl-0">, </span><span class="hl-5">bhp</span><span class="hl-0">);</span><br/><span class="hl-0">        } </span><span class="hl-3">else</span><span class="hl-0"> {</span><br/><span class="hl-0">            </span><span class="hl-3">throw</span><span class="hl-0"> </span><span class="hl-5">err</span><span class="hl-0">;</span><br/><span class="hl-0">        }</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-8">updateMotorcycleHorsePower</span><span class="hl-0">(</span><span class="hl-2">&quot;sv-650&quot;</span><span class="hl-0">, </span><span class="hl-9">73.4</span><span class="hl-0">);</span>
 </code></pre>
-				<a href="#query-and-scan" id="query-and-scan" style="color: inherit; text-decoration: none;">
-					<h3>Query and Scan</h3>
-				</a>
-				<p>Both query and scan are paginated operations.  They may return a limited set of results and you must make repeated calls to get all the results.  <a href="https://pushplay.github.io/dynameh/modules/_queryhelper_.html">queryHelper</a> and <a href="https://pushplay.github.io/dynameh/modules/_scanhelper_.html">scanHelper</a> provide utilities that go through the pagination for you.</p>
-				<p><code>queryAll()</code> and <code>scanAll()</code> will collect all results in a single array.  For small result sets this is easiest to work with but for large result sets this may require a lot of memory to store all results at once.</p>
-				<p><code>queryByCallback()</code> and <code>scanByCallback()</code> take a callback parameter that processes each page of results.  Processing one page at a time reduces the amount of memory required.</p>
-				<p>This example function scans the table for items and deletes them in batches:</p>
-				<pre><code class="language-javascript"><span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">deleteAllItems</span><span style="color: #000000">(</span><span style="color: #001080">dynamodbClient</span><span style="color: #000000">, </span><span style="color: #001080">tableSchema</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">scanInput</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildScanInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">deleteCount</span><span style="color: #000000"> = </span><span style="color: #098658">0</span><span style="color: #000000">;</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">scanHelper</span><span style="color: #000000">.</span><span style="color: #795E26">scanByCallback</span><span style="color: #000000">(</span><span style="color: #001080">dynamodbClient</span><span style="color: #000000">, </span><span style="color: #001080">scanInput</span><span style="color: #000000">, </span><span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #001080">items</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">keysToDelete</span><span style="color: #000000"> = </span><span style="color: #001080">objectSchema</span><span style="color: #000000">.</span><span style="color: #001080">sortKeyField</span><span style="color: #000000"> ?</span>
-<span style="color: #000000">            </span><span style="color: #001080">items</span><span style="color: #000000">.</span><span style="color: #795E26">map</span><span style="color: #000000">(</span><span style="color: #001080">item</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> [</span><span style="color: #001080">item</span><span style="color: #000000">[</span><span style="color: #001080">tableSchema</span><span style="color: #000000">.</span><span style="color: #001080">partitionKeyField</span><span style="color: #000000">], </span><span style="color: #001080">item</span><span style="color: #000000">[</span><span style="color: #001080">tableSchema</span><span style="color: #000000">.</span><span style="color: #001080">sortKeyField</span><span style="color: #000000">]]) :</span>
-<span style="color: #000000">            </span><span style="color: #001080">items</span><span style="color: #000000">.</span><span style="color: #795E26">map</span><span style="color: #000000">(</span><span style="color: #001080">item</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">item</span><span style="color: #000000">[</span><span style="color: #001080">tableSchema</span><span style="color: #000000">.</span><span style="color: #001080">partitionKeyField</span><span style="color: #000000">]);</span>
 
-<span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">batchDeleteInput</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildBatchDeleteInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">keysToDelete</span><span style="color: #000000">);</span>
-<span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">batchHelper</span><span style="color: #000000">.</span><span style="color: #795E26">batchWriteAll</span><span style="color: #000000">(</span><span style="color: #001080">dynamodbClient</span><span style="color: #000000">, </span><span style="color: #001080">batchDeleteInput</span><span style="color: #000000">);</span>
-<span style="color: #000000">        </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">;</span>
-<span style="color: #000000">    });</span>
-<span style="color: #000000">}</span>
+<a href="#query-and-scan" id="query-and-scan" style="color: inherit; text-decoration: none;">
+  <h3>Query and Scan</h3>
+</a>
+<p>Both query and scan are paginated operations.  They may return a limited set of results and you must make repeated calls to get all the results.  <a href="https://pushplay.github.io/dynameh/modules/_queryhelper_.html">queryHelper</a> and <a href="https://pushplay.github.io/dynameh/modules/_scanhelper_.html">scanHelper</a> provide utilities that go through the pagination for you.</p>
+<p><code>queryAll()</code> and <code>scanAll()</code> will collect all results in a single array.  For small result sets this is easiest to work with but for large result sets this may require a lot of memory to store all results at once.</p>
+<p><code>queryByCallback()</code> and <code>scanByCallback()</code> take a callback parameter that processes each page of results.  Processing one page at a time reduces the amount of memory required.</p>
+<p>This example function scans the table for items and deletes them in batches:</p>
+<pre><code class="language-javascript"><span class="hl-4">async</span><span class="hl-0"> </span><span class="hl-4">function</span><span class="hl-0"> </span><span class="hl-8">deleteAllItems</span><span class="hl-0">(</span><span class="hl-5">dynamodbClient</span><span class="hl-0">, </span><span class="hl-5">tableSchema</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">scanInput</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">buildScanInput</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><span class="hl-4">let</span><span class="hl-0"> </span><span class="hl-5">deleteCount</span><span class="hl-0"> = </span><span class="hl-9">0</span><span class="hl-0">;</span><br/><span class="hl-0">    </span><span class="hl-3">await</span><span class="hl-0"> </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">scanHelper</span><span class="hl-0">.</span><span class="hl-8">scanByCallback</span><span class="hl-0">(</span><span class="hl-5">dynamodbClient</span><span class="hl-0">, </span><span class="hl-5">scanInput</span><span class="hl-0">, </span><span class="hl-4">async</span><span class="hl-0"> </span><span class="hl-5">items</span><span class="hl-0"> </span><span class="hl-4">=&gt;</span><span class="hl-0"> {</span><br/><span class="hl-0">        </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">keysToDelete</span><span class="hl-0"> = </span><span class="hl-5">objectSchema</span><span class="hl-0">.</span><span class="hl-5">sortKeyField</span><span class="hl-0"> ?</span><br/><span class="hl-0">            </span><span class="hl-5">items</span><span class="hl-0">.</span><span class="hl-8">map</span><span class="hl-0">(</span><span class="hl-5">item</span><span class="hl-0"> </span><span class="hl-4">=&gt;</span><span class="hl-0"> [</span><span class="hl-5">item</span><span class="hl-0">[</span><span class="hl-5">tableSchema</span><span class="hl-0">.</span><span class="hl-5">partitionKeyField</span><span class="hl-0">], </span><span class="hl-5">item</span><span class="hl-0">[</span><span class="hl-5">tableSchema</span><span class="hl-0">.</span><span class="hl-5">sortKeyField</span><span class="hl-0">]]) :</span><br/><span class="hl-0">            </span><span class="hl-5">items</span><span class="hl-0">.</span><span class="hl-8">map</span><span class="hl-0">(</span><span class="hl-5">item</span><span class="hl-0"> </span><span class="hl-4">=&gt;</span><span class="hl-0"> </span><span class="hl-5">item</span><span class="hl-0">[</span><span class="hl-5">tableSchema</span><span class="hl-0">.</span><span class="hl-5">partitionKeyField</span><span class="hl-0">]);</span><br/><br/><span class="hl-0">        </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">batchDeleteInput</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">buildBatchDeleteInput</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">, </span><span class="hl-5">keysToDelete</span><span class="hl-0">);</span><br/><span class="hl-0">        </span><span class="hl-3">await</span><span class="hl-0"> </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">batchHelper</span><span class="hl-0">.</span><span class="hl-8">batchWriteAll</span><span class="hl-0">(</span><span class="hl-5">dynamodbClient</span><span class="hl-0">, </span><span class="hl-5">batchDeleteInput</span><span class="hl-0">);</span><br/><span class="hl-0">        </span><span class="hl-3">return</span><span class="hl-0"> </span><span class="hl-4">true</span><span class="hl-0">;</span><br/><span class="hl-0">    });</span><br/><span class="hl-0">}</span>
 </code></pre>
-				<a href="#conditions" id="conditions" style="color: inherit; text-decoration: none;">
-					<h3>Conditions</h3>
-				</a>
-				<p>Conditions can be added to a put or delete request to make the operation conditional.</p>
-				<p>One of the most useful conditions is that the item must not already exist (create but not update).  This is done by asserting <code>attribute_not_exists</code> on the primary key.  For example...</p>
-				<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tableSchema</span><span style="color: #000000"> = {</span>
-<span style="color: #000000">    </span><span style="color: #001080">tableName:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;Boats&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyField:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;name&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyType:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;string&quot;</span>
-<span style="color: #000000">};</span>
 
-<span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">addNewBoat</span><span style="color: #000000">(</span><span style="color: #001080">boat</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">putRequest</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildPutInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">boat</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">addCondition</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">putRequest</span><span style="color: #000000">, {</span><span style="color: #001080">attribute:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;name&quot;</span><span style="color: #000000">, </span><span style="color: #001080">operator:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;attribute_not_exists&quot;</span><span style="color: #000000">});</span>
-<span style="color: #000000">    </span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">try</span><span style="color: #000000"> {</span>
-<span style="color: #000000">        </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynamodb</span><span style="color: #000000">.</span><span style="color: #795E26">putItem</span><span style="color: #000000">(</span><span style="color: #001080">putRequest</span><span style="color: #000000">).</span><span style="color: #795E26">promise</span><span style="color: #000000">();</span>
-<span style="color: #000000">    } </span><span style="color: #AF00DB">catch</span><span style="color: #000000"> (</span><span style="color: #001080">err</span><span style="color: #000000">) {</span>
-<span style="color: #000000">        </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">err</span><span style="color: #000000">.</span><span style="color: #001080">code</span><span style="color: #000000"> === </span><span style="color: #A31515">&quot;ConditionalCheckFailedException&quot;</span><span style="color: #000000">) {</span>
-<span style="color: #000000">            </span><span style="color: #AF00DB">throw</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Error</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;This boat already exists!&quot;</span><span style="color: #000000">);</span>
-<span style="color: #000000">        } </span><span style="color: #AF00DB">else</span><span style="color: #000000"> {</span>
-<span style="color: #000000">            </span><span style="color: #AF00DB">throw</span><span style="color: #000000"> </span><span style="color: #001080">err</span><span style="color: #000000">;</span>
-<span style="color: #000000">        }</span>
-<span style="color: #000000">    }</span>
-<span style="color: #000000">}</span>
-
-<span style="color: #795E26">addNewBoat</span><span style="color: #000000">({</span>
-<span style="color: #000000">    </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;Boaty McBoatface&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">type:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;submarine&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">autonomous:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">commissioned:</span><span style="color: #000000"> </span><span style="color: #098658">2016</span>
-<span style="color: #000000">});</span>
+<a href="#conditions" id="conditions" style="color: inherit; text-decoration: none;">
+  <h3>Conditions</h3>
+</a>
+<p>Conditions can be added to a put or delete request to make the operation conditional.</p>
+<p>One of the most useful conditions is that the item must not already exist (create but not update).  This is done by asserting <code>attribute_not_exists</code> on the primary key.  For example...</p>
+<pre><code class="language-javascript"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">tableSchema</span><span class="hl-0"> = {</span><br/><span class="hl-0">    </span><span class="hl-5">tableName:</span><span class="hl-0"> </span><span class="hl-2">&quot;Boats&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyField:</span><span class="hl-0"> </span><span class="hl-2">&quot;name&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyType:</span><span class="hl-0"> </span><span class="hl-2">&quot;string&quot;</span><br/><span class="hl-0">};</span><br/><br/><span class="hl-4">async</span><span class="hl-0"> </span><span class="hl-4">function</span><span class="hl-0"> </span><span class="hl-8">addNewBoat</span><span class="hl-0">(</span><span class="hl-5">boat</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">putRequest</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">buildPutInput</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">, </span><span class="hl-5">boat</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">addCondition</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">, </span><span class="hl-5">putRequest</span><span class="hl-0">, {</span><span class="hl-5">attribute:</span><span class="hl-0"> </span><span class="hl-2">&quot;name&quot;</span><span class="hl-0">, </span><span class="hl-5">operator:</span><span class="hl-0"> </span><span class="hl-2">&quot;attribute_not_exists&quot;</span><span class="hl-0">});</span><br/><span class="hl-0">    </span><br/><span class="hl-0">    </span><span class="hl-3">try</span><span class="hl-0"> {</span><br/><span class="hl-0">        </span><span class="hl-3">await</span><span class="hl-0"> </span><span class="hl-5">dynamodb</span><span class="hl-0">.</span><span class="hl-8">putItem</span><span class="hl-0">(</span><span class="hl-5">putRequest</span><span class="hl-0">).</span><span class="hl-8">promise</span><span class="hl-0">();</span><br/><span class="hl-0">    } </span><span class="hl-3">catch</span><span class="hl-0"> (</span><span class="hl-5">err</span><span class="hl-0">) {</span><br/><span class="hl-0">        </span><span class="hl-3">if</span><span class="hl-0"> (</span><span class="hl-5">err</span><span class="hl-0">.</span><span class="hl-5">code</span><span class="hl-0"> === </span><span class="hl-2">&quot;ConditionalCheckFailedException&quot;</span><span class="hl-0">) {</span><br/><span class="hl-0">            </span><span class="hl-3">throw</span><span class="hl-0"> </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-11">Error</span><span class="hl-0">(</span><span class="hl-2">&quot;This boat already exists!&quot;</span><span class="hl-0">);</span><br/><span class="hl-0">        } </span><span class="hl-3">else</span><span class="hl-0"> {</span><br/><span class="hl-0">            </span><span class="hl-3">throw</span><span class="hl-0"> </span><span class="hl-5">err</span><span class="hl-0">;</span><br/><span class="hl-0">        }</span><br/><span class="hl-0">    }</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-8">addNewBoat</span><span class="hl-0">({</span><br/><span class="hl-0">    </span><span class="hl-5">name:</span><span class="hl-0"> </span><span class="hl-2">&quot;Boaty McBoatface&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">type:</span><span class="hl-0"> </span><span class="hl-2">&quot;submarine&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">autonomous:</span><span class="hl-0"> </span><span class="hl-4">true</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">commissioned:</span><span class="hl-0"> </span><span class="hl-9">2016</span><br/><span class="hl-0">});</span>
 </code></pre>
-				<p>The following conditions are available...</p>
-				<table>
-					<thead>
-						<tr>
-							<th>condition</th>
-							<th># of value parameters</th>
-							<th>description</th>
-						</tr>
-					</thead>
-					<tbody><tr>
-							<td>=</td>
-							<td>1</td>
-							<td>the attribute&#39;s value equals the supplied value</td>
-						</tr>
-						<tr>
-							<td>&lt;&gt;</td>
-							<td>1</td>
-							<td>the attribute&#39;s value does not equal the supplied value</td>
-						</tr>
-						<tr>
-							<td>&lt;</td>
-							<td>1</td>
-							<td>the attribute&#39;s value is less than the supplied value</td>
-						</tr>
-						<tr>
-							<td>&lt;=</td>
-							<td>1</td>
-							<td>the attribute&#39;s value is less than or equal to the supplied value</td>
-						</tr>
-						<tr>
-							<td>&gt;</td>
-							<td>1</td>
-							<td>the attribute&#39;s value is greater than the supplied value</td>
-						</tr>
-						<tr>
-							<td>&gt;=</td>
-							<td>1</td>
-							<td>the attribute&#39;s value is greater than or equal to the supplied value</td>
-						</tr>
-						<tr>
-							<td>BETWEEN</td>
-							<td>2</td>
-							<td>the attribute&#39;s value is between the supplied values</td>
-						</tr>
-						<tr>
-							<td>IN</td>
-							<td>at least 1</td>
-							<td>the attribute&#39;s value is in the list of supplied values</td>
-						</tr>
-						<tr>
-							<td>attribute_exists</td>
-							<td>0</td>
-							<td>the attribute has a value</td>
-						</tr>
-						<tr>
-							<td>attribute_not_exists</td>
-							<td>0</td>
-							<td>the attribute does not have a value</td>
-						</tr>
-						<tr>
-							<td>attribute_type</td>
-							<td>1</td>
-							<td>the attribute&#39;s value is of the supplied type (S, SS, N, NS, B, BS, BOOL, NULL, L, M)</td>
-						</tr>
-						<tr>
-							<td>begins_with</td>
-							<td>1</td>
-							<td>the attribute&#39;s value begins with the supplied value</td>
-						</tr>
-						<tr>
-							<td>contains</td>
-							<td>1</td>
-							<td>the attribute&#39;s value is a string that contains the supplied substring or a set that contains the supplied element</td>
-						</tr>
-				</tbody></table>
-				<p>See <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html">the official documentation</a> for more info.</p>
-				<a href="#filters" id="filters" style="color: inherit; text-decoration: none;">
-					<h3>Filters</h3>
-				</a>
-				<p>Filters can be added to query and scan operations to refine what objects are returned to you.  Query conditions operate on indexed fields (partition and sort) and filters operate on non-indexed fields.  Because filters are for non-indexed fields each object must be read from the database, consuming read capacity.  This makes them slower and more expensive than a well-chosen index.  A filter may still be a good idea to save bandwidth on an infrequent operation.</p>
-				<p>The filter object and the operators available are the same as conditions above.</p>
-				<p>This example scans for boats commissioned exactly 20 years ago for an anniversary announcement (an infrequent operation).</p>
-				<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tableSchema</span><span style="color: #000000"> = {</span>
-<span style="color: #000000">    </span><span style="color: #001080">tableName:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;Boats&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyField:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;name&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyType:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;string&quot;</span>
-<span style="color: #000000">};</span>
+<p>The following conditions are available...</p>
+<table>
+<thead>
+<tr>
+<th>condition</th>
+<th># of value parameters</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>=</td>
+<td>1</td>
+<td>the attribute&#39;s value equals the supplied value</td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td>1</td>
+<td>the attribute&#39;s value does not equal the supplied value</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>1</td>
+<td>the attribute&#39;s value is less than the supplied value</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>1</td>
+<td>the attribute&#39;s value is less than or equal to the supplied value</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>1</td>
+<td>the attribute&#39;s value is greater than the supplied value</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>1</td>
+<td>the attribute&#39;s value is greater than or equal to the supplied value</td>
+</tr>
+<tr>
+<td>BETWEEN</td>
+<td>2</td>
+<td>the attribute&#39;s value is between the supplied values</td>
+</tr>
+<tr>
+<td>IN</td>
+<td>at least 1</td>
+<td>the attribute&#39;s value is in the list of supplied values</td>
+</tr>
+<tr>
+<td>attribute_exists</td>
+<td>0</td>
+<td>the attribute has a value</td>
+</tr>
+<tr>
+<td>attribute_not_exists</td>
+<td>0</td>
+<td>the attribute does not have a value</td>
+</tr>
+<tr>
+<td>attribute_type</td>
+<td>1</td>
+<td>the attribute&#39;s value is of the supplied type (S, SS, N, NS, B, BS, BOOL, NULL, L, M)</td>
+</tr>
+<tr>
+<td>begins_with</td>
+<td>1</td>
+<td>the attribute&#39;s value begins with the supplied value</td>
+</tr>
+<tr>
+<td>contains</td>
+<td>1</td>
+<td>the attribute&#39;s value is a string that contains the supplied substring or a set that contains the supplied element</td>
+</tr>
+</tbody></table>
+<p>See <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html">the official documentation</a> for more info.</p>
 
-<span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">getVigentennialBoats</span><span style="color: #000000">() {</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">anniversaryYear</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Date</span><span style="color: #000000">().</span><span style="color: #795E26">getFullYear</span><span style="color: #000000">() - </span><span style="color: #098658">20</span><span style="color: #000000">;</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">scanRequest</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildScanInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">addFilter</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">scanRequest</span><span style="color: #000000">, {</span><span style="color: #001080">attribute:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;year&quot;</span><span style="color: #000000">, </span><span style="color: #001080">operator:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;=&quot;</span><span style="color: #000000">, </span><span style="color: #001080">values:</span><span style="color: #000000"> [</span><span style="color: #001080">anniversaryYear</span><span style="color: #000000">]});</span>
-<span style="color: #000000">    </span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">scanHelper</span><span style="color: #000000">.</span><span style="color: #795E26">scanAll</span><span style="color: #000000">(</span><span style="color: #001080">dynamodb</span><span style="color: #000000">, </span><span style="color: #001080">scanRequest</span><span style="color: #000000">);</span>
-<span style="color: #000000">}</span>
+<a href="#filters" id="filters" style="color: inherit; text-decoration: none;">
+  <h3>Filters</h3>
+</a>
+<p>Filters can be added to query and scan operations to refine what objects are returned to you.  Query conditions operate on indexed fields (partition and sort) and filters operate on non-indexed fields.  Because filters are for non-indexed fields each object must be read from the database, consuming read capacity.  This makes them slower and more expensive than a well-chosen index.  A filter may still be a good idea to save bandwidth on an infrequent operation.</p>
+<p>The filter object and the operators available are the same as conditions above.</p>
+<p>This example scans for boats commissioned exactly 20 years ago for an anniversary announcement (an infrequent operation).</p>
+<pre><code class="language-javascript"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">tableSchema</span><span class="hl-0"> = {</span><br/><span class="hl-0">    </span><span class="hl-5">tableName:</span><span class="hl-0"> </span><span class="hl-2">&quot;Boats&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyField:</span><span class="hl-0"> </span><span class="hl-2">&quot;name&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyType:</span><span class="hl-0"> </span><span class="hl-2">&quot;string&quot;</span><br/><span class="hl-0">};</span><br/><br/><span class="hl-4">async</span><span class="hl-0"> </span><span class="hl-4">function</span><span class="hl-0"> </span><span class="hl-8">getVigentennialBoats</span><span class="hl-0">() {</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">anniversaryYear</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-11">Date</span><span class="hl-0">().</span><span class="hl-8">getFullYear</span><span class="hl-0">() - </span><span class="hl-9">20</span><span class="hl-0">;</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">scanRequest</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">buildScanInput</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">addFilter</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">, </span><span class="hl-5">scanRequest</span><span class="hl-0">, {</span><span class="hl-5">attribute:</span><span class="hl-0"> </span><span class="hl-2">&quot;year&quot;</span><span class="hl-0">, </span><span class="hl-5">operator:</span><span class="hl-0"> </span><span class="hl-2">&quot;=&quot;</span><span class="hl-0">, </span><span class="hl-5">values:</span><span class="hl-0"> [</span><span class="hl-5">anniversaryYear</span><span class="hl-0">]});</span><br/><span class="hl-0">    </span><br/><span class="hl-0">    </span><span class="hl-3">return</span><span class="hl-0"> </span><span class="hl-3">await</span><span class="hl-0"> </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">scanHelper</span><span class="hl-0">.</span><span class="hl-8">scanAll</span><span class="hl-0">(</span><span class="hl-5">dynamodb</span><span class="hl-0">, </span><span class="hl-5">scanRequest</span><span class="hl-0">);</span><br/><span class="hl-0">}</span>
 </code></pre>
-				<a href="#projections" id="projections" style="color: inherit; text-decoration: none;">
-					<h3>Projections</h3>
-				</a>
-				<p>Projections can be added to a get, batch get or query request to control what attributes are returned.  This saves bandwidth on the request.</p>
-				<p>For example...</p>
-				<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tableSchema</span><span style="color: #000000"> = {</span>
-<span style="color: #000000">    </span><span style="color: #001080">tableName:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;Transactions&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyField:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;customerId&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyType:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;string&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">sortKeyField:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;transactionId&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">sortKeyType:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;string&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">};</span>
 
-<span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">getTransactionDates</span><span style="color: #000000">(</span><span style="color: #001080">customerId</span><span style="color: #000000">) {</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">queryRequest</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">buildQueryInput</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">customerId</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">projectedQueryRequest</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">requestBuilder</span><span style="color: #000000">.</span><span style="color: #795E26">addProjection</span><span style="color: #000000">(</span><span style="color: #001080">tableSchema</span><span style="color: #000000">, </span><span style="color: #001080">queryRequest</span><span style="color: #000000">, [</span><span style="color: #A31515">&quot;date&quot;</span><span style="color: #000000">]);</span>
-<span style="color: #000000">    </span><span style="color: #008000">// Note that addProjection() does not change the original object.</span>
-<span style="color: #000000">    </span><span style="color: #008000">// queryRequest != projectedQueryRequest</span>
-<span style="color: #000000">    </span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">queryResponse</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">dynamodb</span><span style="color: #000000">.</span><span style="color: #795E26">query</span><span style="color: #000000">(</span><span style="color: #001080">projectedQueryRequest</span><span style="color: #000000">).</span><span style="color: #795E26">promise</span><span style="color: #000000">();</span>
-<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">transactions</span><span style="color: #000000"> = </span><span style="color: #001080">dynameh</span><span style="color: #000000">.</span><span style="color: #001080">responseUnwrapper</span><span style="color: #000000">.</span><span style="color: #795E26">unwrapQueryOutput</span><span style="color: #000000">(</span><span style="color: #001080">queryResponse</span><span style="color: #000000">);</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #001080">transactions</span><span style="color: #000000">.</span><span style="color: #795E26">map</span><span style="color: #000000">(</span><span style="color: #001080">t</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">t</span><span style="color: #000000">.</span><span style="color: #001080">date</span><span style="color: #000000">);</span>
-<span style="color: #000000">}</span>
+<a href="#projections" id="projections" style="color: inherit; text-decoration: none;">
+  <h3>Projections</h3>
+</a>
+<p>Projections can be added to a get, batch get or query request to control what attributes are returned.  This saves bandwidth on the request.</p>
+<p>For example...</p>
+<pre><code class="language-javascript"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">tableSchema</span><span class="hl-0"> = {</span><br/><span class="hl-0">    </span><span class="hl-5">tableName:</span><span class="hl-0"> </span><span class="hl-2">&quot;Transactions&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyField:</span><span class="hl-0"> </span><span class="hl-2">&quot;customerId&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyType:</span><span class="hl-0"> </span><span class="hl-2">&quot;string&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">sortKeyField:</span><span class="hl-0"> </span><span class="hl-2">&quot;transactionId&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">sortKeyType:</span><span class="hl-0"> </span><span class="hl-2">&quot;string&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">};</span><br/><br/><span class="hl-4">async</span><span class="hl-0"> </span><span class="hl-4">function</span><span class="hl-0"> </span><span class="hl-8">getTransactionDates</span><span class="hl-0">(</span><span class="hl-5">customerId</span><span class="hl-0">) {</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">queryRequest</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">buildQueryInput</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">, </span><span class="hl-5">customerId</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">projectedQueryRequest</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">requestBuilder</span><span class="hl-0">.</span><span class="hl-8">addProjection</span><span class="hl-0">(</span><span class="hl-5">tableSchema</span><span class="hl-0">, </span><span class="hl-5">queryRequest</span><span class="hl-0">, [</span><span class="hl-2">&quot;date&quot;</span><span class="hl-0">]);</span><br/><span class="hl-0">    </span><span class="hl-6">// Note that addProjection() does not change the original object.</span><br/><span class="hl-0">    </span><span class="hl-6">// queryRequest != projectedQueryRequest</span><br/><span class="hl-0">    </span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">queryResponse</span><span class="hl-0"> = </span><span class="hl-3">await</span><span class="hl-0"> </span><span class="hl-5">dynamodb</span><span class="hl-0">.</span><span class="hl-8">query</span><span class="hl-0">(</span><span class="hl-5">projectedQueryRequest</span><span class="hl-0">).</span><span class="hl-8">promise</span><span class="hl-0">();</span><br/><span class="hl-0">    </span><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">transactions</span><span class="hl-0"> = </span><span class="hl-5">dynameh</span><span class="hl-0">.</span><span class="hl-5">responseUnwrapper</span><span class="hl-0">.</span><span class="hl-8">unwrapQueryOutput</span><span class="hl-0">(</span><span class="hl-5">queryResponse</span><span class="hl-0">);</span><br/><span class="hl-0">    </span><span class="hl-3">return</span><span class="hl-0"> </span><span class="hl-5">transactions</span><span class="hl-0">.</span><span class="hl-8">map</span><span class="hl-0">(</span><span class="hl-5">t</span><span class="hl-0"> </span><span class="hl-4">=&gt;</span><span class="hl-0"> </span><span class="hl-5">t</span><span class="hl-0">.</span><span class="hl-5">date</span><span class="hl-0">);</span><br/><span class="hl-0">}</span><br/><br/><span class="hl-8">getTransactionDates</span><span class="hl-0">(</span><span class="hl-2">&quot;BusinessFactory&quot;</span><span class="hl-0">);</span>
+</code></pre>
 
-<span style="color: #795E26">getTransactionDates</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;BusinessFactory&quot;</span><span style="color: #000000">);</span>
+<a href="#date-serialization" id="date-serialization" style="color: inherit; text-decoration: none;">
+  <h3>Date Serialization</h3>
+</a>
+<p>Date serialization can be configured by setting <code>dateSerializationFunction</code> on your <code>TableSchema</code>.  It&#39;s a function that takes in a <code>Date</code> and returns a <code>string</code> or <code>number</code>.  By default Dates are serialized as ISO-8601 strings (the only correct date format).</p>
+<p>For example...</p>
+<pre><code class="language-javascript"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-7">tableSchema</span><span class="hl-0"> = {</span><br/><span class="hl-0">    </span><span class="hl-5">tableName:</span><span class="hl-0"> </span><span class="hl-2">&quot;MyTable&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyField:</span><span class="hl-0"> </span><span class="hl-2">&quot;id&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-5">partitionKeyType:</span><span class="hl-0"> </span><span class="hl-2">&quot;number&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">    </span><span class="hl-8">dateSerializationFunction</span><span class="hl-5">:</span><span class="hl-0"> </span><span class="hl-5">date</span><span class="hl-0"> </span><span class="hl-4">=&gt;</span><span class="hl-0"> </span><span class="hl-5">date</span><span class="hl-0">.</span><span class="hl-8">toISOString</span><span class="hl-0">()   </span><span class="hl-6">// same as default</span><br/><span class="hl-0">};</span>
 </code></pre>
-				<a href="#date-serialization" id="date-serialization" style="color: inherit; text-decoration: none;">
-					<h3>Date Serialization</h3>
-				</a>
-				<p>Date serialization can be configured by setting <code>dateSerializationFunction</code> on your <code>TableSchema</code>.  It&#39;s a function that takes in a <code>Date</code> and returns a <code>string</code> or <code>number</code>.  By default Dates are serialized as ISO-8601 strings (the only correct date format).</p>
-				<p>For example...</p>
-				<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">tableSchema</span><span style="color: #000000"> = {</span>
-<span style="color: #000000">    </span><span style="color: #001080">tableName:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;MyTable&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyField:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;id&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #001080">partitionKeyType:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;number&quot;</span><span style="color: #000000">,</span>
-<span style="color: #000000">    </span><span style="color: #795E26">dateSerializationFunction</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #001080">date</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">date</span><span style="color: #000000">.</span><span style="color: #795E26">toISOString</span><span style="color: #000000">()   </span><span style="color: #008000">// same as default</span>
-<span style="color: #000000">};</span>
-</code></pre>
-			</div>
-		</div>
-		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation primary">
-				<ul>
-					<li class=" ">
-						<a href="modules.html">Modules</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/condition.html">Condition</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/scopeddynameh.html">Scoped<wbr>Dynameh</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/tableschema.html">Table<wbr>Schema</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/updateexpressionaction.html">Update<wbr>Expression<wbr>Action</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/batchhelper.html">batch<wbr>Helper</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/concurrenthelper.html">concurrent<wbr>Helper</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/dynamodbreservedwords.html">dynamo<wbr>DbReserved<wbr>Words</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/index.html">index</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/queryhelper.html">query<wbr>Helper</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/requestbuilder.html">request<wbr>Builder</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/requestunwrapper.html">request<wbr>Unwrapper</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/responseunwrapper.html">response<wbr>Unwrapper</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/scanhelper.html">scan<wbr>Helper</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/validation.html">validation</a>
-					</li>
-				</ul>
-			</nav>
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul class="before-current">
-				</ul>
-			</nav>
-		</div>
-	</div>
-</div>
-<footer class="with-border-bottom">
-	<div class="container">
-		<h2>Legend</h2>
-		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-			</ul>
-		</div>
-	</div>
-</footer>
-<div class="container tsd-generator">
-	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
-</div>
-<div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-</body>
-</html>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li><li class=" tsd-kind-namespace"><a href="modules/batchHelper.html">batch<wbr/>Helper</a></li><li class=" tsd-kind-namespace"><a href="modules/concurrentHelper.html">concurrent<wbr/>Helper</a></li><li class=" tsd-kind-namespace"><a href="modules/queryHelper.html">query<wbr/>Helper</a></li><li class=" tsd-kind-namespace"><a href="modules/requestBuilder.html">request<wbr/>Builder</a></li><li class=" tsd-kind-namespace"><a href="modules/requestUnwrapper.html">request<wbr/>Unwrapper</a></li><li class=" tsd-kind-namespace"><a href="modules/responseUnwrapper.html">response<wbr/>Unwrapper</a></li><li class=" tsd-kind-namespace"><a href="modules/scanHelper.html">scan<wbr/>Helper</a></li><li class=" tsd-kind-namespace"><a href="modules/validation.html">validation</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-interface"><a href="interfaces/Condition.html" class="tsd-kind-icon">Condition</a></li><li class="tsd-kind-interface"><a href="interfaces/ScopedDynameh.html" class="tsd-kind-icon">Scoped<wbr/>Dynameh</a></li><li class="tsd-kind-interface"><a href="interfaces/TableSchema.html" class="tsd-kind-icon">Table<wbr/>Schema</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionListAppend.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>List<wbr/>Append</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionListPrepend.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>List<wbr/>Prepend</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionListRemoveAtIndex.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>List<wbr/>Remove<wbr/>At<wbr/>Index</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionListSetAtIndex.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>List<wbr/>Set<wbr/>At<wbr/>Index</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionNumberAdd.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>Number<wbr/>Add</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionNumberSubtract.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>Number<wbr/>Subtract</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionPut.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>Put</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionPutIfNotExists.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>Put<wbr/>If<wbr/>Not<wbr/>Exists</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionRemove.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>Remove</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionSetAdd.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>Set<wbr/>Add</a></li><li class="tsd-kind-interface"><a href="interfaces/UpdateExpressionSetDelete.html" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>Set<wbr/>Delete</a></li><li class="tsd-kind-type-alias"><a href="modules.html#UpdateExpressionAction" class="tsd-kind-icon">Update<wbr/>Expression<wbr/>Action</a></li><li class="tsd-kind-function"><a href="modules.html#scope" class="tsd-kind-icon">scope</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
